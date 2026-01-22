@@ -12,6 +12,3 @@ CONTACT_FROM_EMAIL = "GITSContact <onboarding@resend.dev>"
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
-
-[images]
-binding = "IMAGES"
