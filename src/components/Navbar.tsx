@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import type React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,6 +23,9 @@ function cx(...classes: Array<string | false | undefined | null>) {
  * - stacked base + hover layers
  * - subtle vertical flip + rotation
  * - optional shine sweep on hover
+ *
+ * NOTE: We keep this for desktop + rich interactions,
+ * but for mobile we will wrap it in a no-wrap + slightly italic container.
  */
 function TwistText({ children }: { children: React.ReactNode }) {
   return (
@@ -53,6 +57,7 @@ function TwistText({ children }: { children: React.ReactNode }) {
 
 /**
  * Primary navigation link (desktop)
+ * Desktop design stays the same, but we add italic to the label
  */
 function NavLink({
   href,
@@ -77,7 +82,10 @@ function NavLink({
       )}
       style={{ fontFamily: "Inter" }}
     >
-      <TwistText>{children}</TwistText>
+      {/* italic label */}
+      <span className="italic">
+        <TwistText>{children}</TwistText>
+      </span>
 
       {/* underline */}
       <span
@@ -149,14 +157,16 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   /**
-   * Desktop primary navigation
+   * Desktop + Mobile primary navigation
+   * - Desktop keeps "What We Build"
+   * - Mobile uses shorter label to prevent wrapping (durable)
    */
   const primary = useMemo(
     () => [
-      { label: "Services", href: "/services" },
-      { label: "What We Build", href: "/what-we-build" },
-      { label: "Blog", href: "/blog" },
-      { label: "About", href: "/about" },
+      { label: "Services", href: "/services", mobileLabel: "Services" },
+      { label: "What We Build", href: "/what-we-build", mobileLabel: "Projects" }, // ✅ mobile label
+      { label: "Blog", href: "/blog", mobileLabel: "Blog" },
+      { label: "About", href: "/about", mobileLabel: "About" },
     ],
     []
   );
@@ -180,7 +190,7 @@ export default function Navbar() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex h-16 sm:h-[72px] items-center justify-between gap-3">
             {/* Brand */}
-            <Link href="/" className="inline-flex items-center gap-3 select-none">
+            <Link href="/" className="inline-flex items-center gap-3 select-none flex-shrink-0">
               <motion.div
                 className="text-xl sm:text-2xl font-bold"
                 style={{
@@ -223,15 +233,20 @@ export default function Navbar() {
             </div>
 
             {/* Mobile top row */}
-            <div className="md:hidden flex items-center gap-2">
+            <div className="md:hidden flex items-center gap-2 min-w-0">
+              {/* Use shorter labels on mobile + prevent wrap */}
               {primary.slice(0, 3).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group rounded-full px-3 py-2 text-sm text-white/85 hover:text-white transition"
+                  className={cx(
+                    "group rounded-full px-3 py-2",
+                    "text-[13px] text-white/85 hover:text-white transition",
+                    "whitespace-nowrap leading-none italic" // ✅ italic + never stack
+                  )}
                   style={{ fontFamily: "Inter" }}
                 >
-                  <TwistText>{item.label}</TwistText>
+                  <TwistText>{item.mobileLabel ?? item.label}</TwistText>
                 </Link>
               ))}
 
@@ -239,7 +254,7 @@ export default function Navbar() {
                 onClick={() => setOpen(true)}
                 aria-label="Open menu"
                 className={cx(
-                  "ml-1 inline-flex h-10 w-10 items-center justify-center rounded-full",
+                  "ml-1 inline-flex h-10 w-10 items-center justify-center rounded-full flex-shrink-0",
                   "border border-white/20 bg-black text-white",
                   "hover:bg-white/5 transition active:scale-[0.99]"
                 )}
@@ -296,7 +311,8 @@ export default function Navbar() {
                       className="group flex items-center justify-between rounded-2xl px-4 py-3 border border-white/12 bg-black text-white/90 hover:bg-white/5 transition"
                       style={{ fontFamily: "Inter" }}
                     >
-                      <span className="text-sm font-medium">
+                      {/* italic menu items too */}
+                      <span className="text-sm font-medium italic">
                         <TwistText>{item.label}</TwistText>
                       </span>
                       <span className="text-white/50">→</span>
@@ -308,7 +324,8 @@ export default function Navbar() {
                   <GhostButton href="/contact" onClick={() => setOpen(false)}>
                     Contact
                   </GhostButton>
-                  <PrimaryButton href="/get-free-audit" onClick={() => setOpen(false)}>
+                  {/* Keep route consistent with the rest of the app */}
+                  <PrimaryButton href="/audit" onClick={() => setOpen(false)}>
                     Get free audit
                   </PrimaryButton>
                 </div>
