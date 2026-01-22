@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // keep your compiler
   reactCompiler: true,
+
+  // ✅ REQUIRED for OpenNext on Cloudflare Workers
+  output: "standalone",
+
+  // optional but safe
+  poweredByHeader: false,
 };
 
 export default nextConfig;
