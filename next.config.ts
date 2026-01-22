@@ -1,14 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
-  output: "standalone",
-
-  // IMPORTANT: Prevent OpenNext from relying on Cloudflare Images runtime modules.
-  // This avoids: "No such module cloudflare/images.js"
-  images: {
-    unoptimized: true,
-  },
+  reactCompiler: true
 };
 
 export default nextConfig;
