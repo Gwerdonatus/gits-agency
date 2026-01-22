@@ -7,10 +7,10 @@
     "dev": "next dev",
 
     "build": "next build",
-
     "build:worker": "opennextjs-cloudflare build",
 
-    "deploy": "wrangler deploy --no-bundle",
+    "deploy": "wrangler deploy --config wrangler.toml --no-bundle",
+    "deploy:debug": "wrangler deploy --config wrangler.toml --no-bundle --log-level debug",
 
     "lint": "eslint"
   },
