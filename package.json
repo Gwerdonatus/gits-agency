@@ -2,17 +2,19 @@
   "name": "gits",
   "version": "0.1.0",
   "private": true,
+
   "scripts": {
     "dev": "next dev",
+
     "build": "next build",
 
-    "cf:build": "opennextjs-cloudflare build",
     "build:worker": "opennextjs-cloudflare build",
 
-    "deploy": "wrangler deploy",
-    "start": "next start",
+    "deploy": "wrangler deploy --no-bundle",
+
     "lint": "eslint"
   },
+
   "dependencies": {
     "@fontsource/great-vibes": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
@@ -28,6 +30,7 @@
     "resend": "^6.8.0",
     "three": "^0.182.0"
   },
+
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.15.0",
     "@tailwindcss/postcss": "^4",
