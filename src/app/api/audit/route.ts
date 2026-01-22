@@ -3,6 +3,12 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error("Missing RESEND_API_KEY");
+  return new Resend(key);
+}
+
 function esc(s: string) {
   return (s || "")
     .replaceAll("&", "&amp;")
@@ -40,31 +46,20 @@ export async function POST(req: Request) {
     const okEmail = /^\S+@\S+\.\S+$/.test(email);
 
     if (!website || website.length < 6) {
-      return NextResponse.json(
-        { ok: false, error: "Website URL is required." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Website URL is required." }, { status: 400 });
     }
     if (!okEmail) {
-      return NextResponse.json(
-        { ok: false, error: "Valid email is required." },
-        { status: 400 }
-      );
+      return NextResponse.json({ ok: false, error: "Valid email is required." }, { status: 400 });
     }
 
-    const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.AUDIT_TO_EMAIL;
     const from = process.env.AUDIT_FROM_EMAIL;
 
-    // ✅ Build-safe: do not construct Resend unless env exists at runtime
-    if (!apiKey || !to || !from) {
-      return NextResponse.json(
-        { ok: false, error: "Email is not configured. Missing env vars." },
-        { status: 500 }
-      );
+    if (!to || !from) {
+      return NextResponse.json({ ok: false, error: "Email is not configured. Missing env vars." }, { status: 500 });
     }
 
-    const resend = new Resend(apiKey);
+    const resend = getResend();
 
     const subject = `New Free Audit Request — ${website}`;
 
@@ -100,17 +95,10 @@ Notes:
 ${notes || "-"}`,
     });
 
-    if (error) {
-      return NextResponse.json(
-        { ok: false, error: error.message },
-        { status: 500 }
-      );
-    }
+    if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
 
     return NextResponse.json({ ok: true, id: data?.id || null });
-  } catch (err: unknown) {
-    const message =
-      err instanceof Error ? err.message : "Unexpected server error.";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+  } catch (err: any) {
+    return NextResponse.json({ ok: false, error: err?.message || "Unexpected server error." }, { status: 500 });
   }
 }

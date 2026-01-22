@@ -5,9 +5,56 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+const SITE_NAME = "GITS";
+const SITE_DESCRIPTION = "GITS — premium UI/UX, web engineering, and automation.";
+
+// IMPORTANT: change this to your real deployed domain
+// Example: "https://gits.donatusgwer.workers.dev"
+const SITE_URL = "https://gits.donatusgwer.workers.dev";
+
 export const metadata: Metadata = {
-  title: "GITS",
-  description: "GITS — premium UI/UX, web engineering, and automation.",
+  metadataBase: new URL(SITE_URL),
+
+  title: {
+    default: SITE_NAME,
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+
+  // This controls favicon / tab icon and also helps link previews in some places
+  icons: {
+    icon: [
+      { url: "/gits.png" }, // your logo
+    ],
+    apple: [
+      { url: "/gits.png" },
+    ],
+  },
+
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    siteName: SITE_NAME,
+    images: [
+      {
+        url: "/gits.png",
+        width: 1200,
+        height: 630,
+        alt: "GITS",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/gits.png"],
+    // optional: add your handle if you have one
+    // creator: "@yourhandle",
+  },
 };
 
 export default function RootLayout({
@@ -26,12 +73,8 @@ export default function RootLayout({
       </head>
 
       <body className="min-h-screen bg-white text-gray-900 antialiased overflow-x-hidden">
-        {/* Fixed navbar sits over every page/hero */}
         <Navbar />
-
-        {/* No extra spacing — pages control their own top padding */}
         {children}
-
         <Footer />
       </body>
     </html>
