@@ -1,6 +1,7 @@
 name = "gits"
 main = ".open-next/worker.js"
 compatibility_date = "2026-01-22"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 AUDIT_TO_EMAIL = "donatusgwer@gmail.com"
