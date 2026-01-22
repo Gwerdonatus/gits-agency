@@ -3,8 +3,6 @@ import { Resend } from "resend";
 
 export const runtime = "nodejs";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 function esc(s: string) {
   return (s || "")
     .replaceAll("&", "&amp;")
@@ -30,30 +28,43 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     // Honeypot
-    const company = clean(body.company, 120);
+    const company = clean((body as any).company, 120);
     if (company) return NextResponse.json({ ok: true });
 
-    const website = normalizeUrl(clean(body.website, 300));
-    const email = clean(body.email, 200);
-    const industry = clean(body.industry, 200);
-    const goal = clean(body.goal, 200);
-    const notes = clean(body.notes, 6000);
+    const website = normalizeUrl(clean((body as any).website, 300));
+    const email = clean((body as any).email, 200);
+    const industry = clean((body as any).industry, 200);
+    const goal = clean((body as any).goal, 200);
+    const notes = clean((body as any).notes, 6000);
 
     const okEmail = /^\S+@\S+\.\S+$/.test(email);
 
     if (!website || website.length < 6) {
-      return NextResponse.json({ ok: false, error: "Website URL is required." }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Website URL is required." },
+        { status: 400 }
+      );
     }
     if (!okEmail) {
-      return NextResponse.json({ ok: false, error: "Valid email is required." }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Valid email is required." },
+        { status: 400 }
+      );
     }
 
+    const apiKey = process.env.RESEND_API_KEY;
     const to = process.env.AUDIT_TO_EMAIL;
     const from = process.env.AUDIT_FROM_EMAIL;
 
-    if (!process.env.RESEND_API_KEY || !to || !from) {
-      return NextResponse.json({ ok: false, error: "Email is not configured. Missing env vars." }, { status: 500 });
+    // ✅ Build-safe: do not construct Resend unless env exists at runtime
+    if (!apiKey || !to || !from) {
+      return NextResponse.json(
+        { ok: false, error: "Email is not configured. Missing env vars." },
+        { status: 500 }
+      );
     }
+
+    const resend = new Resend(apiKey);
 
     const subject = `New Free Audit Request — ${website}`;
 
@@ -90,12 +101,16 @@ ${notes || "-"}`,
     });
 
     if (error) {
-      return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+      return NextResponse.json(
+        { ok: false, error: error.message },
+        { status: 500 }
+      );
     }
 
-    // Return id for UI confirmation / debugging
     return NextResponse.json({ ok: true, id: data?.id || null });
-  } catch (err: any) {
-    return NextResponse.json({ ok: false, error: err?.message || "Unexpected server error." }, { status: 500 });
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Unexpected server error.";
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
 }
