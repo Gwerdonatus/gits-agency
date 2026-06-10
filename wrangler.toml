@@ -1,0 +1,14 @@
+name = "gits"
+main = ".open-next/worker.js"
+compatibility_date = "2026-01-22"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+AUDIT_TO_EMAIL = "donatusgwer@gmail.com"
+AUDIT_FROM_EMAIL = "GITSAudit <onboarding@resend.dev>"
+CONTACT_TO_EMAIL = "donatusgwer@gmail.com"
+CONTACT_FROM_EMAIL = "GITSContact <onboarding@resend.dev>"
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"

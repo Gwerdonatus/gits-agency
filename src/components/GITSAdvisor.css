@@ -1,0 +1,511 @@
+/* ═══════════════════════════════════════════════════════════════
+   GITS AI ADVISOR — Optimized CSS
+   
+   Key architectural decisions:
+   · --robot-h CSS variable = single source of truth for robot height
+   · All positions computed from --robot-h, not hardcoded px
+   · dvh (dynamic viewport height) for mobile keyboard awareness
+   · Bottom sheet pattern on mobile (full-width, slides from bottom)
+   · Safe-area insets for notched iPhones + Android gesture bars
+   · 16px input font on mobile prevents iOS auto-zoom
+   · min(72vh, 560px) height = never clips, never overflows
+   · Tablet breakpoint fills the gap between mobile + desktop
+═══════════════════════════════════════════════════════════════ */
+
+const CSS = `
+/* ── DESIGN TOKENS ──────────────────────────────────────────── */
+:root {
+  --robot-h: 188px;
+  --robot-w: 130px;
+  --chat-w:  360px;
+  --chat-gap: 10px;
+  --chat-bottom: calc(var(--robot-h) + var(--chat-gap));
+
+  /* ── colour palette ── */
+  --gb:   #080807;
+  --gb2:  #111110;
+  --gb3:  #1c1c1a;
+  --gb4:  #272725;
+  --gb5:  #323230;
+  --gw:   #f2f2ee;
+  --gw2:  #c8c8c4;
+  --gw3:  #888884;
+  --gw4:  #4a4a48;
+  --gbr:  rgba(255,255,255,0.08);
+  --gbr2: rgba(255,255,255,0.14);
+  --gbr3: rgba(255,255,255,0.24);
+  --gsh:  0 32px 80px rgba(0,0,0,0.92), 0 6px 22px rgba(0,0,0,0.65);
+  --gsh2: 0 12px 40px rgba(0,0,0,0.80);
+  --gf:   'Syne','Bricolage Grotesque',system-ui,sans-serif;
+  --gm:   'DM Mono',monospace;
+}
+
+@media(prefers-color-scheme:light) {
+  :root {
+    --gb:   #f8f8f6;
+    --gb2:  #ffffff;
+    --gb3:  #f0f0ec;
+    --gb4:  #e8e8e4;
+    --gb5:  #e0e0dc;
+    --gw:   #111110;
+    --gw2:  #333330;
+    --gw3:  #777774;
+    --gw4:  #aaaaaa;
+    --gbr:  rgba(0,0,0,0.08);
+    --gbr2: rgba(0,0,0,0.12);
+    --gbr3: rgba(0,0,0,0.20);
+    --gsh:  0 32px 80px rgba(0,0,0,0.18), 0 6px 22px rgba(0,0,0,0.10);
+    --gsh2: 0 12px 40px rgba(0,0,0,0.12);
+  }
+}
+
+/* ── ROOT ANCHOR ────────────────────────────────────────────── */
+#g3d-root {
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
+  font-family: var(--gf);
+  /* Respect iOS safe areas so nothing hides behind home bar */
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  padding-right: max(24px, env(safe-area-inset-right));
+}
+#g3d-root > * { pointer-events: auto; }
+
+/* ── 3D ROBOT CANVAS ────────────────────────────────────────── */
+.g3d-canvas {
+  display: block;
+  width: var(--robot-w);
+  height: var(--robot-h);
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  filter: drop-shadow(0 8px 28px rgba(0,0,0,0.45))
+          drop-shadow(0 2px 8px rgba(0,0,0,0.38));
+  transition: filter 0.32s ease, transform 0.24s ease;
+}
+.g3d-canvas:hover {
+  filter: drop-shadow(0 14px 44px rgba(0,0,0,0.55))
+          drop-shadow(0 2px 12px rgba(0,0,0,0.45));
+  transform: translateY(-2px);
+}
+.g3d-canvas:active {
+  transform: scale(0.97);
+}
+.g3d-canvas:focus-visible {
+  outline: 2px solid var(--gbr3);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+/* ── UNREAD BADGE ───────────────────────────────────────────── */
+.g3d-badge {
+  position: absolute;
+  /* anchor relative to the robot top-right corner */
+  bottom: calc(var(--robot-h) + max(24px, env(safe-area-inset-bottom)) - 12px);
+  right: max(24px, env(safe-area-inset-right));
+  transform: translateX(50%);
+  min-width: 20px;
+  height: 20px;
+  background: #dc2626;
+  color: #fff;
+  font-family: var(--gm);
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 100px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--gb);
+  animation: g3d-badge-in 0.30s cubic-bezier(0.34,1.6,0.64,1),
+             g3d-badge-pulse 2.2s ease-in-out infinite 0.6s;
+}
+@keyframes g3d-badge-in   { from{transform:translateX(50%) scale(0)} to{transform:translateX(50%) scale(1)} }
+@keyframes g3d-badge-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.5)} 50%{box-shadow:0 0 0 7px rgba(220,38,38,0)} }
+
+/* ── SPEECH BUBBLE ──────────────────────────────────────────── */
+.g3d-bubble {
+  position: absolute;
+  /* Always sits directly above the robot */
+  bottom: calc(var(--robot-h) + max(24px, env(safe-area-inset-bottom)) + 8px);
+  right: max(24px, env(safe-area-inset-right));
+  width: min(262px, calc(100vw - 56px));
+  background: var(--gb2);
+  border: 1px solid var(--gbr2);
+  border-radius: 18px 18px 4px 18px;
+  padding: 15px 16px 14px;
+  box-shadow: var(--gsh2), inset 0 1px 0 var(--gbr);
+  transform-origin: bottom right;
+  animation: g3d-bub-in 0.52s cubic-bezier(0.34,1.40,0.64,1) both;
+  z-index: 2;
+}
+@keyframes g3d-bub-in {
+  from { opacity:0; transform:scale(0.04) translateY(30px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.g3d-bubble::after  { content:''; position:absolute; bottom:-9px; right:18px; border-left:10px solid transparent; border-top:10px solid var(--gbr2); }
+.g3d-bubble::before { content:''; position:absolute; bottom:-7px; right:19px; z-index:1; border-left:9px solid transparent; border-top:9px solid var(--gb2); }
+.g3d-bubble-x { position:absolute; top:-10px; right:-10px; width:24px; height:24px; background:var(--gb3); border:1px solid var(--gbr); border-radius:50%; color:var(--gw3); font-size:10px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:color .2s,background .2s; }
+.g3d-bubble-x:hover { color:var(--gw); background:var(--gb4); }
+.g3d-bubble-txt { font-size:12.5px; font-weight:500; line-height:1.65; color:var(--gw); letter-spacing:-0.01em; }
+.g3d-bubble-txt strong { font-weight:700; color:var(--gw); }
+.g3d-bubble-ctas { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+.g3d-bubble-yes { background:var(--gw); color:var(--gb); border:none; font-family:var(--gf); font-size:11.5px; font-weight:700; padding:7px 16px; border-radius:100px; cursor:pointer; white-space:nowrap; transition:background .2s,transform .15s; }
+.g3d-bubble-yes:hover { background:var(--gw2); transform:scale(1.04); }
+.g3d-bubble-no { background:transparent; color:var(--gw3); border:1px solid var(--gbr); font-family:var(--gf); font-size:11.5px; padding:7px 13px; border-radius:100px; cursor:pointer; white-space:nowrap; transition:color .2s,border-color .2s; }
+.g3d-bubble-no:hover { color:var(--gw2); border-color:var(--gbr2); }
+
+/* ── CHAT PANEL — DESKTOP BASE ──────────────────────────────── */
+.g3d-chat {
+  position: absolute;
+  bottom: var(--chat-bottom);
+  right: 0;
+  width: var(--chat-w);
+  /* ⬇ key change: flex layout height, never clips or overflows */
+  max-height: min(72vh, 560px);
+  height: min(72vh, 560px);
+  background: var(--gb2);
+  border: 1px solid var(--gbr2);
+  border-radius: 20px;
+  box-shadow: var(--gsh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.05) translateY(55px);
+  transform-origin: bottom right;
+  pointer-events: none;
+  transition: opacity 0.48s cubic-bezier(0.34,1.25,0.64,1),
+              transform 0.52s cubic-bezier(0.34,1.25,0.64,1);
+  z-index: 1;
+}
+.g3d-chat.open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: all;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────── */
+.g3d-head { 
+  display: flex; 
+  align-items: center; 
+  gap: 9px; 
+  padding: 12px 12px 11px; 
+  border-bottom: 1px solid var(--gbr); 
+  background: var(--gb3); 
+  flex-shrink: 0; 
+  position: relative;
+  /* Ensure header is never squashed */
+  min-height: 52px;
+}
+.g3d-head-ava { position:relative; flex-shrink:0; }
+.g3d-status { 
+  position:absolute; bottom:2px; right:2px; 
+  width:9px; height:9px; border-radius:50%; 
+  background: #4ade80; /* online green */
+  border:2px solid var(--gb3); 
+  animation: g3d-status 2.4s ease-in-out infinite; 
+}
+@keyframes g3d-status { 0%,100%{opacity:1} 50%{opacity:.45} }
+.g3d-head-name { font-size:13.5px; font-weight:700; color:var(--gw); letter-spacing:-0.025em; }
+.g3d-head-sub  { font-family:var(--gm); font-size:9px; color:var(--gw3); display:flex; align-items:center; gap:4px; letter-spacing:.06em; margin-top:1px; }
+.g3d-dot { width:4px; height:4px; border-radius:50%; background: #4ade80; animation:g3d-status 2.5s ease infinite; }
+.g3d-icon-btn { background:none; border:none; cursor:pointer; color:var(--gw4); padding:5px; border-radius:7px; display:flex; align-items:center; justify-content:center; transition:color .2s,background .2s; flex-shrink:0; }
+.g3d-icon-btn:hover { color:var(--gw2); background:var(--gb4); }
+.g3d-close { background:none; border:none; cursor:pointer; color:var(--gw4); padding:7px; border-radius:7px; display:flex; align-items:center; justify-content:center; transition:color .2s,background .2s; flex-shrink:0; min-width:32px; min-height:32px; }
+.g3d-close:hover { color:var(--gw2); background:var(--gb4); }
+
+/* ── DROPDOWN MENU ──────────────────────────────────────────── */
+.g3d-menu { position:absolute; top:calc(100% + 6px); right:0; min-width:182px; background:var(--gb3); border:1px solid var(--gbr2); border-radius:12px; box-shadow:var(--gsh2); padding:5px; z-index:30; animation:g3d-menu-in .22s cubic-bezier(0.34,1.4,0.64,1); transform-origin:top right; }
+@keyframes g3d-menu-in { from{opacity:0;transform:scale(.88) translateY(-6px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.g3d-menu-item { display:flex; align-items:center; gap:9px; width:100%; background:none; border:none; color:var(--gw2); font-family:var(--gf); font-size:12.5px; padding:9px 12px; border-radius:8px; cursor:pointer; text-align:left; text-decoration:none; transition:background .15s,color .15s; }
+.g3d-menu-item:hover { background:var(--gb4); color:var(--gw); }
+.g3d-menu-wa { color:#4ade80; }
+.g3d-menu-wa:hover { background:rgba(74,222,128,.08); }
+.g3d-menu-div { height:1px; background:var(--gbr); margin:4px 0; }
+
+/* ── MESSAGES AREA ──────────────────────────────────────────── */
+.g3d-msgs {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* overscroll-behavior keeps the page from scrolling when chat scrolls */
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+.g3d-msgs::-webkit-scrollbar { width: 2px; }
+.g3d-msgs::-webkit-scrollbar-track { background: transparent; }
+.g3d-msgs::-webkit-scrollbar-thumb { background: var(--gbr2); border-radius: 2px; }
+
+/* ── MESSAGE ROWS ───────────────────────────────────────────── */
+.g3d-row { display:flex; gap:7px; align-items:flex-end; animation:g3d-msg-in 0.36s cubic-bezier(0.34,1.5,0.64,1); }
+.g3d-row.user { flex-direction:row-reverse; }
+@keyframes g3d-msg-in { from{opacity:0;transform:translateY(10px) scale(.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+.g3d-msg-wrap { display:flex; flex-direction:column; max-width:84%; }
+.g3d-row.user .g3d-msg-wrap { align-items:flex-end; }
+.g3d-bub { padding:9px 12px; font-size:12.5px; font-weight:500; line-height:1.66; color:var(--gw); background:var(--gb3); border:1px solid var(--gbr); border-radius:14px 14px 14px 3px; word-break:break-word; }
+.g3d-row.user .g3d-bub { background:var(--gb4); border-color:var(--gbr); border-radius:14px 14px 3px 14px; color:var(--gw2); }
+.g3d-bub a { color:var(--gw); text-decoration:underline; text-underline-offset:2px; text-decoration-color:var(--gbr3); }
+.g3d-bub a:hover { text-decoration-color:var(--gw2); }
+.g3d-bub strong { color:var(--gw); font-weight:700; }
+.g3d-ts { display:block; font-family:var(--gm); font-size:8.5px; color:var(--gw4); margin-top:4px; letter-spacing:.04em; }
+.g3d-row.user .g3d-ts { text-align:right; }
+.g3d-you { width:22px; height:22px; border-radius:50%; background:var(--gb4); color:var(--gw3); font-size:8.5px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid var(--gbr); }
+
+/* ── TYPING INDICATOR ───────────────────────────────────────── */
+.g3d-dots { display:flex; gap:4px; align-items:center; background:var(--gb3); border:1px solid var(--gbr); padding:10px 13px; border-radius:14px 14px 14px 3px; }
+.g3d-dots span { width:5px; height:5px; border-radius:50%; background:var(--gw4); animation:g3d-dot 1.3s ease infinite; }
+.g3d-dots span:nth-child(2){animation-delay:.15s}
+.g3d-dots span:nth-child(3){animation-delay:.30s}
+@keyframes g3d-dot { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-5px);opacity:1} }
+
+/* ── QUICK REPLIES ──────────────────────────────────────────── */
+.g3d-quicks {
+  padding: 4px 12px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.g3d-q {
+  background: var(--gb3);
+  border: 1px solid var(--gbr2);
+  color: var(--gw2);
+  font-family: var(--gf);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 100px;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  transition: all .18s;
+  animation: g3d-q-in 0.38s cubic-bezier(0.34,1.5,0.64,1) both;
+}
+@keyframes g3d-q-in { from{opacity:0;transform:translateX(10px) scale(.90)} to{opacity:1;transform:translateX(0) scale(1)} }
+.g3d-q:hover { background:var(--gb4); border-color:var(--gbr3); color:var(--gw); transform:scale(1.02); }
+.g3d-q:active { transform:scale(0.97); }
+
+/* ── INPUT ROW ──────────────────────────────────────────────── */
+.g3d-input-row {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  padding: 8px 10px 10px;
+  border-top: 1px solid var(--gbr);
+  background: var(--gb3);
+  flex-shrink: 0;
+}
+.g3d-input {
+  flex: 1;
+  background: var(--gb);
+  border: 1px solid var(--gbr2);
+  border-radius: 11px;
+  color: var(--gw);
+  font-family: var(--gf);
+  font-size: 13px;
+  padding: 8px 12px;
+  outline: none;
+  resize: none;
+  min-height: 36px;
+  max-height: 80px;
+  line-height: 1.52;
+  overflow-y: hidden;
+  transition: border-color .22s, box-shadow .22s;
+}
+.g3d-input::placeholder { color: var(--gw4); }
+.g3d-input:focus {
+  border-color: var(--gbr3);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+}
+.g3d-send {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: var(--gw);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gb);
+  transition: background .2s, transform .15s, opacity .2s;
+}
+.g3d-send:hover:not(:disabled) { background: var(--gw2); transform: scale(1.06); }
+.g3d-send:active:not(:disabled) { transform: scale(0.96); }
+.g3d-send:disabled { opacity: .22; cursor: not-allowed; transform: none; }
+
+/* ── FOOTER ─────────────────────────────────────────────────── */
+.g3d-footer {
+  text-align: center;
+  font-family: var(--gm);
+  font-size: 8px;
+  color: var(--gw4);
+  letter-spacing: .08em;
+  padding: 5px 0 8px;
+  background: var(--gb3);
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE: TABLET  441px – 768px
+═══════════════════════════════════════════════════════════════ */
+@media(min-width:441px) and (max-width:768px) {
+  :root {
+    --robot-h: 170px;
+    --robot-w: 118px;
+    --chat-w:  min(340px, 92vw);
+  }
+  .g3d-chat {
+    max-height: min(68vh, 520px);
+    height:     min(68vh, 520px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE: MOBILE  ≤ 440px
+   Bottom-sheet UX: slides up from the bottom edge of the viewport.
+   Full-width minus safe areas. Rounded only at top.
+═══════════════════════════════════════════════════════════════ */
+@media(max-width:440px) {
+  :root {
+    --robot-h: 145px;
+    --robot-w: 100px;
+  }
+
+  #g3d-root {
+    /* Use left: 0 too so we can position the sheet full-width */
+    left: 0 !important;
+    padding-left:   0;
+    padding-right:  0;
+    padding-bottom: 0;
+    bottom: 0 !important;
+    right:  0 !important;
+  }
+
+  /* Robot stays in bottom-right, we override selectively */
+  .g3d-canvas {
+    /* Keep robot at bottom-right — restore padding just for the canvas */
+    margin-right:  max(14px, env(safe-area-inset-right));
+    margin-bottom: max(14px, env(safe-area-inset-bottom));
+    display: block;
+  }
+
+  .g3d-badge {
+    right:   max(14px, env(safe-area-inset-right));
+    bottom:  calc(var(--robot-h) + max(14px, env(safe-area-inset-bottom)) - 10px);
+    transform: translateX(50%);
+  }
+
+  .g3d-bubble {
+    right:   max(14px, env(safe-area-inset-right));
+    bottom:  calc(var(--robot-h) + max(14px, env(safe-area-inset-bottom)) + 8px);
+    width:   min(240px, calc(100vw - 40px));
+    left:    auto;
+  }
+
+  /* ── Bottom sheet ── */
+  .g3d-chat {
+    /* Anchored to viewport bottom — covers full width */
+    position: fixed;
+    bottom:  0;
+    left:    0;
+    right:   0;
+    width:   100%;
+    border-radius: 22px 22px 0 0;
+    transform-origin: bottom center;
+    transform: translateY(110%);
+    /* Use dynamic viewport height so keyboard doesn't clip the input */
+    max-height: calc(100dvh - var(--robot-h) - max(14px, env(safe-area-inset-bottom)) - 8px);
+    height:     calc(100dvh - var(--robot-h) - max(14px, env(safe-area-inset-bottom)) - 8px);
+    /* Fallback for browsers without dvh */
+    max-height: calc(100vh  - var(--robot-h) - 22px);
+    height:     calc(100vh  - var(--robot-h) - 22px);
+    /* dvh override where supported */
+    max-height: calc(100dvh - var(--robot-h) - max(14px, env(safe-area-inset-bottom)) - 8px);
+    height:     calc(100dvh - var(--robot-h) - max(14px, env(safe-area-inset-bottom)) - 8px);
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.5), 0 -2px 12px rgba(0,0,0,0.3);
+    opacity: 1;
+    /* Drag handle decoration */
+  }
+  .g3d-chat.open {
+    transform: translateY(0);
+    transition: transform 0.44s cubic-bezier(0.32,0.92,0.44,1);
+  }
+
+  /* Drag handle pill at top of sheet */
+  .g3d-head::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--gbr2);
+  }
+  .g3d-head {
+    padding-top: 18px;
+  }
+
+  /* ⚠ 16px prevents iOS from auto-zooming on textarea focus */
+  .g3d-input {
+    font-size: 16px !important;
+  }
+
+  /* Add padding-bottom for iPhone home indicator */
+  .g3d-footer {
+    padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 6px));
+  }
+
+  /* Quick replies wrap nicely on small screens */
+  .g3d-quicks {
+    padding: 4px 10px 6px;
+    gap: 4px;
+  }
+  .g3d-q {
+    font-size: 10.5px;
+    padding: 5px 10px;
+  }
+}
+
+/* ── LANDSCAPE MOBILE (very short viewport) ─────────────────── */
+@media(max-width:440px) and (max-height:500px) {
+  .g3d-chat {
+    max-height: 90dvh;
+    height:     90dvh;
+    max-height: 90vh;
+    height:     90vh;
+  }
+}
+
+/* ── REDUCED MOTION ─────────────────────────────────────────── */
+@media(prefers-reduced-motion:reduce) {
+  .g3d-bubble,
+  .g3d-chat,
+  .g3d-q,
+  .g3d-row,
+  .g3d-dots span,
+  .g3d-badge {
+    animation: none !important;
+    transition: opacity 0.12s linear !important;
+  }
+  .g3d-bubble { opacity: 1 !important; transform: none !important; }
+  .g3d-chat.open { transform: translateY(0) !important; opacity: 1 !important; }
+}
+`;
+
+export default CSS;
