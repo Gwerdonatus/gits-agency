@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Luxury Real Estate - Homes for Sale | Elowen Living</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+</head>
+<body>
+    <!-- Top Utility Bar -->
+    <div class="top-bar">
+        <a href="#">Join / Log In</a>
+        <span class="separator">|</span>
+        <a href="#">Preferences</a>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="logo">
+            <span class="logo-brand">Elowen</span>
+            <span class="logo-sub">LIVING</span>
+        </div>
+        <div class="nav-links">
+            <a href="properties.html" class="search-icon">&#128269;</a>
+            <a href="properties.html" class="active">Search</a>
+            <a href="properties.html">Properties</a>
+            <a href="agents.html">Agents</a>
+            <a href="stories.html">Stories</a>
+        </div>
+        <a href="sell-with-us.html" class="nav-cta">Sell With Us</a>
+    </nav>
+
+    <!-- Search Bar Section -->
+    <div class="search-bar-section">
+        <form class="search-input-wrapper" id="properties-search-form">
+            <span style="color:#999; font-size:18px;">&#128269;</span>
+            <input type="text" id="properties-search-input" placeholder="Country, City, Address, Postal Code or ID">
+        </form>
+        <div class="search-filters">
+            <button class="filter-btn active" data-tab="buy">Buy</button>
+            <button class="filter-btn" data-tab="rent">Rent</button>
+            <button class="filter-btn" type="button">Price Range</button>
+            <button class="filter-btn" type="button">Beds & Baths</button>
+            <button class="filter-btn" type="button">Home Type</button>
+            <button class="filter-btn" type="button">Filters</button>
+        </div>
+    </div>
+
+    <!-- Properties Section -->
+    <div class="properties-section">
+        <!-- List View -->
+        <div class="properties-list">
+            <div class="properties-header">
+                <h2 id="properties-count-heading">Viewing 24 of 952,254 Homes for Sale in All locations</h2>
+                <p id="properties-count-sub">Showing listings marketed by all brokers in the searched area.</p>
+            </div>
+            <div class="sort-bar">
+                <span class="sort-label">Sort:</span>
+                <span class="sort-value">Exclusive (Default) &#9662;</span>
+            </div>
+
+            <!-- Property Card 1 -->
+            <div class="property-card" id="property-1" data-lat="34.0259" data-lng="-118.7798" data-price="$12,500,000" data-address="123 Ocean View Drive, Malibu, California 90265">
+                <div class="img-placeholder card-image">
+                    <span class="placeholder-label">Property Image 1</span>
+                </div>
+                <div class="card-info">
+                    <div class="card-price">$12,500,000</div>
+                    <div class="card-address">123 Ocean View Drive<br>Malibu, California 90265</div>
+                    <div class="card-details">5 Beds &bull; 7 Baths &bull; 8,500 sq ft</div>
+                    <a href="#" class="column-link see-details-link">See Details &#8594;</a>
+                </div>
+            </div>
+
+            <!-- Property Card 2 -->
+            <div class="property-card" id="property-2" data-lat="40.7614" data-lng="-73.9776" data-price="$8,950,000" data-address="456 Park Avenue, Apt 45B, New York, New York 10022">
+                <div class="img-placeholder card-image">
+                    <span class="placeholder-label">Property Image 2</span>
+                </div>
+                <div class="card-info">
+                    <div class="card-price">$8,950,000</div>
+                    <div class="card-address">456 Park Avenue, Apt 45B<br>New York, New York 10022</div>
+                    <div class="card-details">3 Beds &bull; 4 Baths &bull; 3,200 sq ft</div>
+                    <a href="#" class="column-link see-details-link">See Details &#8594;</a>
+                </div>
+            </div>
+
+            <!-- Property Card 3 -->
+            <div class="property-card" id="property-3" data-lat="34.0900" data-lng="-118.4859" data-price="$24,000,000" data-address="789 Bel Air Road, Los Angeles, California 90077">
+                <div class="img-placeholder card-image">
+                    <span class="placeholder-label">Property Image 3</span>
+                </div>
+                <div class="card-info">
+                    <div class="card-price">$24,000,000</div>
+                    <div class="card-address">789 Bel Air Road<br>Los Angeles, California 90077</div>
+                    <div class="card-details">7 Beds &bull; 10 Baths &bull; 15,000 sq ft</div>
+                    <a href="#" class="column-link see-details-link">See Details &#8594;</a>
+                </div>
+            </div>
+
+            <!-- Property Card 4 -->
+            <div class="property-card" id="property-4" data-lat="41.9070" data-lng="-87.6218" data-price="$4,200,000" data-address="321 Lake Shore Drive, Chicago, Illinois 60611">
+                <div class="img-placeholder card-image">
+                    <span class="placeholder-label">Property Image 4</span>
+                </div>
+                <div class="card-info">
+                    <div class="card-price">$4,200,000</div>
+                    <div class="card-address">321 Lake Shore Drive<br>Chicago, Illinois 60611</div>
+                    <div class="card-details">4 Beds &bull; 5 Baths &bull; 4,100 sq ft</div>
+                    <a href="#" class="column-link see-details-link">See Details &#8594;</a>
+                </div>
+            </div>
+
+            <!-- Property Card 5 -->
+            <div class="property-card" id="property-5" data-lat="25.7838" data-lng="-80.1517" data-price="$18,750,000" data-address="555 Star Island Drive, Miami Beach, Florida 33139">
+                <div class="img-placeholder card-image">
+                    <span class="placeholder-label">Property Image 5</span>
+                </div>
+                <div class="card-info">
+                    <div class="card-price">$18,750,000</div>
+                    <div class="card-address">555 Star Island Drive<br>Miami Beach, Florida 33139</div>
+                    <div class="card-details">6 Beds &bull; 8 Baths &bull; 12,000 sq ft</div>
+                    <a href="#" class="column-link see-details-link">See Details &#8594;</a>
+                </div>
+            </div>
+
+            <!-- Property Card 6 -->
+            <div class="property-card" id="property-6" data-lat="42.3505" data-lng="-71.1054" data-price="$6,800,000" data-address="888 Commonwealth Avenue, Boston, Massachusetts 02215">
+                <div class="img-placeholder card-image">
+                    <span class="placeholder-label">Property Image 6</span>
+                </div>
+                <div class="card-info">
+                    <div class="card-price">$6,800,000</div>
+                    <div class="card-address">888 Commonwealth Avenue<br>Boston, Massachusetts 02215</div>
+                    <div class="card-details">4 Beds &bull; 5 Baths &bull; 5,200 sq ft</div>
+                    <a href="#" class="column-link see-details-link">See Details &#8594;</a>
+                </div>
+            </div>
+            <div class="agents-search-empty" id="properties-empty-state">No properties match your search. Try a different city or address.</div>
+        </div>
+
+        <!-- Map View -->
+        <div class="map-section">
+            <div class="map-controls">
+                <button class="map-control-btn" id="boundary-btn" type="button">
+                    <span>&#128204;</span> Boundary
+                </button>
+                <button class="map-control-btn" id="remove-outline-btn" type="button">Remove Outline</button>
+            </div>
+            <div class="map-zoom">
+                <button class="map-zoom-btn" id="map-zoom-in" type="button">+</button>
+                <button class="map-zoom-btn" id="map-zoom-out" type="button">&#8722;</button>
+            </div>
+            <div id="live-map"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="logo-brand">Elowen</div>
+                <p>Elowen Living Affiliates LLC was founded to provide independent brokerages with a powerful marketing and referral program for luxury listings.</p>
+                <div class="footer-social">
+                    <a href="#">f</a>
+                    <a href="#">X</a>
+                    <a href="#">Ig</a>
+                    <a href="#">In</a>
+                    <a href="#">Yt</a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <a href="#">Luxury Outlook</a>
+                <a href="#">About Us</a>
+                <a href="#">Giving Back</a>
+                <a href="#">Recent Press</a>
+                <a href="#">Join Us</a>
+            </div>
+            <div class="footer-column">
+                <h4>Apps</h4>
+                <a href="#">Mobile App</a>
+                <a href="#">Apple TV App</a>
+                <a href="#">Virtual Reality</a>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Contact Us</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Copyright &copy; 2025 Elowen Living Affiliates LLC. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Contact / List Your Home Modal -->
+    <div class="modal-overlay" id="contact-modal">
+        <div class="modal-box">
+            <button class="modal-close" id="modal-close-btn" aria-label="Close">&times;</button>
+            <h3 id="modal-title">Contact an Agent</h3>
+            <p class="modal-subtitle" id="modal-subtitle">Tell us a bit about what you're looking for and we'll be in touch shortly.</p>
+            <form id="contact-form">
+                <div class="modal-field">
+                    <label for="modal-name">Full Name</label>
+                    <input type="text" id="modal-name" required>
+                </div>
+                <div class="modal-field">
+                    <label for="modal-email">Email</label>
+                    <input type="email" id="modal-email" required>
+                </div>
+                <div class="modal-field">
+                    <label for="modal-phone">Phone</label>
+                    <input type="tel" id="modal-phone">
+                </div>
+                <div class="modal-field">
+                    <label for="modal-message">Message</label>
+                    <textarea id="modal-message"></textarea>
+                </div>
+                <button type="submit" class="modal-submit">Send Inquiry</button>
+                <p class="modal-note">This opens your email app with the message pre-filled. Once you've connected an inbox or CRM, this can submit automatically instead.</p>
+            </form>
+        </div>
+    </div>
+    <div class="toast" id="toast"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
