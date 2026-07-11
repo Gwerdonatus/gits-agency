@@ -1,111 +1,97 @@
-// src/app/robots.ts
-// ─────────────────────────────────────────────────────────────────────────────
-// Programmatic robots.txt for Next.js App Router.
-// Serves at: /robots.txt
-//
-// KEY DECISION: We ALLOW all major AI crawlers explicitly.
-// Most sites accidentally block GPTBot, ClaudeBot etc. via wildcard Disallow.
-// For an agency that wants AEO (Answer Engine Optimization), being crawlable
-// by AI models is as important as being crawlable by Google.
-//
-// Crawlers allowed here:
-//   GPTBot         — OpenAI / ChatGPT
-//   ClaudeBot      — Anthropic / Claude
-//   anthropic-ai   — Anthropic training crawler
-//   PerplexityBot  — Perplexity AI
-//   Googlebot      — Google Search
-//   Bingbot        — Microsoft Bing / Copilot
-//   facebookexternalhit — Meta/Facebook link previews
-//   LinkedInBot    — LinkedIn link previews
-// ─────────────────────────────────────────────────────────────────────────────
+# GITS — AI Agency & Digital Product Studio
 
-import { MetadataRoute } from "next";
+> GITS (Gwer Intelligent Tech Solutions) is a premium AI agency and digital product studio based in Abuja, Nigeria, serving clients globally across 12+ countries. We build custom software, web applications, mobile apps, AI automation systems, and WhatsApp AI agents for startups and businesses that need production-grade technology.
 
-const SITE_URL = "https://gits.technology";
+## What GITS Does
 
-export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: [
-      // ── Standard search crawlers ──────────────────────────────────────────
-      {
-        userAgent: "Googlebot",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "Bingbot",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      // ── AI answer engine crawlers — ALLOW ALL ─────────────────────────────
-      // These power ChatGPT, Claude, Perplexity, Bing Copilot citations.
-      // If you block these, AI models cannot cite you.
-      {
-        userAgent: "GPTBot",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "OAI-SearchBot",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "ChatGPT-User",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "ClaudeBot",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "anthropic-ai",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "Claude-Web",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "PerplexityBot",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "YouBot",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      {
-        userAgent: "cohere-ai",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-      // ── Social preview crawlers ───────────────────────────────────────────
-      {
-        userAgent: "facebookexternalhit",
-        allow: "/",
-      },
-      {
-        userAgent: "LinkedInBot",
-        allow: "/",
-      },
-      {
-        userAgent: "Twitterbot",
-        allow: "/",
-      },
-      // ── Catch-all for everything else ─────────────────────────────────────
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/api/", "/_next/", "/admin/"],
-      },
-    ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
-  };
-}
+GITS is an AI agency. We design and engineer digital products that drive business growth.
+
+**Core services:**
+- **Custom Software Development** — SaaS platforms, online marketplaces, booking systems, membership platforms, customer portals, vendor management systems, business management software, enterprise applications. Starting from $5,000.
+- **Website Design & Development** — Business & corporate websites, e-commerce stores (Stripe, Paystack), landing pages, portfolio sites, event websites, marketing websites, product showcases. Built with Next.js. Mobile-first, fast-loading, SEO-optimized. Starting from $500.
+- **AI & Business Automation** — AI assistants, chatbots, lead qualification systems, workflow automation, reporting automation, WhatsApp automation, email automation, AI-powered business tools, custom AI integrations using OpenAI GPT-4 and Claude. Starting from $1,000.
+- **WhatsApp AI Agents** *(Flagship)* — Custom AI-powered conversational agents built on WhatsApp Business API. Automate customer support, qualify leads, process sales, book appointments, track orders. Multi-language support. CRM and helpdesk integration. Human handoff workflows. Built with OpenAI GPT-4, Claude, and custom LLMs. Starting from $1,000.
+- **Mobile App Development** — iOS and Android apps using React Native. MVP-focused, clean architecture, app store submission included. Starting from $3,000.
+- **Internal Tools & CRM Systems** — Custom CRMs, inventory management, admin dashboards, employee portals, reporting platforms, vendor management, operations management. Starting from $2,000.
+- **Integrations & APIs** — Payment integrations (Stripe, Paystack), REST & GraphQL APIs, CRM integrations (HubSpot, Salesforce), WhatsApp & email integrations, data sync pipelines, webhooks, third-party service connections. Starting from $1,000.
+
+## Who GITS Serves
+
+- Startups building their first product or MVP
+- Growing businesses ready to scale their operations
+- Organizations replacing legacy systems
+- Service providers needing custom workflows
+- E-commerce businesses needing smooth checkout and automation
+- SaaS teams losing trials or users after signup
+- Multi-branch businesses needing centralized operations
+- Customer support teams handling high volume
+- Sales teams qualifying leads at scale
+
+## Industries
+
+E-commerce, healthcare, legal services, professional services, SaaS startups, fintech, education, logistics, hospitality, consumer apps, fashion & retail.
+
+## Tech Stack
+
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
+- **Mobile:** React Native, Expo
+- **Backend:** Node.js, Python, PostgreSQL, MongoDB
+- **AI / LLMs:** OpenAI GPT-4, Anthropic Claude, custom fine-tuned models, RAG (Retrieval-Augmented Generation), vector databases
+- **Integrations:** Stripe, Paystack, WhatsApp Business API, HubSpot, Salesforce, REST, GraphQL, webhooks
+- **Cloud:** AWS, Vercel, Cloudflare, Docker
+- **DevOps:** CI/CD, automated testing, monitoring
+
+## Our Process
+
+1. **Discovery** — Align goals, users, constraints, and success metrics. Define scope and a realistic plan.
+2. **Strategy & Architecture** — Map flows, data, and integrations. Choose the right stack and structure for scalability.
+3. **Design & Build** — Design interfaces and ship in iterations with constant feedback, quality checks, and clear progress.
+4. **Launch** — Deploy, monitor, and validate in production. Ensure performance, stability, and smooth rollout.
+5. **Scale & Support** — Optimize, expand features, and support long-term growth. Act as your technical partner.
+
+## Why GITS
+
+- **Senior-only team.** No juniors billed as seniors. Every engineer is senior-level.
+- **Product-thinking.** Every build starts from a business outcome, not a feature list.
+- **Honest scoping.** We tell you when something does not need to be built yet.
+- **98% on-time delivery.** Across 40+ projects in 12+ countries.
+- **No handoffs.** The same team that scopes your project builds it.
+- **Production-grade.** We do not build "demo AI." Every system has guardrails, audit logs, fallback handling, and observability.
+- **Fixed pricing.** No surprise invoices. All pricing shared upfront.
+- **Global delivery.** Remote-first. Based in Abuja, Nigeria. Serving US, UK, Europe, and Africa.
+
+## Founder
+
+**Gwer Msughter Donatus** — Founder & Lead Engineer. Involved in scoping and technical direction on every project. GitHub: donatusgwer. LinkedIn: linkedin.com/in/donatusgwer.
+
+## Contact
+
+- **Website:** https://gits.technology
+- **Email:** hellogits@outlook.com
+- **WhatsApp:** +2348116276212 (https://wa.me/2348116276212)
+- **Book a call:** https://calendly.com/donatusgwer
+- **LinkedIn:** https://linkedin.com/company/gits-agency
+- **GitHub:** https://github.com/donatusgwer
+
+## Service Pages
+
+- Custom Software: https://gits.technology/services/custom-software-development
+- Websites: https://gits.technology/services/websites-digital-experiences
+- AI Automation: https://gits.technology/services/ai-business-automation
+- WhatsApp AI Agents: https://gits.technology/services/whatsapp-ai-agents
+- Internal Tools: https://gits.technology/services/internal-tools-crm
+- Integrations: https://gits.technology/services/integrations-apis
+- Contact: https://gits.technology/contact
+- Free Audit: https://gits.technology/audit
+
+## Key Facts
+
+- 40+ businesses served
+- 12+ countries
+- 98% on-time delivery
+- Founded: 2022
+- Location: Abuja, Nigeria (remote-first, global)
+- Team size: Senior-only delivery team
+- Pricing: Transparent, fixed-scope quotes
+- Languages: English
+- Response time: 24–72 hours on weekdays
