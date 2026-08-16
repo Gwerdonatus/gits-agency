@@ -65,7 +65,7 @@ export default function SellWithUsPage() {
           </div>
           <div style={{ position: "relative", width: "100%", height: "500px" }}>
             <Image
-              src="/images/elowen/luxury-interior.jpg"
+              src="/images/elowen/luxury-interior.webp"
               alt="Luxury Property Interior"
               fill
               style={{ objectFit: "cover" }}
@@ -137,7 +137,7 @@ export default function SellWithUsPage() {
             <div className="feature-card">
               <div style={{ position: "relative", width: "100%", height: "200px", marginBottom: "20px" }}>
                 <Image
-                  src="/images/elowen/press-coverage.jpg"
+                  src="/images/elowen/press-coverage.webp"
                   alt="Press Coverage"
                   fill
                   style={{ objectFit: "cover" }}
@@ -149,7 +149,7 @@ export default function SellWithUsPage() {
             <div className="feature-card">
               <div style={{ position: "relative", width: "100%", height: "200px", marginBottom: "20px" }}>
                 <Image
-                  src="/images/elowen/network-map.jpg"
+                  src="/images/elowen/network-map.webp"
                   alt="Global Network Map"
                   fill
                   style={{ objectFit: "cover" }}
@@ -161,7 +161,7 @@ export default function SellWithUsPage() {
             <div className="feature-card">
               <div style={{ position: "relative", width: "100%", height: "200px", marginBottom: "20px" }}>
                 <Image
-                  src="/images/elowen/creative-agency.jpg"
+                  src="/images/elowen/creative-agency.webp"
                   alt="Creative Agency Partnership"
                   fill
                   style={{ objectFit: "cover" }}

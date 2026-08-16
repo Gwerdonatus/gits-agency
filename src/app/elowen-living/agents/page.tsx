@@ -7,7 +7,7 @@ export default function AgentsPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const agents = [
-    { name: "Sarah Mitchell", title: "Sales Manager - Project Developments", location: "Park Avenue Tower, New York, NY", image: "/images/elowen/agent-1.jpg" },
+    { name: "Sarah Mitchell", title: "Sales Manager - Project Developments", location: "Park Avenue Tower, New York, NY", image: "/images/elowen/agent-1.webp" },
     { name: "James Wellington", title: "Senior Real Estate Advisor", location: "Beverly Hills, California", image: "/images/elowen/agent-2.jpg" },
     { name: "Elena Rodriguez", title: "Luxury Property Specialist", location: "Miami Beach, Florida", image: "/images/elowen/agent-3.jpg" },
     { name: "Michael Chen", title: "International Sales Director", location: "Singapore, Southeast Asia", image: "/images/elowen/agent-4.jpg" },
@@ -32,7 +32,7 @@ export default function AgentsPage() {
       {/* Hero Section with Background Image */}
       <section className="hero-agents">
         <Image
-          src="/images/elowen/agents-hero.jpg"
+          src="/images/elowen/agents-hero.webp"
           alt="Luxury Poolside Estate"
           fill
           style={{ objectFit: "cover" }}

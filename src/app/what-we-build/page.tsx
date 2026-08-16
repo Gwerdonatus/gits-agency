@@ -84,10 +84,10 @@ function MediaMosaic() {
 
   const images = useMemo(
     () => [
-      "/projects/showcase-1.jpg",
-      "/projects/showcase-2.jpg",
-      "/projects/showcase-3.jpg",
-      "/projects/showcase-4.jpg",
+      "/projects/showcase-1.webp",
+      "/projects/showcase-2.webp",
+      "/projects/showcase-3.webp",
+      "/projects/showcase-4.webp",
     ],
     []
   );
@@ -325,7 +325,7 @@ const blueprintItems: BlueprintItem[] = [
     title: "Sanmark Luxury",
     desc: "Premium fashion store in Lagos — editorial product photography, clean taxonomy, conversion-optimized checkout.",
     accent: "#c4a060",
-    image: "/projects/blueprints/sanmark.jpeg",
+    image: "/projects/blueprints/sanmark.webp",
     url: "https://sanmarkluxury.com/",
   },
   {
@@ -335,7 +335,7 @@ const blueprintItems: BlueprintItem[] = [
     title: "NOTGATE",
     desc: "Corporate site for a construction firm — project gallery, partner trust badges, and stats front and center.",
     accent: "#a060c4",
-    image: "/projects/blueprints/notgate.jpeg",
+    image: "/projects/blueprints/notgate.webp",
     url: "https://notgate-w6l1.vercel.app/",
   },
   {
@@ -345,7 +345,7 @@ const blueprintItems: BlueprintItem[] = [
     title: "Lamed Pharmacy",
     desc: "Patient-facing pharmacy platform — prescription upload, PLASCHEMA integration, branch locator, auto-refill.",
     accent: "#60c4a0",
-    image: "/projects/blueprints/lamed.jpeg",
+    image: "/projects/blueprints/lamed.webp",
     url: "https://lamed-pharmacy.vercel.app/",
   },
   {
@@ -355,7 +355,7 @@ const blueprintItems: BlueprintItem[] = [
     title: "Selo",
     desc: "A curated store selling only purple clothing, accessories, and bags — bold monochromatic brand identity.",
     accent: "#c460c4",
-    image: "/projects/blueprints/selo.jpeg",
+    image: "/projects/blueprints/selo.webp",
     url: "https://selo-red.vercel.app/",
   },
   {
@@ -365,7 +365,7 @@ const blueprintItems: BlueprintItem[] = [
     title: "Blakdhut Exchange",
     desc: "Dark-mode crypto trading platform — live pricing, secure transaction flows, built for speed and trust.",
     accent: "#60a0c4",
-    image: "/projects/blueprints/blakdhut.jpeg",
+    image: "/projects/blueprints/blakdhut.webp",
     url: "https://www.blakdhut.com/",
   },
 ];
@@ -509,7 +509,7 @@ function BlueprintsSection() {
             "Remembers each client's preferences automatically",
             "Sends reminders so no-shows drop on their own",
           ]}
-          images={["/projects/blueprints/ai-spa-1.jpeg", "/projects/blueprints/ai-spa-2.png"]}
+          images={["/projects/blueprints/ai-spa-1.webp", "/projects/blueprints/ai-spa-2.webp"]}
         />
 
         <FeatureShowcase
@@ -523,9 +523,9 @@ function BlueprintsSection() {
             "Cut admin time by 60% for the business running it",
           ]}
           images={[
-            "/projects/blueprints/pet-system-1.jpeg",
-            "/projects/blueprints/pet-system-2.png",
-            "/projects/blueprints/pet-system-3.png",
+            "/projects/blueprints/pet-system-1.webp",
+            "/projects/blueprints/pet-system-2.webp",
+            "/projects/blueprints/pet-system-3.webp",
           ]}
         />
       </div>
@@ -696,7 +696,7 @@ export default function WhatWeBuildPage() {
               quote="Our site finally feels warm and trustworthy. The layout is clean, the pages load fast, and customers actually find what they need without asking questions. The little details made a big difference."
               name="Aisha"
               meta="Pet services · Website refresh"
-              avatarSrc="/people/aisha.jpg"
+              avatarSrc="/people/aisha.webp"
             />
             <TestimonialCard
               emoji="🧩"
@@ -704,7 +704,7 @@ export default function WhatWeBuildPage() {
               quote="The extension feels lightweight and polished. It's simple for users, but the logic under the hood is solid. We also appreciated how clearly everything was explained during delivery."
               name="Chinedu"
               meta="Product team · Chrome extension"
-              avatarSrc="/people/chinedu.jpg"
+              avatarSrc="/people/chinedu.webp"
             />
             <TestimonialCard
               emoji="📅"
@@ -712,7 +712,7 @@ export default function WhatWeBuildPage() {
               quote="We went from messy scheduling to a calm system the team can actually use. The dashboard is fast, the flow makes sense, and the work feels structured instead of rushed."
               name="Sarah"
               meta="Operations · Internal dashboard"
-              avatarSrc="/people/sarah.jpg"
+              avatarSrc="/people/sarah.webp"
             />
           </motion.div>
 

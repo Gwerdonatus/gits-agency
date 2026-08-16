@@ -6,8 +6,8 @@ export const BLOG_POSTS = [
     readTime: "6 min read",
     category: "Product News",
     tags: ["AI", "Automation", "Workflow", "Next.js", "APIs"],
-    coverImage: "/blog/ai-workflow-suite.jpg",
-    coverImageDesktop: "/blog/ai-workflow-suite-desktop.jpg",
+    coverImage: "/blog/ai-workflow-suite.webp",
+    coverImageDesktop: "/blog/ai-workflow-suite-desktop.webp",
     summary:
       "We launched an AI Workflow Suite that automates repetitive operations—routing requests, generating responses, syncing tools, and triggering actions across your stack.",
     excerpt:
@@ -82,7 +82,7 @@ export const BLOG_POSTS = [
     readTime: "8 min read",
     category: "Engineering Insights",
     tags: ["Architecture", "Performance", "Reliability", "Next.js", "Cloud"],
-    coverImage: "/blog/scale-modern-apps.jpg",
+    coverImage: "/blog/scale-modern-apps.webp",
     summary:
       "A practical framework for scaling apps: performance budgets, stable API contracts, observability, and cloud patterns that reduce outages and expensive rewrites.",
     excerpt:
@@ -157,7 +157,7 @@ export const BLOG_POSTS = [
     readTime: "7 min read",
     category: "UI/UX Strategy",
     tags: ["UI/UX", "Conversion", "Retention", "Product Design", "Accessibility"],
-    coverImage: "/blog/newsletter-june2025.jpg",
+    coverImage: "/blog/newsletter-june2025.webp",
     summary:
       "Great UI/UX is a growth strategy: it reduces friction, builds trust, and makes the product feel “obvious” to use—so customers buy, return, and recommend.",
     excerpt:
@@ -225,7 +225,7 @@ export const BLOG_POSTS = [
     readTime: "7 min read",
     category: "UI/UX Strategy",
     tags: ["Design Systems", "UI Consistency", "Product Teams", "Components"],
-    coverImage: "/blog/gits-global-design-award.jpg",
+    coverImage: "/blog/gits-global-design-award.webp",
     summary:
       "A design system isn’t a fancy component library. It’s an operating system for building UI—so teams ship faster with fewer bugs and a more premium feel.",
     excerpt:
@@ -273,7 +273,7 @@ export const BLOG_POSTS = [
     readTime: "7 min read",
     category: "AI Insights",
     tags: ["AI", "Agents", "Automation", "Workflows"],
-    coverImage: "/blog/ai-trends-business.jpg",
+    coverImage: "/blog/ai-trends-business.webp",
     summary:
       "From copilots to agents: practical patterns companies use to improve operations—without risking quality, compliance, or brand reputation.",
     excerpt:
@@ -331,7 +331,7 @@ export const BLOG_POSTS = [
     readTime: "9 min read",
     category: "Security",
     tags: ["Security", "Auth", "RBAC", "Compliance", "Best Practices"],
-    coverImage: "/blog/security-best-practices.jpg",
+    coverImage: "/blog/security-best-practices.webp",
     summary:
       "Security doesn’t need to slow delivery. These are the baseline practices we apply on modern builds: authentication, RBAC, secure APIs, secrets, logging, and deployment hygiene.",
     excerpt:
@@ -380,7 +380,7 @@ export const BLOG_POSTS = [
     readTime: "7 min read",
     category: "Engineering Insights",
     tags: ["Integrations", "APIs", "Webhooks", "Reliability"],
-    coverImage: "/blog/integrations-scale.jpg",
+    coverImage: "/blog/integrations-scale.webp",
     summary:
       "Integrations fail quietly when they’re not designed for retries, idempotency, monitoring, and API change. Here’s how we build them properly.",
     excerpt:
@@ -423,7 +423,7 @@ export const BLOG_POSTS = [
     readTime: "8 min read",
     category: "Design Trends",
     tags: ["UI/UX", "Motion", "Typography", "Accessibility", "Design Systems"],
-    coverImage: "/blog/ui-ux-trends.jpg",
+    coverImage: "/blog/ui-ux-trends.webp",
     summary:
       "UI is becoming calmer and more intentional: fewer distractions, better hierarchy, purposeful motion, and systems that scale across products—without sacrificing speed.",
     excerpt:
@@ -476,7 +476,7 @@ export const BLOG_POSTS = [
     readTime: "8 min read",
     category: "DevOps",
     tags: ["DevOps", "CI/CD", "Cloud", "Monitoring", "Release Strategy"],
-    coverImage: "/blog/modern-devops.jpg",
+    coverImage: "/blog/modern-devops.webp",
     summary:
       "Modern DevOps is safe speed: automated pipelines, consistent environments, release strategies, and observability that prevents incidents from becoming disasters.",
     excerpt:
@@ -524,7 +524,7 @@ export const BLOG_POSTS = [
     readTime: "8 min read",
     category: "UI/UX Strategy",
     tags: ["Checkout UX", "Conversion", "Forms", "Performance", "Product"],
-    coverImage: "/blog/ecommerce-case-study.jpg",
+    coverImage: "/blog/ecommerce-case-study.webp",
     summary:
       "Checkout is where revenue is won or lost. Here’s how we design checkout UX that’s fast, trustworthy, and easy to complete—especially on mobile.",
     excerpt:
