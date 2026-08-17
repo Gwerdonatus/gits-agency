@@ -31,7 +31,7 @@ export const colors = {
 
 // ── Logo URL — must be absolute, publicly accessible ──
 // Drop email-logo.png in /public and Vercel serves it here.
-const LOGO_URL = "https://gits.technology/email-icon.png";
+const LOGO_URL = "https://gits.technology/email-icon-64.png";
 
 export function EmailLayout({ preview, children }: EmailLayoutProps) {
   return (

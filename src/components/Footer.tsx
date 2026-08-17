@@ -325,7 +325,7 @@ export default function Footer() {
             {/* Logo + wordmark */}
             <div className="flex items-center gap-[10px] mb-[14px]">
               <Image
-                src="/email-icon1.png"
+                src="/email-icon1.webp"
                 alt="GITS"
                 width={48}
                 height={48}
@@ -483,7 +483,7 @@ export default function Footer() {
         style={{ aspectRatio: "16 / 7" }}
       >
         <Image
-          src="/footer-hands.jpg"
+          src="/footer-hands.webp"
           alt=""
           fill
           sizes="100vw"

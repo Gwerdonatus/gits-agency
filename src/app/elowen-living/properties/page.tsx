@@ -8,12 +8,12 @@ export default function PropertiesPage() {
   const filters = ["Buy", "Rent", "Price Range", "Beds & Baths", "Home Type", "Filters"];
 
   const properties = [
-    { price: "$12,500,000", address: "123 Ocean View Drive", city: "Malibu, California 90265", details: "5 Beds • 7 Baths • 8,500 sq ft", image: "/images/elowen/property-1.jpg", alt: "Ocean View Estate Malibu" },
-    { price: "$8,950,000", address: "456 Park Avenue, Apt 45B", city: "New York, New York 10022", details: "3 Beds • 4 Baths • 3,200 sq ft", image: "/images/elowen/property-2.jpg", alt: "Park Avenue Penthouse New York" },
-    { price: "$24,000,000", address: "789 Bel Air Road", city: "Los Angeles, California 90077", details: "7 Beds • 10 Baths • 15,000 sq ft", image: "/images/elowen/property-3.jpg", alt: "Bel Air Mansion Los Angeles" },
-    { price: "$4,200,000", address: "321 Lake Shore Drive", city: "Chicago, Illinois 60611", details: "4 Beds • 5 Baths • 4,100 sq ft", image: "/images/elowen/property-4.jpg", alt: "Lake Shore Residence Chicago" },
-    { price: "$18,750,000", address: "555 Star Island Drive", city: "Miami Beach, Florida 33139", details: "6 Beds • 8 Baths • 12,000 sq ft", image: "/images/elowen/property-5.jpg", alt: "Star Island Estate Miami Beach" },
-    { price: "$6,800,000", address: "888 Commonwealth Avenue", city: "Boston, Massachusetts 02215", details: "4 Beds • 5 Baths • 5,200 sq ft", image: "/images/elowen/property-6.jpg", alt: "Commonwealth Avenue Townhouse Boston" },
+    { price: "$12,500,000", address: "123 Ocean View Drive", city: "Malibu, California 90265", details: "5 Beds • 7 Baths • 8,500 sq ft", image: "/images/elowen/property-1.webp", alt: "Ocean View Estate Malibu" },
+    { price: "$8,950,000", address: "456 Park Avenue, Apt 45B", city: "New York, New York 10022", details: "3 Beds • 4 Baths • 3,200 sq ft", image: "/images/elowen/property-2.webp", alt: "Park Avenue Penthouse New York" },
+    { price: "$24,000,000", address: "789 Bel Air Road", city: "Los Angeles, California 90077", details: "7 Beds • 10 Baths • 15,000 sq ft", image: "/images/elowen/property-3.webp", alt: "Bel Air Mansion Los Angeles" },
+    { price: "$4,200,000", address: "321 Lake Shore Drive", city: "Chicago, Illinois 60611", details: "4 Beds • 5 Baths • 4,100 sq ft", image: "/images/elowen/property-4.webp", alt: "Lake Shore Residence Chicago" },
+    { price: "$18,750,000", address: "555 Star Island Drive", city: "Miami Beach, Florida 33139", details: "6 Beds • 8 Baths • 12,000 sq ft", image: "/images/elowen/property-5.webp", alt: "Star Island Estate Miami Beach" },
+    { price: "$6,800,000", address: "888 Commonwealth Avenue", city: "Boston, Massachusetts 02215", details: "4 Beds • 5 Baths • 5,200 sq ft", image: "/images/elowen/property-6.webp", alt: "Commonwealth Avenue Townhouse Boston" },
   ];
 
   const markers = [

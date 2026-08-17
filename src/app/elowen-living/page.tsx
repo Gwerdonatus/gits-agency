@@ -34,7 +34,7 @@ export default function HomePage() {
           <div className="hero-property-card">
             <div style={{ position: "relative", width: "100%", height: "400px" }}>
               <Image
-                src="/images/elowen/hero-featured.jpg"
+                src="/images/elowen/hero-featured.webp"
                 alt="Chatham MA Estate"
                 fill
                 style={{ objectFit: "cover" }}
@@ -67,7 +67,7 @@ export default function HomePage() {
             <div className="feature-card">
               <div style={{ position: "relative", width: "100%", height: "280px", marginBottom: "20px" }}>
                 <Image
-                  src="/images/elowen/magazine-cover.jpg"
+                  src="/images/elowen/magazine-cover.webp"
                   alt="Reside Magazine"
                   fill
                   style={{ objectFit: "cover" }}
@@ -79,7 +79,7 @@ export default function HomePage() {
             <div className="feature-card">
               <div style={{ position: "relative", width: "100%", height: "280px", marginBottom: "20px" }}>
                 <Image
-                  src="/images/elowen/market-report.jpg"
+                  src="/images/elowen/market-report.webp"
                   alt="Luxury Outlook Market Report"
                   fill
                   style={{ objectFit: "cover" }}
@@ -91,7 +91,7 @@ export default function HomePage() {
             <div className="feature-card">
               <div style={{ position: "relative", width: "100%", height: "280px", marginBottom: "20px" }}>
                 <Image
-                  src="/images/elowen/virtual-tour.jpg"
+                  src="/images/elowen/virtual-tour.webp"
                   alt="Virtual Experiences"
                   fill
                   style={{ objectFit: "cover" }}

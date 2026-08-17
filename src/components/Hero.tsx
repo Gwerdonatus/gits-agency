@@ -324,8 +324,8 @@ const cardsData: CardData[] = [
     label: "Software",
     title: "Custom Software",
     description: "From MVPs to full platforms — built to scale with your business. Senior engineers only. No handoffs.",
-    bgImage: "/hero/software-lead.png",
-    bgImageAlt: "/hero/software-lead2.png",
+    bgImage: "/hero/software-lead.webp",
+    bgImageAlt: "/hero/software-lead2.webp",
     overlayGradient: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0) 70%)",
     widget: <SoftwareWidget />,
     href: "/services/custom-software-development",
@@ -607,7 +607,7 @@ export default function Hero() {
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Tracks how many times the software card has become active on desktop,
-  // so the image can alternate between software-lead.png and software-lead2.png
+  // so the image can alternate between software-lead.webp and software-lead2.webp
   const [desktopSoftwareVisits, setDesktopSoftwareVisits] = useState(0);
   const prevActiveIndexRef = useRef(activeIndex);
 

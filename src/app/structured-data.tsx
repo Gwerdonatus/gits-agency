@@ -58,18 +58,37 @@ export function OrganizationSchema() {
       founder: {
         "@type": "Person",
         name: "Gwer Msughter Donatus",
-        jobTitle: "Founder & Lead Engineer",
-        url: `${SITE_URL}/#founder`,
+        jobTitle: "Founder & Senior Software Engineer",
+        // Resolves to the anchor on the About page's founder section.
+        url: `${SITE_URL}/about#founder`,
+        // sameAs is how Google collapses these profiles into one person
+        // entity — every URL here must be a profile that actually exists.
+        // Verified against donatus-gwer.vercel.app — the previous GitHub and
+        // LinkedIn URLs here ("donatusgwer") did not exist and contradicted
+        // the links rendered on the About page.
         sameAs: [
-          "https://github.com/donatusgwer",
-          "https://linkedin.com/in/donatusgwer",
+          "https://donatus-gwer.vercel.app/",
+          "https://github.com/Gwerdonatus",
+          "https://www.linkedin.com/in/donatus-gwer-857610338",
+          "https://x.com/donatus_gwer",
+          "https://www.instagram.com/gwerthedev/",
         ],
       },
+      // Keep this list in sync with the team grid in app/about/page.tsx.
+      // Only list people who actually work here — Google uses `employee` for
+      // entity building, and unverifiable names weaken the whole record.
       employee: [
-        { "@type": "Person", name: "Aisha Adeyemi",   jobTitle: "UI/UX Lead"             },
-        { "@type": "Person", name: "Chinedu Okafor",  jobTitle: "Senior Engineer"         },
-        { "@type": "Person", name: "Tomi Afolayan",   jobTitle: "DevOps Engineer"         },
-        { "@type": "Person", name: "Nneka Eze",       jobTitle: "Backend & Security Lead" },
+        {
+          "@type": "Person",
+          name: "Daniel Ochai",
+          jobTitle: "UI/UX Designer",
+          sameAs: ["https://www.linkedin.com/in/daniel-o-ochai-596a47319/"],
+        },
+        {
+          "@type": "Person",
+          name: "Aisha Adeyemi",
+          jobTitle: "Marketing & Media",
+        },
       ],
       address: {
         "@type": "PostalAddress",
@@ -150,7 +169,7 @@ export function OrganizationSchema() {
       sameAs: [
         "https://wa.me/2348116276212",
         "https://calendly.com/donatusgwer",
-        "https://github.com/donatusgwer",
+        "https://github.com/Gwerdonatus",
         "https://linkedin.com/company/gits-agency",
         // Add Twitter/X, Instagram when live
       ],
