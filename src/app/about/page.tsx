@@ -897,7 +897,7 @@ export default function AboutPage() {
               />
               <div className="mt-5 text-center sm:text-left">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#666666]">
-                  Founder &amp; Principal Engineer
+                  Founder &amp; Senior Software Engineer
                 </p>
                 <p className="mt-1 text-xl font-light text-[#050505]">
                   Gwer Msughter Donatus

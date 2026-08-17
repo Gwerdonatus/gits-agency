@@ -58,7 +58,7 @@ export function OrganizationSchema() {
       founder: {
         "@type": "Person",
         name: "Gwer Msughter Donatus",
-        jobTitle: "Founder & Lead Engineer",
+        jobTitle: "Founder & Senior Software Engineer",
         // Resolves to the anchor on the About page's founder section.
         url: `${SITE_URL}/about#founder`,
         // sameAs is how Google collapses these profiles into one person
