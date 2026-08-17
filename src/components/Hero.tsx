@@ -607,7 +607,7 @@ export default function Hero() {
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Tracks how many times the software card has become active on desktop,
-  // so the image can alternate between software-lead.png and software-lead2.png
+  // so the image can alternate between software-lead.webp and software-lead2.webp
   const [desktopSoftwareVisits, setDesktopSoftwareVisits] = useState(0);
   const prevActiveIndexRef = useRef(activeIndex);
 
