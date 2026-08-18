@@ -1,7 +1,7 @@
 // src/lib/metadata.ts
 import type { Metadata } from "next";
 
-const SITE_URL  = "https://gits.donatusgwer.workers.dev";
+const SITE_URL  = "https://gits.technology";
 const SITE_NAME = "GITS";
 const IMG_ROOT  = "/GITS_Complete_Image_Package";
 

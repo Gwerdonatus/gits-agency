@@ -1,42 +1,56 @@
 // src/app/sitemap.ts
 import type { MetadataRoute } from "next";
+import { getAllPosts } from "@/lib/posts";
 
 const SITE_URL = "https://gits.technology";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    // ── Core pages ─────────────────────────────────────────────
-    { url: SITE_URL,                        lastModified: new Date(), changeFrequency: "monthly", priority: 1.0 },
-    { url: `${SITE_URL}/services`,          lastModified: new Date(), changeFrequency: "monthly", priority: 0.95 },
-    { url: `${SITE_URL}/what-we-build`,     lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
-    { url: `${SITE_URL}/about`,             lastModified: new Date(), changeFrequency: "yearly",  priority: 0.7 },
-    { url: `${SITE_URL}/blog`,              lastModified: new Date(), changeFrequency: "weekly",  priority: 0.8 },
-    { url: `${SITE_URL}/contact`,           lastModified: new Date(), changeFrequency: "yearly",  priority: 0.75 },
-    { url: `${SITE_URL}/audit`,             lastModified: new Date(), changeFrequency: "yearly",  priority: 0.8 },
+// Only slugs that have a real page on disk. /services/whatsapp-ai-agents was
+// listed here previously and returned 404 — a dead entry in a sitemap wastes
+// crawl budget and is treated as a quality signal against the whole file.
+const SERVICE_SLUGS = [
+  "custom-software-development",
+  "websites-digital-experiences",
+  "ai-business-automation",
+  "internal-tools-crm",
+  "integrations-apis",
+] as const;
 
-    // ── Individual service pages (REAL slugs from your services page code) ──
-    // These MUST match the slugs in your SERVICES array exactly:
-    // { icon: "💻", slug: "custom-software-development", ... }
-    // { icon: "🌐", slug: "websites-digital-experiences", ... }
-    // { icon: "🤖", slug: "ai-business-automation", ... }
-    // { icon: "📊", slug: "internal-tools-crm", ... }
-    // { icon: "🔗", slug: "integrations-apis", ... }
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date();
 
-    { url: `${SITE_URL}/services/custom-software-development`,   lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE_URL}/services/websites-digital-experiences`,  lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE_URL}/services/ai-business-automation`,        lastModified: new Date(), changeFrequency: "weekly",  priority: 0.95 },
-    { url: `${SITE_URL}/services/internal-tools-crm`,            lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
-    { url: `${SITE_URL}/services/integrations-apis`,             lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
-
-    // ── NEW: WhatsApp AI Agents (your flagship service) ──────
-    // NOTE: This page does NOT exist in your current SERVICES array yet.
-    // You need to create this page OR add it to your SERVICES array.
-    // If you add it to SERVICES, use the slug "whatsapp-ai-agents".
-    { url: `${SITE_URL}/services/whatsapp-ai-agents`,           lastModified: new Date(), changeFrequency: "weekly",  priority: 0.95 },
-
-    // ── Blog posts (uncomment as you publish) ─────────────────
-    // { url: `${SITE_URL}/blog/ai-agency-guide`,                  lastModified: new Date(), changeFrequency: "yearly",  priority: 0.7 },
-    // { url: `${SITE_URL}/blog/whatsapp-ai-agents-business`,    lastModified: new Date(), changeFrequency: "yearly",  priority: 0.7 },
-    // { url: `${SITE_URL}/blog/choosing-ai-agency-2026`,        lastModified: new Date(), changeFrequency: "yearly",  priority: 0.7 },
+  const core: MetadataRoute.Sitemap = [
+    { url: SITE_URL,                    lastModified: now, changeFrequency: "monthly", priority: 1.0  },
+    { url: `${SITE_URL}/services`,      lastModified: now, changeFrequency: "monthly", priority: 0.95 },
+    { url: `${SITE_URL}/what-we-build`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${SITE_URL}/about`,         lastModified: now, changeFrequency: "yearly",  priority: 0.7  },
+    { url: `${SITE_URL}/blog`,          lastModified: now, changeFrequency: "weekly",  priority: 0.8  },
+    { url: `${SITE_URL}/contact`,       lastModified: now, changeFrequency: "yearly",  priority: 0.75 },
+    { url: `${SITE_URL}/audit`,         lastModified: now, changeFrequency: "yearly",  priority: 0.8  },
+    { url: `${SITE_URL}/privacy`,       lastModified: now, changeFrequency: "yearly",  priority: 0.3  },
+    { url: `${SITE_URL}/terms`,         lastModified: now, changeFrequency: "yearly",  priority: 0.3  },
   ];
+
+  const services: MetadataRoute.Sitemap = SERVICE_SLUGS.map((slug) => ({
+    url: `${SITE_URL}/services/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.9,
+  }));
+
+  // Generated from the posts themselves so publishing a post lists it here
+  // automatically — the previous file had them commented out by hand.
+  let posts: MetadataRoute.Sitemap = [];
+  try {
+    const all = await getAllPosts();
+    posts = all.map((p: { slug: string; date?: string }) => ({
+      url: `${SITE_URL}/blog/${p.slug}`,
+      lastModified: p.date ? new Date(p.date) : now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    posts = [];
+  }
+
+  return [...core, ...services, ...posts];
 }
