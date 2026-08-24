@@ -113,7 +113,7 @@ export const metadata: Metadata = {
         url: `${IMG_ROOT}/social/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "GITS — Premium digital agency. SaaS, mobile apps, AI automation. clarity · speed · quality.",
+        alt: "GITS — Software, engineered with restraint. Custom software, digital platforms and AI automation.",
         type: "image/png",
       },
       {

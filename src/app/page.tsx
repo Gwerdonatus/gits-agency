@@ -40,6 +40,26 @@ export const metadata: Metadata = {
       "Premium digital agency. SaaS, mobile apps, AI automation, websites, and internal tools. Senior-only team. Starting from $500. 40+ businesses, 12 countries.",
     url: SITE_URL,
     type: "website",
+    // images MUST be repeated here. A page-level openGraph object replaces the
+    // root layout's wholesale rather than deep-merging, so omitting this left
+    // the homepage with no og:image at all — WhatsApp, Facebook, LinkedIn,
+    // iMessage and Slack rendered the share with no image.
+    images: [
+      {
+        url: "/GITS_Complete_Image_Package/social/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "GITS — Software, engineered with restraint.",
+        type: "image/png",
+      },
+      {
+        url: "/GITS_Complete_Image_Package/social/og-square-1200x1200.png",
+        width: 1200,
+        height: 1200,
+        alt: "GITS",
+        type: "image/png",
+      },
+    ],
   },
 };
 
