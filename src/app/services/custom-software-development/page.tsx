@@ -921,10 +921,10 @@ const CASES = [
       { week: "Weeks 3–4", title: "Build, test & phased launch", items: ["Core inventory and transfer modules built first", "Tested with live warehouse and branch data", "Expiry monitoring alerts configured per product category", "Branch staff onboarded role by role"] },
     ],
     outcomes: [
-      { value: "Real-time", label: "Stock visibility across all branches and warehouse", why: "Every sale, transfer, and restock now writes to a single shared database — eliminating the lag between what happened and what management knows." },
-      { value: "Automated", label: "Expiry alerts before the redistribution window closes", why: "The system monitors expiry dates continuously and flags products before action is no longer possible — turning a reactive problem into a proactive one." },
-      { value: "Zero", label: "Manual steps required to produce management reports", why: "Reports are generated directly from operational data on a schedule. No branch manager prepares them. No figures need to be consolidated." },
-      { value: "One", label: "System connecting warehouse, branches, and management", why: "Where six separate tools and communication channels existed, there is now a single operational record that everyone reads from and writes to." },
+      { claim: "Real-time stock visibility across all branches and the warehouse.", why: "Every sale, transfer, and restock now writes to a single shared database — eliminating the lag between what happened and what management knows." },
+      { claim: "Automated expiry alerts fire before the redistribution window closes.", why: "The system monitors expiry dates continuously and flags products before action is no longer possible — turning a reactive problem into a proactive one." },
+      { claim: "Zero manual steps to produce management reports.", why: "Reports are generated directly from operational data on a schedule. No branch manager prepares them. No figures need to be consolidated." },
+      { claim: "One system connecting the warehouse, branches and management.", why: "Where six separate tools and communication channels existed, there is now a single operational record that everyone reads from and writes to." },
     ],
     before: ["Warehouse and branch stock tracked in separate spreadsheets", "Expiry monitoring relied on manual shelf checks", "Stock transfers coordinated by WhatsApp and phone", "Management reports compiled manually by branch managers", "No unified view of network-wide inventory position"],
     after: ["Single inventory database updated in real time across all locations", "Automated expiry alerts surface redistribution opportunities early", "Transfers logged from request to receipt with full audit trail", "Management reports generated automatically from live data", "Business owners see a live operational dashboard at any time"],
@@ -961,10 +961,10 @@ const CASES = [
       { week: "Weeks 3–5", title: "Build, pilot & rollout", items: ["Director dashboard and budget tracking built first", "Piloted on one active site for two weeks", "Site manager log refined based on field feedback", "Full rollout across all active sites in week 5"] },
     ],
     outcomes: [
-      { value: "Daily", label: "Site progress visibility — not weekly", why: "Site managers log daily. Directors see it the same day. The one-week information lag is eliminated." },
-      { value: "Before", label: "Directors approve procurement above threshold — not after", why: "The approval workflow routes purchase orders to directors before the vendor is contacted. Retrospective reconciliation is replaced by real-time oversight." },
-      { value: "Live", label: "Budget vs actual for every active site", why: "Every approved purchase updates the budget ledger immediately. Burn rate is visible at any time, not at month-end." },
-      { value: "Zero", label: "WhatsApp messages needed to get a site update", why: "Directors open the dashboard. The information is there — progress, workers, materials, photos — without calling anyone." },
+      { claim: "Daily site progress visibility, not weekly.", why: "Site managers log daily. Directors see it the same day. The one-week information lag is eliminated." },
+      { claim: "Procurement above the threshold is approved before the vendor is contacted, not reconciled after.", why: "The approval workflow routes purchase orders to directors before the vendor is contacted. Retrospective reconciliation is replaced by real-time oversight." },
+      { claim: "Live budget against actual for every active site.", why: "Every approved purchase updates the budget ledger immediately. Burn rate is visible at any time, not at month-end." },
+      { claim: "Zero WhatsApp messages needed to get a site update.", why: "Directors open the dashboard. The information is there — progress, workers, materials, photos — without calling anyone." },
     ],
     before: ["Progress updates received via WhatsApp voice notes and calls", "Budget monitoring in spreadsheets updated monthly", "Material requests made verbally with no formal record", "Directors waited for weekly meetings to understand site status", "Procurement happened informally and was reconciled after the fact"],
     after: ["Daily site logs give directors a live operational picture", "Budget vs actual tracked in real time per site", "Every material request, approval, and delivery is logged", "Director dashboard shows all sites simultaneously — no calls needed", "Procurement above threshold requires approval before the order is placed"],
@@ -1001,10 +1001,10 @@ const CASES = [
       { week: "Weeks 3–5", title: "Build, test & staged rollout", items: ["Production batch tracker built and tested first", "Raw material allocation engine integrated", "QC sign-off workflow piloted with one product line", "Full rollout with all five operational roles in week 5"] },
     ],
     outcomes: [
-      { value: "One", label: "System tracking every batch from raw intake to dispatch", why: "Where five separate logs and notebooks existed, there is now a single production record that all five roles read from and write to." },
-      { value: "Zero", label: "Batches started without confirmed material availability", why: "The allocation engine checks and reserves materials before a batch begins. Starting a batch with insufficient stock is prevented by the system, not by someone remembering to check." },
-      { value: "Auditable", label: "QC record for every batch — with timestamps and sign-offs", why: "QC sign-off is a required step in the batch pipeline. It cannot be skipped. Every batch that reaches a customer has a documented QC clearance." },
-      { value: "Accurate", label: "Finished goods inventory before dispatch orders are raised", why: "Dispatch can only be raised against confirmed warehouse stock. Sales commitments are made against real inventory, not estimates." },
+      { claim: "One system tracking every batch from raw intake to dispatch.", why: "Where five separate logs and notebooks existed, there is now a single production record that all five roles read from and write to." },
+      { claim: "Zero batches started without confirmed material availability.", why: "The allocation engine checks and reserves materials before a batch begins. Starting a batch with insufficient stock is prevented by the system, not by someone remembering to check." },
+      { claim: "An auditable QC record for every batch, with timestamps and sign-offs.", why: "QC sign-off is a required step in the batch pipeline. It cannot be skipped. Every batch that reaches a customer has a documented QC clearance." },
+      { claim: "Accurate finished-goods inventory before dispatch orders are raised.", why: "Dispatch can only be raised against confirmed warehouse stock. Sales commitments are made against real inventory, not estimates." },
     ],
     before: ["Production runs logged in notebooks with no formal tracking", "Raw material shortages discovered mid-batch", "QC results in a separate notebook with no system link", "Dispatch orders raised against unconfirmed finished goods", "No single view of what was in production, QC, or warehouse at any time"],
     after: ["Every batch tracked through a defined pipeline from intake to dispatch", "Material availability confirmed before a batch begins", "QC sign-off required before any batch advances", "Dispatch raised only against confirmed finished goods inventory", "Supervisors and management see live production status at any time"],
@@ -1158,14 +1158,18 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
           </div>
         </div>
         {!isOpen && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {study.outcomes.slice(0, 3).map(o => (
-              <span key={o.value} className="flex items-center gap-2 border border-[#050505]/12 px-3 py-1.5 text-[11px] text-[#666666]">
-                <span className="font-semibold text-gray-900">{o.value}</span>{o.label}
-              </span>
-            ))}
-            <span className="hidden md:flex items-center text-xs text-gray-400 ml-auto">Read full story →</span>
-          </div>
+          <>
+            <div className="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-3">
+              {study.outcomes.slice(0, 3).map(o => (
+                <p key={o.claim} className="border-t border-[#050505]/10 pt-3 text-[12px] font-light leading-[1.6] text-[#666666]">
+                  {o.claim}
+                </p>
+              ))}
+            </div>
+            <span className="mt-4 hidden md:flex items-center font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-[#666666]">
+              Read full story →
+            </span>
+          </>
         )}
       </button>
 
@@ -1247,12 +1251,14 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
                 {tab === "results" && (
                   <motion.div key="res" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
                     <p className="text-xs text-gray-500 mb-4 max-w-xl leading-relaxed">Outcomes are stated with the mechanism that produced them. We don't publish numbers we can't explain.</p>
-                    <div className="grid grid-cols-2 gap-3">
-                      {study.outcomes.map(o => (
-                        <div key={o.value} className="border border-[#050505]/10 bg-white p-4">
-                          <p className="text-2xl font-semibold leading-none mb-1" style={{ color: theme.accent }}>{o.value}</p>
-                          <p className="text-xs font-medium text-gray-700 mb-1.5 leading-snug">{o.label}</p>
-                          <p className="text-[11px] text-gray-400 leading-relaxed">{o.why}</p>
+                    <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+                      {study.outcomes.map((o, i) => (
+                        <div key={o.claim} className="border-t border-[#050505]/10 pt-5">
+                          <span className="font-[family-name:var(--font-mono)] text-[11px] tracking-[0.12em]" style={{ color: theme.accent }}>
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <p className="mt-3 text-base font-light leading-snug tracking-tight text-[#050505]">{o.claim}</p>
+                          <p className="mt-2.5 text-[13px] font-light leading-[1.7] text-[#666666]">{o.why}</p>
                         </div>
                       ))}
                     </div>
