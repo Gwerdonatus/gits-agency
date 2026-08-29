@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -49,68 +50,108 @@ type CaseId = keyof typeof CASE_THEMES;
 function Hero() {
   const rm = useReducedMotion();
   const fd = (d: number) => ({ duration: rm ? 0 : 0.7, ease, delay: d });
+
+  // Three supporting notes. Numbered in mono rather than sat behind coloured
+  // icon tiles — the numeral carries the hierarchy, so no accent is needed.
+  const notes = [
+    {
+      n: "01",
+      title: "Built for your business",
+      body: "Custom software is designed from scratch around your specific workflows, roles, and data — not around what's easiest to build.",
+    },
+    {
+      n: "02",
+      title: "Why generic tools break down",
+      body: "Off-the-shelf tools serve the average business. If your operations have any complexity — multiple locations, multiple roles, custom workflows — they create more manual work than they save.",
+    },
+    {
+      n: "03",
+      title: "What we need from you",
+      body: "Not a technical spec. Just a clear description of how your business currently operates and where the friction is. We handle architecture, design, development, and launch.",
+    },
+  ];
+
   return (
-    <section className="relative px-6 pt-28 pb-16 md:pt-36 md:pb-20 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-blue-500/8 blur-3xl" />
-        <div className="absolute top-48 -left-32 h-[380px] w-[380px] rounded-full bg-cyan-400/6 blur-3xl" />
-        <div className="absolute -bottom-16 right-0 h-[400px] w-[400px] rounded-full bg-indigo-400/7 blur-3xl" />
-      </div>
-      <div className="relative mx-auto max-w-6xl">
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)} className="text-xs uppercase tracking-widest text-gray-400 mb-4">
-          Services / Custom Software Development
-        </motion.p>
-        <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.06)} className="text-4xl md:text-[3.4rem] font-medium leading-[1.08] tracking-tight text-gray-900 max-w-4xl">
-          Software built exactly for<br className="hidden md:block" />
-          <span className="text-blue-600"> the way your business works.</span>
+    <section className="relative px-6 sm:px-10 lg:px-16 pt-28 pb-16 md:pt-36 md:pb-24">
+      <div className="relative mx-auto max-w-[1400px]">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}>
+          <Eyebrow index="01">Custom Software Development</Eyebrow>
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={fd(0.06)}
+          className="mt-8 md:mt-12 max-w-5xl"
+        >
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] font-extralight leading-[1.03] tracking-[-0.03em] text-[#050505]">
+            Software built exactly for
+          </span>
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] italic font-light leading-[1.03] tracking-[-0.01em] text-[#050505]/70 font-[family-name:var(--font-fraunces)] pl-[4vw] md:pl-[2vw]">
+            the way your business works.
+          </span>
         </motion.h1>
-        <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.12)} className="mt-5 text-gray-500 max-w-2xl leading-relaxed text-base md:text-lg">
-          Off-the-shelf tools make your business adapt to someone else's product.
+
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={fd(0.12)}
+          className="mt-8 md:mt-10 max-w-xl text-base md:text-lg font-light text-[#666666] leading-[1.75]"
+        >
+          Off-the-shelf tools make your business adapt to someone else&rsquo;s product.
           Custom software adapts to you — built around your workflows, your team, and your growth plan.
           You own the code. No licensing. No lock-in.
         </motion.p>
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.18)} className="mt-8 flex flex-wrap items-center gap-3">
-          <Link href="/contact" className="inline-flex items-center gap-2 rounded-xl bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-80 transition">
-            Start a project
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          </Link>
-          <a href="#case-studies" className="inline-flex items-center gap-2 rounded-xl border border-black/12 bg-white px-6 py-3 text-sm font-medium text-gray-700 hover:bg-black/[0.03] transition">
-            See our work
-          </a>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={fd(0.18)}
+          className="mt-10 flex flex-wrap items-center gap-4"
+        >
+          <EditorialButton href="/contact">Start a project</EditorialButton>
+          <EditorialButton href="#case-studies" variant="ghost">See our work</EditorialButton>
         </motion.div>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fd(0.26)} className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
-          {["Full code ownership — no lock-in","NDA before any details are shared","Fixed scope — no surprise invoices","12+ countries served"].map(t => (
-            <span key={t} className="flex items-center gap-1.5 text-xs text-gray-400">
-              <span className="h-1 w-1 rounded-full bg-gray-300" />{t}
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={fd(0.26)}
+          className="mt-12 flex flex-wrap gap-x-8 gap-y-3"
+        >
+          {["Full code ownership — no lock-in", "NDA before any details are shared", "Fixed scope — no surprise invoices", "12+ countries served"].map((t) => (
+            <span
+              key={t}
+              className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em] text-[#666666]"
+            >
+              {t}
             </span>
           ))}
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.3)} className="mt-12 rounded-3xl border border-black/10 bg-white/70 backdrop-blur p-6 md:p-8" style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.06)" }}>
-          <div className="grid gap-8 md:grid-cols-[1fr,1px,1fr,1px,1fr]">
-            <div>
-              <div className="h-8 w-8 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-3">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#2563eb" strokeWidth="1.25"/><path d="M5 7l2 2 4-3" stroke="#2563eb" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
-              <p className="text-sm font-semibold text-gray-900 mb-1.5">Built for your business</p>
-              <p className="text-sm text-gray-500 leading-relaxed">Custom software is designed from scratch around your specific workflows, roles, and data — not around what's easiest to build.</p>
+
+        {/* Hairline-ruled columns instead of a floating rounded card: the rules
+            do the separating, so no shadow, radius or backdrop blur is needed. */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={fd(0.3)}
+          className="mt-16 md:mt-20 grid gap-10 md:gap-0 md:grid-cols-3 border-t border-[#050505]/10 pt-10"
+        >
+          {notes.map((note, i) => (
+            <div
+              key={note.n}
+              className={cx(
+                "md:px-8",
+                i === 0 && "md:pl-0",
+                i === 2 && "md:pr-0",
+                i > 0 && "md:border-l md:border-[#050505]/10"
+              )}
+            >
+              <span className="font-[family-name:var(--font-mono)] text-xs text-[#666666]">{note.n}</span>
+              <p className="mt-3 text-lg font-light tracking-tight text-[#050505]">{note.title}</p>
+              <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">{note.body}</p>
             </div>
-            <div className="hidden md:block bg-black/6 self-stretch" />
-            <div>
-              <div className="h-8 w-8 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center mb-3">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#d97706" strokeWidth="1.25"/><path d="M8 5v4M8 11v.5" stroke="#d97706" strokeWidth="1.5" strokeLinecap="round"/></svg>
-              </div>
-              <p className="text-sm font-semibold text-gray-900 mb-1.5">Why generic tools break down</p>
-              <p className="text-sm text-gray-500 leading-relaxed">Off-the-shelf tools serve the average business. If your operations have any complexity — multiple locations, multiple roles, custom workflows — they create more manual work than they save.</p>
-            </div>
-            <div className="hidden md:block bg-black/6 self-stretch" />
-            <div>
-              <div className="h-8 w-8 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-3">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v1.5M8 12.5V14M2 8h1.5M12.5 8H14" stroke="#059669" strokeWidth="1.25" strokeLinecap="round"/><circle cx="8" cy="8" r="3.5" stroke="#059669" strokeWidth="1.25"/></svg>
-              </div>
-              <p className="text-sm font-semibold text-gray-900 mb-1.5">What we need from you</p>
-              <p className="text-sm text-gray-500 leading-relaxed">Not a technical spec. Just a clear description of how your business currently operates and where the friction is. We handle architecture, design, development, and launch.</p>
-            </div>
-          </div>
+          ))}
         </motion.div>
       </div>
     </section>
@@ -138,12 +179,12 @@ function WhatWeBuildCarousel() {
   const next = () => setActive(i => (i + 1) % total);
   const visible = [WHAT_WE_BUILD[active % total], WHAT_WE_BUILD[(active + 1) % total], WHAT_WE_BUILD[(active + 2) % total]];
   return (
-    <section className="px-6 py-16 md:py-20 border-t border-black/[0.06]">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10">
+      <div className="mx-auto max-w-[1400px]">
         <div className="flex items-end justify-between mb-8 gap-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">What we build</p>
-            <h2 className="text-2xl md:text-3xl font-medium text-gray-900 max-w-lg leading-snug">Not sure if your business needs custom software?</h2>
+            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">What we build</p>
+            <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-lg leading-snug">Not sure if your business needs custom software?</h2>
             <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">Here are eight types of operational systems we build. If any of these describe a problem your business has right now, we should talk.</p>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -178,9 +219,9 @@ function WhatWeBuildCarousel() {
             <button key={i} type="button" onClick={() => setActive(i)} className={`transition-all duration-200 rounded-full ${i === active ? "h-1.5 w-5 bg-black" : "h-1.5 w-1.5 bg-black/20"}`} aria-label={`Slide ${i + 1}`} />
           ))}
         </div>
-        <div className="mt-8 rounded-2xl border border-black/10 bg-black/[0.02] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-sm text-gray-600 max-w-xl">If your business is currently running critical operations through WhatsApp, spreadsheets, or a tool that wasn't built for your industry — there's a better way. We've built it before.</p>
-          <Link href="/contact" className="flex-shrink-0 inline-flex items-center justify-center rounded-xl bg-black text-white px-5 py-2.5 text-sm font-medium hover:opacity-80 transition whitespace-nowrap">Tell us what you need</Link>
+        <div className="mt-12 border-t border-[#050505]/10 pt-8 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
+          <p className="text-sm font-light text-[#666666] leading-[1.75] max-w-xl">If your business is currently running critical operations through WhatsApp, spreadsheets, or a tool that wasn&rsquo;t built for your industry — there&rsquo;s a better way. We&rsquo;ve built it before.</p>
+          <EditorialButton href="/contact" className="flex-shrink-0 whitespace-nowrap">Tell us what you need</EditorialButton>
         </div>
       </div>
     </section>
@@ -1233,11 +1274,11 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
 function CaseStudiesSection() {
   const [openId, setOpenId] = useState<CaseId | null>(null);
   return (
-    <section id="case-studies" className="px-6 py-16 md:py-20 border-t border-black/[0.06]">
-      <div className="mx-auto max-w-6xl">
+    <section id="case-studies" className="px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10">
+      <div className="mx-auto max-w-[1400px]">
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">Operational systems — built & shipped</p>
-          <h2 className="text-2xl md:text-3xl font-medium text-gray-900 max-w-2xl leading-snug">Three businesses. Three complex operational problems. Here's exactly how we thought through each one.</h2>
+          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">Operational systems — built & shipped</p>
+          <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-2xl leading-snug">Three businesses. Three complex operational problems. Here's exactly how we thought through each one.</h2>
           <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">Each case below includes an interactive system demo, the full story behind our decisions, the delivery timeline, and the outcomes — with the reasoning behind each result.</p>
         </div>
         <div className="space-y-4">
@@ -1319,14 +1360,14 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // ═══════════════════════════════════════════════════════════════
 export default function CustomSoftwareDevelopmentPage() {
   return (
-    <main className="min-h-screen bg-white text-black">
+    <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <Hero />
       <WhatWeBuildCarousel />
       <CaseStudiesSection />
-      <section className="px-6 pb-24 pt-4">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">FAQ</p>
-          <h2 className="text-2xl md:text-3xl font-medium text-gray-900 mb-2">Questions we hear before every project starts.</h2>
+      <section className="px-6 sm:px-10 lg:px-16 pb-28 pt-4">
+        <div className="mx-auto max-w-[1400px]">
+          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">FAQ</p>
+          <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] mb-2">Questions we hear before every project starts.</h2>
           <p className="text-sm text-gray-500 mb-8 max-w-xl leading-relaxed">Answered here so your first conversation with us can focus on your specific situation.</p>
           <div className="grid gap-3">{FAQS.map(f => <FaqItem key={f.q} q={f.q} a={f.a} />)}</div>
         </div>
