@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug, getAllSlugs } from "@/lib/posts";
+import { getAuthor } from "@/lib/authors";
+import { ArticleSchema, BreadcrumbSchema } from "@/app/structured-data";
 import BlogPostClient from "./BlogPostClient";
 
 export const revalidate = 60;
@@ -24,11 +26,22 @@ export async function generateMetadata({
 
   const canonical = `${SITE_URL}/blog/${post.slug}`;
   const description = post.summary ?? post.excerpt ?? "";
-  const image = post.coverImage ? `${SITE_URL}${post.coverImage}` : undefined;
+  // Sanity returns absolute cdn.sanity.io URLs while local posts use relative
+  // paths, so only prefix the site origin when the path is actually relative.
+  // Prefixing blindly produced "https://gits.technologyhttps://cdn.sanity.io/..."
+  // and left every Sanity-backed post imageless when shared.
+  const image = post.coverImage
+    ? /^https?:\/\//i.test(post.coverImage)
+      ? post.coverImage
+      : `${SITE_URL}${post.coverImage}`
+    : undefined;
+
+  const author = getAuthor((post as { author?: string }).author);
 
   return {
     title: post.title,
     description,
+    authors: [{ name: author.name, url: author.url }],
     alternates: { canonical },
     openGraph: {
       type: "article",
@@ -59,5 +72,38 @@ export default async function BlogPostPage({
   const all = await getAllPosts();
   const related = all.filter((p) => p.slug !== post.slug).slice(0, 4);
 
-  return <BlogPostClient post={post as any} related={related as any} />;
+  const author = getAuthor((post as { author?: string }).author);
+  const url = `${SITE_URL}/blog/${post.slug}`;
+  const image = post.coverImage
+    ? /^https?:\/\//i.test(post.coverImage)
+      ? post.coverImage
+      : `${SITE_URL}${post.coverImage}`
+    : undefined;
+
+  return (
+    <>
+      {/* Blog posts previously carried no Article schema at all. */}
+      <ArticleSchema
+        title={post.title}
+        description={post.summary ?? ""}
+        url={url}
+        datePublished={post.date}
+        image={image}
+        author={{
+          name: author.name,
+          jobTitle: author.role,
+          url: author.url,
+          sameAs: author.sameAs,
+        }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: SITE_URL },
+          { name: "Blog", url: `${SITE_URL}/blog` },
+          { name: post.title, url },
+        ]}
+      />
+      <BlogPostClient post={post as any} related={related as any} />
+    </>
+  );
 }

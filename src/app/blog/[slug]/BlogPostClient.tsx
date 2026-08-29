@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { getAuthor } from "@/lib/authors";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -68,6 +69,7 @@ export default function BlogPostClient({
   const highlights = "highlights" in post ? (post as any).highlights : undefined;
   const content = "content" in post ? (post as any).content : undefined;
   const readTime = "readTime" in post ? (post as any).readTime : undefined;
+  const author = getAuthor((post as { author?: string }).author);
 
   return (
     <main className="bg-white text-gray-900">
@@ -105,6 +107,28 @@ export default function BlogPostClient({
                 <span>{readTime}</span>
               </>
             ) : null}
+          </motion.div>
+
+          {/* Visible byline. The Article schema names the author for machines;
+              this names them for readers. Both matter for E-E-A-T. */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            custom={0.07}
+            className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm"
+          >
+            <span className="text-gray-500">By</span>
+            <Link
+              href={author.url.replace("https://gits.technology", "")}
+              className="font-medium text-gray-900 underline decoration-black/20 underline-offset-4 hover:decoration-black/60 transition-colors"
+            >
+              {author.name}
+            </Link>
+            <span className="text-gray-500">— {author.role}</span>
+            <span className="w-full text-xs text-gray-500 leading-relaxed max-w-xl">
+              {author.credential}
+            </span>
           </motion.div>
 
           <motion.h1

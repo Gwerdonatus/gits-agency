@@ -23,6 +23,8 @@ export type UniversalPost = {
   highlights?: string[];
   videoUrl?: string;
   postType?: string;
+  /** Key into AUTHORS in lib/authors.ts. Falls back to the default author. */
+  author?: string;
   content?: ContentBlock[];
 };
 
@@ -42,6 +44,7 @@ function normalizeStaticPost(p: (typeof BLOG_POSTS)[number]): UniversalPost {
     highlights: "highlights" in p ? (p as any).highlights : undefined,
     videoUrl: "videoUrl" in p ? (p as any).videoUrl : undefined,
     content: "content" in p ? (p as any).content : undefined,
+    author: "author" in p ? (p as any).author : undefined,
   };
 }
 

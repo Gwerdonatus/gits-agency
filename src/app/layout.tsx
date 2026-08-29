@@ -39,23 +39,10 @@ export const metadata: Metadata = {
 
   description: SITE_DESC,
 
-  // Keywords still matter for Bing, DuckDuckGo, and AI crawlers even if
-  // Google de-emphasises them. Keep tight, no keyword stuffing.
-  keywords: [
-    "digital agency Nigeria",
-    "web development agency Africa",
-    "SaaS development company",
-    "mobile app development Nigeria",
-    "AI automation agency",
-    "custom software development",
-    "Next.js agency",
-    "React Native agency",
-    "internal tools development",
-    "UI UX design agency",
-    "startup development partner",
-    "GITS",
-    "Gwer Intelligent Tech Solutions",
-  ],
+  // No `keywords`: Google ignores the meta keywords tag outright and Bing
+  // treats it as a spam signal at worst. Inherited by every route, it also
+  // produced an identical keyword string on all 25 pages, which reads as
+  // boilerplate. Real targeting lives in each page's title and description.
 
   authors: [{ name: "GITS — Gwer Intelligent Tech Solutions", url: SITE_URL }],
   creator: "GITS — Gwer Intelligent Tech Solutions",
@@ -129,8 +116,8 @@ export const metadata: Metadata = {
   // ── Twitter / X Card ───────────────────────────────────────────────────────
   twitter: {
     card: "summary_large_image",
-    site: "@GITSAgency",       // Update to verified handle when live
-    creator: "@GITSAgency",
+    // site/creator intentionally omitted: GITS has no X account. Declaring an
+    // unverified handle attributes every share card to whoever owns it.
     title: "SaaS, Mobile Apps & AI Automation Agency | GITS",
     images: [`${IMG_ROOT}/social/twitter-card.png`],
   },

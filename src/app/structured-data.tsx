@@ -166,12 +166,17 @@ export function OrganizationSchema() {
       ],
       email: "hellogits@outlook.com",
       telephone: "+2348116276212",
+      // Verified profiles only. sameAs is how Google and AI engines collapse
+      // these accounts into one confident entity, so an unverifiable or dead
+      // URL here weakens the whole record rather than padding it.
+      // Keep in sync with the `socials` array in components/Footer.tsx.
       sameAs: [
+        "https://www.linkedin.com/company/gits-agency/",
+        "https://www.facebook.com/profile.php?id=61590804764643",
+        "https://www.tiktok.com/@buildwithgits",
+        "https://github.com/Gwerdonatus",
         "https://wa.me/2348116276212",
         "https://calendly.com/donatusgwer",
-        "https://github.com/Gwerdonatus",
-        "https://linkedin.com/company/gits-agency",
-        // Add Twitter/X, Instagram when live
       ],
     }} />
   );
@@ -323,6 +328,7 @@ export function ArticleSchema({
   datePublished,
   dateModified,
   image,
+  author,
 }: {
   title: string;
   description: string;
@@ -330,6 +336,10 @@ export function ArticleSchema({
   datePublished: string;
   dateModified?: string;
   image?: string;
+  /** A named human. Search and AI engines weigh author identity (E-E-A-T)
+   *  when deciding whether to surface or cite a claim; crediting only the
+   *  Organization leaves the article attributed to nobody in particular. */
+  author?: { name: string; jobTitle?: string; url?: string; sameAs?: string[] };
 }) {
   return (
     <LD data={{
@@ -342,7 +352,16 @@ export function ArticleSchema({
       datePublished,
       dateModified: dateModified ?? datePublished,
       image: image ?? `${IMG_ROOT}/social/og-image.png`,
-      author: { "@id": `${SITE_URL}/#organization` },
+      author: author
+        ? {
+            "@type": "Person",
+            name: author.name,
+            jobTitle: author.jobTitle,
+            url: author.url,
+            sameAs: author.sameAs,
+            worksFor: { "@id": `${SITE_URL}/#organization` },
+          }
+        : { "@id": `${SITE_URL}/#organization` },
       publisher: { "@id": `${SITE_URL}/#organization` },
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       inLanguage: "en-US",

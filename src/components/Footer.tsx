@@ -24,36 +24,31 @@ function LinkedInIcon() {
     </svg>
   );
 }
-function TwitterXIcon() {
+
+// Real profiles only. These were previously bare domains (https://facebook.com
+// etc.), which dropped visitors on a login page and gave search and AI engines
+// nothing to tie the GITS entity to. Keep this list in sync with the
+// Organization `sameAs` array in app/structured-data.tsx.
+function TikTokIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-function InstagramIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 1 1 .77-5.06V9.7a5.67 5.67 0 0 0-.77-.05A5.66 5.66 0 1 0 15.54 15.3V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.29 4.29 0 0 1-3.24-1.48z" />
     </svg>
   );
 }
 
 const socials = [
-  { label: "Facebook",  href: "https://facebook.com",  Icon: FacebookIcon  },
-  { label: "LinkedIn",  href: "https://linkedin.com",  Icon: LinkedInIcon  },
-  { label: "Twitter",   href: "https://twitter.com",   Icon: TwitterXIcon  },
-  { label: "Instagram", href: "https://instagram.com", Icon: InstagramIcon },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/gits-agency/", Icon: LinkedInIcon },
+  { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61590804764643", Icon: FacebookIcon },
+  { label: "TikTok",   href: "https://www.tiktok.com/@buildwithgits", Icon: TikTokIcon },
 ];
 
 const services = [
-  { label: "Custom Software Development", href: "/services/custom-software"   },
-  { label: "Websites & Digital Experiences", href: "/services/websites"         },
-  { label: "AI & Business Automation",    href: "/services/ai-automation"     },
-  { label: "Internal Tools & CRM",        href: "/services/internal-tools"    },
-  { label: "Integrations & APIs",         href: "/services/integrations"      },
+  { label: "Custom Software Development", href: "/services/custom-software-development" },
+  { label: "Websites & Digital Experiences", href: "/services/websites-digital-experiences" },
+  { label: "AI & Business Automation",    href: "/services/ai-business-automation" },
+  { label: "Internal Tools & CRM",        href: "/services/internal-tools-crm" },
+  { label: "Integrations & APIs",         href: "/services/integrations-apis" },
 ];
 
 const company = [
