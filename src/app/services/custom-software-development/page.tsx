@@ -931,7 +931,7 @@ const CASES = [
     stack: ["Next.js", "PostgreSQL", "Prisma", "Role-Based Auth", "Resend", "Vercel"],
     duration: "4 weeks",
     DemoComponent: MedicoreDemo,
-    demoCaption: "Owner dashboard — tab between Overview (branch performance) and Inventory (network-wide stock with expiry alerts).",
+    demoCaption: "Owner dashboard — branch performance and network-wide stock, with expiry flagged before the redistribution window closes.",
   },
   {
     id: "buildcore" as CaseId,
@@ -971,7 +971,7 @@ const CASES = [
     stack: ["Next.js", "PostgreSQL", "Prisma", "Cloudinary", "Resend", "Vercel"],
     duration: "5 weeks",
     DemoComponent: BuildCoreDemo,
-    demoCaption: "Director dashboard — budget bars animate on load. Tap 'Approve purchase order' in the satellite card to see the procurement flow live.",
+    demoCaption: "Director dashboard — live budget against actual for every active site, with purchase orders routed for approval before the vendor is contacted.",
   },
   {
     id: "factoryflow" as CaseId,
@@ -1011,7 +1011,7 @@ const CASES = [
     stack: ["Next.js", "PostgreSQL", "Prisma", "Role-Based Auth", "Resend", "Railway"],
     duration: "5 weeks",
     DemoComponent: FactoryFlowDemo,
-    demoCaption: "Production pipeline — watch the batch advance automatically. Interact with 'QC Sign-Off' and 'Material Shortage' satellite cards.",
+    demoCaption: "Production pipeline — a batch tracked from raw intake to dispatch, with QC sign-off and material shortages surfaced at the stage they occur.",
   },
 ] as const;
 
@@ -1041,7 +1041,7 @@ function ModuleRow({ mod, accent }: { mod: { name: string; problem: string; buil
                 { l: "Business impact", t: mod.impact, c: "text-emerald-700" },
               ].map(({ l, t, c }) => (
                 <div key={l} className="px-4 py-3">
-                  <p className={`text-[10px] font-semibold uppercase tracking-widest mb-1 ${c}`}>{l}</p>
+                  <p className={`font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] mb-1 ${c}`}>{l}</p>
                   <p className="text-sm text-gray-600 leading-relaxed">{t}</p>
                 </div>
               ))}
@@ -1085,7 +1085,7 @@ function BeforeAfter({ before, after }: { before: readonly string[]; after: read
   return (
     <div className="grid md:grid-cols-2 gap-3">
       <div className="rounded-xl border border-red-100 bg-red-50/40 p-4">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-red-400 mb-3">Before</p>
+        <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-red-400 mb-3">Before</p>
         <ul className="space-y-2">{before.map(item => (
           <li key={item} className="flex items-start gap-2 text-xs text-gray-600">
             <span className="text-red-300 flex-shrink-0 text-[10px] font-bold mt-0.5">✕</span>{item}
@@ -1093,7 +1093,7 @@ function BeforeAfter({ before, after }: { before: readonly string[]; after: read
         ))}</ul>
       </div>
       <div className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4">
-        <p className="text-[10px] font-semibold uppercase tracking-widest text-emerald-500 mb-3">After</p>
+        <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-emerald-500 mb-3">After</p>
         <ul className="space-y-2">{after.map(item => (
           <li key={item} className="flex items-start gap-2 text-xs text-gray-600">
             <span className="text-emerald-400 flex-shrink-0 text-[10px] font-bold mt-0.5">✓</span>{item}
@@ -1126,8 +1126,8 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
   return (
     <motion.div ref={ref} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
       transition={{ duration: rm ? 0 : 0.5, ease, delay: index * 0.07 }}
-      className="rounded-3xl border overflow-hidden bg-white transition-shadow duration-300"
-      style={{ borderColor: isOpen ? theme.accentBorder : "rgba(0,0,0,0.09)", boxShadow: isOpen ? "0 20px 60px rgba(0,0,0,0.09)" : "0 2px 10px rgba(0,0,0,0.05)" }}>
+      className="border overflow-hidden bg-white transition-colors duration-300"
+      style={{ borderColor: isOpen ? theme.accentBorder : "rgba(5,5,5,0.12)" }}>
 
       {/* Collapsed header */}
       <button type="button" onClick={handleToggle} aria-expanded={isOpen} className="w-full text-left p-5 md:p-6">
@@ -1143,13 +1143,13 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3 mb-2">
               <div>
-                <span className="text-[10px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full" style={{ background: theme.accentLight, color: theme.accentText }}>
+                <span className="inline-block font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] px-2.5 py-1" style={{ background: theme.accentLight, color: theme.accentText }}>
                   {theme.label}
                 </span>
-                <p className="text-[9px] text-gray-400 mt-1.5">{study.client} · {study.industry} · {study.scope}</p>
+                <p className="mt-2 font-[family-name:var(--font-mono)] text-[11px] tracking-[0.08em] text-[#666666]">{study.client} · {study.scope}</p>
               </div>
-              <div className={`h-7 w-7 rounded-full flex-shrink-0 flex items-center justify-center transition-all duration-300 ${isOpen ? "rotate-45" : ""}`}
-                style={{ background: isOpen ? theme.accentLight : "rgba(0,0,0,0.05)", color: isOpen ? theme.accent : "#9ca3af" }} aria-hidden="true">
+              <div className={`h-7 w-7 flex-shrink-0 flex items-center justify-center border transition-all duration-300 ${isOpen ? "rotate-45" : ""}`}
+                style={{ background: isOpen ? theme.accentLight : "transparent", borderColor: isOpen ? theme.accentBorder : "rgba(5,5,5,0.12)", color: isOpen ? theme.accent : "#666666" }} aria-hidden="true">
                 <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
               </div>
             </div>
@@ -1160,7 +1160,7 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
         {!isOpen && (
           <div className="mt-4 flex flex-wrap gap-2">
             {study.outcomes.slice(0, 3).map(o => (
-              <span key={o.value} className="flex items-center gap-1.5 rounded-full border border-black/10 px-3 py-1 text-[11px] text-gray-500">
+              <span key={o.value} className="flex items-center gap-2 border border-[#050505]/12 px-3 py-1.5 text-[11px] text-[#666666]">
                 <span className="font-semibold text-gray-900">{o.value}</span>{o.label}
               </span>
             ))}
@@ -1175,7 +1175,7 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
             {/* Demo band */}
             <div className="border-t border-black/[0.06]" style={{ background: theme.accentLight }}>
               <div className="px-5 md:px-8 py-6">
-                <p className="text-[10px] font-semibold uppercase tracking-widest mb-4" style={{ color: theme.accentText }}>
+                <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] mb-4" style={{ color: theme.accentText }}>
                   System demo — {study.demoCaption}
                 </p>
                 <study.DemoComponent />
@@ -1201,32 +1201,32 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
                 {tab === "story" && (
                   <motion.div key="story" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
                     {/* Key insight callout */}
-                    <div className="mb-5 rounded-2xl border p-4 flex items-start gap-3" style={{ borderColor: theme.accentBorder, background: theme.accentLight }}>
+                    <div className="mb-6 border-l-2 pl-4 py-1 flex items-start gap-3" style={{ borderColor: theme.accentBorder, background: theme.accentLight }}>
                       <div className="h-6 w-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: theme.accent }}>
                         <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1v5.5M6 9v.5" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
                       </div>
                       <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-widest mb-1" style={{ color: theme.accentText }}>Key insight</p>
+                        <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] mb-1" style={{ color: theme.accentText }}>Key insight</p>
                         <p className="text-sm leading-relaxed" style={{ color: theme.accentText }}>{study.insight}</p>
                       </div>
                     </div>
                     <div className="grid gap-6 md:grid-cols-2">
                       <div className="space-y-5">
                         <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">{study.why.title}</p>
+                          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-gray-400 mb-2">{study.why.title}</p>
                           <p className="text-sm text-gray-600 leading-relaxed">{study.why.body}</p>
                         </div>
                         <div>
-                          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">{study.how.title}</p>
+                          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-gray-400 mb-2">{study.how.title}</p>
                           <p className="text-sm text-gray-600 leading-relaxed">{study.how.body}</p>
                         </div>
                       </div>
                       <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">Before & after</p>
+                        <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-gray-400 mb-2">Before & after</p>
                         <BeforeAfter before={study.before} after={study.after} />
                         <div className="mt-4">
-                          <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-2">Stack</p>
-                          <div className="flex flex-wrap gap-1.5">{study.stack.map(s => <span key={s} className="rounded-lg border border-black/10 px-2.5 py-1 text-xs text-gray-600 font-mono">{s}</span>)}</div>
+                          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-gray-400 mb-2">Stack</p>
+                          <div className="flex flex-wrap gap-1.5">{study.stack.map(s => <span key={s} className="border border-[#050505]/12 px-2.5 py-1 text-xs text-[#666666] font-[family-name:var(--font-mono)]">{s}</span>)}</div>
                         </div>
                       </div>
                     </div>
@@ -1249,14 +1249,14 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
                     <p className="text-xs text-gray-500 mb-4 max-w-xl leading-relaxed">Outcomes are stated with the mechanism that produced them. We don't publish numbers we can't explain.</p>
                     <div className="grid grid-cols-2 gap-3">
                       {study.outcomes.map(o => (
-                        <div key={o.value} className="rounded-xl border border-black/[0.08] bg-white p-4">
+                        <div key={o.value} className="border border-[#050505]/10 bg-white p-4">
                           <p className="text-2xl font-semibold leading-none mb-1" style={{ color: theme.accent }}>{o.value}</p>
                           <p className="text-xs font-medium text-gray-700 mb-1.5 leading-snug">{o.label}</p>
                           <p className="text-[11px] text-gray-400 leading-relaxed">{o.why}</p>
                         </div>
                       ))}
                     </div>
-                    <div className="mt-5 rounded-2xl border p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3" style={{ borderColor: theme.accentBorder, background: theme.accentLight }}>
+                    <div className="mt-6 border p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4" style={{ borderColor: theme.accentBorder, background: theme.accentLight }}>
                       <div>
                         <p className="text-xs text-gray-600">Delivered in <span className="font-semibold text-gray-900">{study.duration}</span> from signed scope to live system.</p>
                         <p className="text-xs text-gray-400 mt-0.5">Full source code ownership. NDA signed before discovery begins.</p>
@@ -1300,14 +1300,14 @@ function CaseStudiesSection() {
         <div className="mt-6 rounded-3xl bg-black text-white p-6 md:p-8 relative overflow-hidden">
           <div className="absolute -top-20 -right-20 h-48 w-48 rounded-full bg-white/5 blur-3xl pointer-events-none" />
           <div className="relative">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-white/35 mb-3">How we approach every project</p>
+            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] text-white/35 mb-3">How we approach every project</p>
             <p className="text-lg md:text-xl font-medium text-white max-w-2xl leading-snug">We help growing businesses replace disconnected spreadsheets, manual reporting, and fragmented workflows with software designed around how their operations actually run.</p>
             <div className="mt-6 grid sm:grid-cols-3 gap-3">
               {CASES.map(c => {
                 const t = CASE_THEMES[c.id];
                 return (
                   <div key={c.id} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                    <span className="inline-block text-[9px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded-full mb-3" style={{ background: `${t.accent}22`, color: t.accent }}>{t.label.split("·")[0].trim()}</span>
+                    <span className="inline-block font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] px-2 py-0.5 mb-3" style={{ background: `${t.accent}22`, color: t.accent }}>{t.label.split("·")[0].trim()}</span>
                     <p className="text-xs text-white/60 leading-relaxed">{c.insight}</p>
                   </div>
                 );
