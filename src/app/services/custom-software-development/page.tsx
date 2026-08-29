@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
+import { SERVICE_ICONS, type ServiceIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -161,67 +162,74 @@ function Hero() {
 // ═══════════════════════════════════════════════════════════════
 // CAROUSEL
 // ═══════════════════════════════════════════════════════════════
-const WHAT_WE_BUILD = [
-  { icon: "⚙️", title: "SaaS Platforms", who: "Startups & scale-ups", desc: "Multi-tenant applications with subscription billing, role management, and real-time features built to handle 10× your current volume.", example: "e.g. A B2B compliance tracking tool used by 200 companies." },
-  { icon: "🏗️", title: "Construction Management", who: "Contractors & developers", desc: "Multi-site dashboards, material tracking, procurement approvals, and progress reporting — replacing WhatsApp updates and Excel reports.", example: "e.g. A director tracking 4 active sites, budgets, and procurement from one screen." },
-  { icon: "🏭", title: "Manufacturing Systems", who: "Factories & processors", desc: "Raw material intake, production planning, quality control, and dispatch tracking connected into one operational system.", example: "e.g. A food processor tracking batches from intake to finished goods." },
-  { icon: "💊", title: "Healthcare & Pharmacy Ops", who: "Clinics & pharmacy networks", desc: "Multi-branch inventory, expiry monitoring, dispensing workflows, and unified management dashboards for healthcare operations.", example: "e.g. A pharmacy network connecting warehouse, branches, and delivery." },
-  { icon: "📦", title: "Fleet & Logistics Ops", who: "Companies that own vehicles", desc: "Maintenance schedules, fuel tracking, driver assignment, route logs, and downtime monitoring for businesses managing their own fleets.", example: "e.g. A distributor tracking 40 trucks across 3 depots." },
-  { icon: "🏫", title: "School Management Platforms", who: "Private & independent schools", desc: "Admissions, fee management, results, parent portals, attendance, and staff management — replacing disconnected school admin tools.", example: "e.g. A group of private schools with a shared management system." },
-  { icon: "🏨", title: "Hotel & Hospitality Systems", who: "Hotels & guest houses", desc: "Reservations, housekeeping, room status, restaurant billing, and staff management — built for operations that don't fit generic hotel software.", example: "e.g. A boutique hotel group replacing Opera PMS with a custom-fit system." },
-  { icon: "📊", title: "Internal Tools & CRMs", who: "Operations-heavy teams", desc: "Purpose-built internal dashboards, CRMs, and management tools replacing disconnected SaaS stacks with one system designed for your process.", example: "e.g. A custom CRM for a sales team with pipeline stages no generic tool supports." },
+const WHAT_WE_BUILD: {
+  key: ServiceIconKey; title: string; who: string; desc: string;
+}[] = [
+  { key: "saas",          title: "SaaS Platforms",             who: "Startups & scale-ups",        desc: "Multi-tenant apps with subscription billing, role management and real-time features — built for 10× your current volume." },
+  { key: "construction",  title: "Construction Management",    who: "Contractors & developers",    desc: "Multi-site dashboards, material tracking and procurement approvals, replacing WhatsApp updates and Excel reports." },
+  { key: "manufacturing", title: "Manufacturing Systems",      who: "Factories & processors",      desc: "Raw material intake, production planning, quality control and dispatch connected into one system." },
+  { key: "healthcare",    title: "Healthcare & Pharmacy Ops",  who: "Clinics & pharmacy networks", desc: "Multi-branch inventory, expiry monitoring and dispensing workflows under one dashboard." },
+  { key: "fleet",         title: "Fleet & Logistics Ops",      who: "Companies that own vehicles", desc: "Maintenance schedules, fuel tracking, driver assignment and downtime monitoring." },
+  { key: "school",        title: "School Management",          who: "Private & independent schools", desc: "Admissions, fees, results, parent portals and attendance in a single platform." },
+  { key: "hotel",         title: "Hotel & Hospitality",        who: "Hotels & guest houses",       desc: "Reservations, housekeeping, room status and restaurant billing for operations generic PMS software cannot fit." },
+  { key: "internal",      title: "Internal Tools & CRMs",      who: "Operations-heavy teams",      desc: "Purpose-built dashboards and CRMs replacing a disconnected stack of SaaS subscriptions." },
 ];
 
 function WhatWeBuildCarousel() {
-  const [active, setActive] = useState(0);
-  const total = WHAT_WE_BUILD.length;
-  const prev = () => setActive(i => (i - 1 + total) % total);
-  const next = () => setActive(i => (i + 1) % total);
-  const visible = [WHAT_WE_BUILD[active % total], WHAT_WE_BUILD[(active + 1) % total], WHAT_WE_BUILD[(active + 2) % total]];
+  // Previously a carousel showing three of eight (one on mobile), so most of
+  // the range was hidden behind arrow clicks and nothing could be scanned.
+  // A plain grid lets someone recognise their own industry at a glance, which
+  // is the only job this section has.
   return (
     <section className="px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10">
       <div className="mx-auto max-w-[1400px]">
-        <div className="flex items-end justify-between mb-8 gap-4">
-          <div>
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">What we build</p>
-            <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-lg leading-snug">Not sure if your business needs custom software?</h2>
-            <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">Here are eight types of operational systems we build. If any of these describe a problem your business has right now, we should talk.</p>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button type="button" onClick={prev} className="h-9 w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition" aria-label="Previous">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </button>
-            <span className="text-xs text-gray-400 font-mono w-12 text-center">{active + 1} / {total}</span>
-            <button type="button" onClick={next} className="h-9 w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition" aria-label="Next">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </button>
-          </div>
+        <div className="max-w-2xl">
+          <Eyebrow index="02">What we build</Eyebrow>
+          <h2 className="mt-6 text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] leading-[1.1]">
+            Not sure if your business needs custom software?
+          </h2>
+          <p className="mt-5 text-base font-light text-[#666666] leading-[1.75]">
+            Eight kinds of operational system we build. If one of these describes a
+            problem you have right now, we should talk.
+          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {visible.map((item, i) => (
-            <motion.div key={`${active}-${i}`} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.32, ease, delay: i * 0.05 }}
-              className={`rounded-2xl border border-black/10 bg-white p-5 flex flex-col ${i > 0 ? "hidden md:flex" : ""}`}
-              style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 border border-black/10 rounded-full px-2.5 py-1">{item.who}</span>
-              </div>
-              <p className="text-base font-semibold text-gray-900 mb-2">{item.title}</p>
-              <p className="text-sm text-gray-500 leading-relaxed flex-1">{item.desc}</p>
-              <div className="mt-4 pt-4 border-t border-black/[0.06]">
-                <p className="text-xs text-gray-400 leading-relaxed italic">{item.example}</p>
-              </div>
-            </motion.div>
-          ))}
+
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-14">
+          {WHAT_WE_BUILD.map((item, i) => {
+            const Icon = SERVICE_ICONS[item.key];
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, ease, delay: (i % 4) * 0.06 }}
+                className="group"
+              >
+                <Icon className="w-10 h-10 text-[#050505] transition-transform duration-500 ease-out group-hover:-translate-y-0.5" />
+                <p className="mt-6 font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em] text-[#666666]">
+                  {item.who}
+                </p>
+                <h3 className="mt-2 text-lg font-light tracking-tight text-[#050505]">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">
+                  {item.desc}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
-        <div className="mt-5 flex items-center justify-center gap-1.5">
-          {WHAT_WE_BUILD.map((_, i) => (
-            <button key={i} type="button" onClick={() => setActive(i)} className={`transition-all duration-200 rounded-full ${i === active ? "h-1.5 w-5 bg-black" : "h-1.5 w-1.5 bg-black/20"}`} aria-label={`Slide ${i + 1}`} />
-          ))}
-        </div>
-        <div className="mt-12 border-t border-[#050505]/10 pt-8 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
-          <p className="text-sm font-light text-[#666666] leading-[1.75] max-w-xl">If your business is currently running critical operations through WhatsApp, spreadsheets, or a tool that wasn&rsquo;t built for your industry — there&rsquo;s a better way. We&rsquo;ve built it before.</p>
-          <EditorialButton href="/contact" className="flex-shrink-0 whitespace-nowrap">Tell us what you need</EditorialButton>
+
+        <div className="mt-20 border-t border-[#050505]/10 pt-8 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
+          <p className="text-sm font-light text-[#666666] leading-[1.75] max-w-xl">
+            If your business is currently running critical operations through WhatsApp,
+            spreadsheets, or a tool that wasn&rsquo;t built for your industry — there&rsquo;s
+            a better way. We&rsquo;ve built it before.
+          </p>
+          <EditorialButton href="/contact" className="flex-shrink-0 whitespace-nowrap">
+            Tell us what you need
+          </EditorialButton>
         </div>
       </div>
     </section>
