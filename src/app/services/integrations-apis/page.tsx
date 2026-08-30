@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { CONCEPT_ICONS, type ConceptIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -37,23 +38,17 @@ function Hero() {
   const fd = (d: number) => ({ duration: rm ? 0 : 0.7, ease, delay: d });
 
   return (
-    <section className="relative px-4 sm:px-6 pt-20 sm:pt-28 md:pt-36 pb-12 sm:pb-16 md:pb-20 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[300px] w-[300px] sm:h-[500px] sm:w-[500px] rounded-full bg-sky-500/[0.08] blur-3xl" />
-        <div className="absolute top-32 sm:top-48 -left-20 sm:-left-32 h-[200px] w-[200px] sm:h-[380px] sm:w-[380px] rounded-full bg-blue-500/[0.06] blur-3xl" />
-        <div className="absolute -bottom-16 right-0 h-[250px] w-[250px] sm:h-[400px] sm:w-[400px] rounded-full bg-cyan-400/[0.07] blur-3xl" />
-      </div>
+    <section className="relative px-6 sm:px-10 lg:px-16 pt-28 pb-16 md:pt-36 md:pb-24">
 
-      <div className="relative mx-auto max-w-6xl">
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}
-          className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-3 sm:mb-4">
-          Services / Integrations &amp; APIs
-        </motion.p>
+      <div className="relative mx-auto max-w-[1400px]">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}>
+          <Eyebrow index="01">Integrations &amp; APIs</Eyebrow>
+        </motion.div>
 
         <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.06)}
-          className="text-[1.75rem] sm:text-4xl md:text-[3.4rem] font-medium leading-[1.1] sm:leading-[1.08] tracking-tight text-gray-900 max-w-4xl">
-          Your tools should work together —<br className="hidden md:block" />
-          <span className="text-sky-700"> not against each other.</span>
+          className="mt-8 md:mt-12 max-w-5xl">
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] font-extralight leading-[1.03] tracking-[-0.03em] text-[#050505]">Your tools should work together —</span>
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] italic font-light leading-[1.03] tracking-[-0.01em] text-[#050505]/70 font-[family-name:var(--font-fraunces)] pl-[4vw] md:pl-[2vw]">not against each other.</span>
         </motion.h1>
 
         <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.12)}
@@ -65,17 +60,8 @@ function Hero() {
 
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.18)}
           className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
-          <Link href="/contact"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-black text-white px-5 sm:px-6 py-3 text-sm font-medium hover:opacity-80 transition">
-            Get a free integration audit
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-          <a href="#case-studies"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-black/[0.12] bg-white px-5 sm:px-6 py-3 text-sm font-medium text-gray-700 hover:bg-black/[0.03] transition">
-            See what we've connected
-          </a>
+          <EditorialButton href="/contact">Get a free integration audit</EditorialButton>
+          <EditorialButton href="#case-studies" variant="ghost">See what we've connected</EditorialButton>
         </motion.div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fd(0.26)}
@@ -141,86 +127,86 @@ function Hero() {
 // ═══════════════════════════════════════════════════════════════
 // WHAT WE INTEGRATE CAROUSEL — Responsive Single Card on Mobile
 // ═══════════════════════════════════════════════════════════════
-const WHAT_WE_INTEGRATE = [
+const WHAT_WE_INTEGRATE: { key: ConceptIconKey; title: string; who: string; desc: string; example?: string }[] = [
   {
-    icon: "💳",
+    key: "payment",
     title: "Payment Gateway Integration",
     who: "For e-commerce & SaaS",
     desc: "Stripe, Paystack, Flutterwave, Square, and Braintree — embedded natively into your product with full webhook handling, reconciliation, refund flows, and multi-currency support.",
     example: "e.g. An e-commerce brand accepting card, bank transfer, USSD, and mobile money through one unified checkout — with zero manual reconciliation.",
   },
   {
-    icon: "🔔",
+    key: "message",
     title: "WhatsApp & SMS Notification APIs",
     who: "For any customer-facing business",
     desc: "Twilio, Termii, WhatsApp Business API, and Africa's Talking wired into your core system — order updates, appointment reminders, OTPs, and alerts triggered automatically by real events.",
     example: "e.g. A logistics company whose customers receive live delivery updates via WhatsApp — triggered automatically when a driver marks a job in-transit.",
   },
   {
-    icon: "🗺️",
+    key: "map",
     title: "Maps & Routing API Integration",
     who: "For logistics & field services",
     desc: "Google Maps Platform, Mapbox, and HERE Maps integrated for real-time tracking, route optimisation, distance calculation, and address validation inside your application.",
     example: "e.g. A courier SaaS showing live rider locations to dispatchers and sharing a tracking link with clients — without a single manual update.",
   },
   {
-    icon: "🤝",
+    key: "crm",
     title: "CRM & Marketing Automation",
     who: "For sales & marketing teams",
     desc: "HubSpot, Salesforce, Zoho, Mailchimp, and ActiveCampaign connected to your product — so leads flow in, contacts update, and nurture sequences trigger without anyone touching them.",
     example: "e.g. A SaaS product where a new sign-up automatically creates a HubSpot contact, triggers a 5-email onboarding sequence, and notifies the sales owner.",
   },
   {
-    icon: "🧾",
+    key: "ledger",
     title: "Accounting & ERP Integration",
     who: "For finance & operations teams",
     desc: "Xero, QuickBooks, Sage, and SAP connected to your billing, orders, and payroll — invoices created automatically, payments reconciled in real time, reports always current.",
     example: "e.g. A services business where every completed project milestone auto-generates an invoice in Xero and logs the payment against the right client record.",
   },
   {
-    icon: "🆔",
+    key: "identity",
     title: "Identity Verification & KYC APIs",
     who: "For regulated industries",
     desc: "Smile ID, Onfido, Jumio, and government database APIs for automated identity checks, document verification, and compliance screening embedded directly in your onboarding flow.",
     example: "e.g. A fintech whose applicants upload a selfie and ID — and receive an automated pass/fail decision in under 60 seconds, fully compliant.",
   },
   {
-    icon: "🚚",
+    key: "parcel",
     title: "Shipping & Logistics APIs",
     who: "For e-commerce & fulfilment",
     desc: "DHL, FedEx, UPS, Sendbox, and Shipbob APIs integrated for real-time rate calculation, label generation, shipment tracking, and returns management inside your own platform.",
     example: "e.g. An online retailer where checkout automatically shows live shipping rates, generates a waybill on purchase, and sends a tracking link when dispatched.",
   },
   {
-    icon: "📊",
+    key: "analytics",
     title: "Analytics & Data Pipeline APIs",
     who: "For data-driven teams",
     desc: "Google Analytics 4, Mixpanel, Segment, and custom data warehouse connections — structured pipelines that move event data from your product into the right reporting and analysis tools automatically.",
     example: "e.g. A SaaS product where every user action feeds Mixpanel in real time, revenue events sync to Stripe, and a weekly report lands in Slack automatically.",
   },
   {
-    icon: "📅",
+    key: "calendar",
     title: "Booking & Scheduling API Integration",
     who: "For appointment-based businesses",
     desc: "Calendly, Cal.com, and custom booking APIs connected to your CRM, payment system, and messaging tools — so every booking triggers an invoice, confirmation, and reminder automatically.",
     example: "e.g. A clinic where a patient books online, receives a WhatsApp confirmation, pays via link, and the therapist's calendar updates — all without staff involvement.",
   },
   {
-    icon: "🤖",
+    key: "model",
     title: "AI & LLM API Integration",
     who: "For product teams adding AI",
     desc: "OpenAI, Anthropic Claude, Google Gemini, and open-source model APIs embedded into your existing product — adding AI-powered features without rebuilding your infrastructure.",
     example: "e.g. A legal SaaS platform where uploaded contracts are automatically summarised and key clause risks flagged using Claude — inside the existing document workflow.",
   },
   {
-    icon: "🏦",
+    key: "bank",
     title: "Open Banking & Financial Data APIs",
     who: "For fintech & lending",
     desc: "Mono, Okra, Plaid, and Truelayer connected for real-time bank account verification, transaction history retrieval, and income analysis in your lending or financial product.",
     example: "e.g. A lending platform where applicants connect their bank account and receive an automated creditworthiness assessment in under 2 minutes.",
   },
   {
-    icon: "🌐",
+    key: "api",
     title: "Custom API Development",
     who: "For platforms needing their own API",
     desc: "Well-documented, secure, versioned REST or GraphQL APIs that let your partners, clients, or internal tools interact with your system reliably at scale.",
@@ -229,97 +215,46 @@ const WHAT_WE_INTEGRATE = [
 ];
 
 function WhatWeIntegrateCarousel() {
-  const [active, setActive] = useState(0);
-  const total = WHAT_WE_INTEGRATE.length;
-  const prev = () => setActive((i) => (i - 1 + total) % total);
-  const next = () => setActive((i) => (i + 1) % total);
-
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const diff = touchStartX.current - touchEndX.current;
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) next();
-      else prev();
-    }
-  };
-
-  const visible = [WHAT_WE_INTEGRATE[active % total], WHAT_WE_INTEGRATE[(active + 1) % total], WHAT_WE_INTEGRATE[(active + 2) % total]];
-
+  // Was a carousel showing three of 12 behind arrow controls, so most of the
+  // range was hidden. A grid lets someone find their own case at a glance.
   return (
-    <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-4 sm:px-6 py-12 sm:py-16 md:py-20")}>
+    <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10")}>
       <div className="mx-auto max-w-[1400px]">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4">
-          <div>
-            <p className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">What we integrate</p>
-            <h2 className="text-xl sm:text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-lg leading-snug">
-              12 types of API integration. Find your situation.
-            </h2>
-            <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">
-              These are the integrations businesses hire us for most. If you see your tools here, we've connected them before.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button type="button" onClick={prev} className="h-10 w-10 sm:h-9 sm:w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition active:scale-95" aria-label="Previous">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
-            <span className="text-xs text-gray-400 font-mono w-14 text-center">{active + 1} / {total}</span>
-            <button type="button" onClick={next} className="h-10 w-10 sm:h-9 sm:w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition active:scale-95" aria-label="Next">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
-          </div>
-        </div>
-
-        <div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {visible.map((item, i) => (
-            <motion.div key={`${active}-${i}`} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35, ease, delay: i * 0.05 }}
-              className={`rounded-2xl border border-black/10 bg-white p-4 sm:p-5 flex flex-col ${i > 0 ? "hidden md:flex" : ""}`}
-              style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-              <div className="flex items-start justify-between mb-3 gap-2">
-                <span className="text-xl sm:text-2xl">{item.icon}</span>
-                <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-widest text-gray-400 border border-black/10 rounded-full px-2 sm:px-2.5 py-1 truncate max-w-[140px] sm:max-w-[160px]">{item.who}</span>
-              </div>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 mb-2">{item.title}</p>
-              <p className="text-xs sm:text-sm text-gray-500 leading-relaxed flex-1">{item.desc}</p>
-              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-black/[0.06]">
-                <p className="text-[10px] sm:text-xs text-gray-400 leading-relaxed italic">{item.example}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <p className="md:hidden text-center text-[10px] text-gray-300 mt-3">Swipe to browse</p>
-
-        <div className="mt-4 sm:mt-5 flex items-center justify-center gap-1.5">
-          {WHAT_WE_INTEGRATE.map((_, i) => (
-            <button key={i} type="button" onClick={() => setActive(i)}
-              className={`transition-all duration-200 rounded-full ${i === active ? "h-1.5 w-5 bg-black" : "h-1.5 w-1.5 bg-black/20"}`}
-              aria-label={`Go to slide ${i + 1}`} />
-          ))}
-        </div>
-
-        <div className="mt-6 sm:mt-8 rounded-2xl border border-black/10 bg-black/[0.02] p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Don't see your exact stack? Tell us which tools you use and where data is falling through the cracks — if it has an API, we can connect it.
+        <div className="max-w-2xl">
+          <Eyebrow index="02">What we integrate</Eyebrow>
+          <h2 className="mt-6 text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] leading-[1.1]">
+            The connections that stop the manual work.
+          </h2>
+          <p className="mt-5 text-base font-light text-[#666666] leading-[1.75]">
+            Twelve integrations we build most often. If your team is copying data between two of these every day, it can be automated.
           </p>
-          <Link href="/contact" className="flex-shrink-0 inline-flex items-center justify-center rounded-xl bg-black text-white px-5 py-2.5 text-sm font-medium hover:opacity-80 transition whitespace-nowrap w-full sm:w-auto">
-            Tell us what you need
-          </Link>
+        </div>
+
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-14">
+          {WHAT_WE_INTEGRATE.map((item, i) => {
+            const Icon = CONCEPT_ICONS[item.key];
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, ease, delay: (i % 4) * 0.06 }}
+                className="group"
+              >
+                <Icon className="w-10 h-10 text-[#050505] transition-transform duration-500 ease-out group-hover:-translate-y-0.5" />
+                <p className="mt-6 font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em] text-[#666666]">
+                  {item.who}
+                </p>
+                <h3 className="mt-2 text-lg font-light tracking-tight text-[#050505]">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">
+                  {item.desc}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

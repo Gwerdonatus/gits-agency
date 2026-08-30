@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { CONCEPT_ICONS, type ConceptIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -43,35 +44,25 @@ function Hero() {
   const fd = (d: number) => ({ duration: rm ? 0 : 0.7, ease, delay: d });
 
   return (
-    <section className="relative px-6 pt-28 pb-16 md:pt-36 md:pb-20 overflow-hidden">
-      {/* Background glows */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-blue-500/[0.08] blur-3xl" />
-        <div className="absolute top-48 -left-32 h-[380px] w-[380px] rounded-full bg-cyan-400/[0.06] blur-3xl" />
-        <div className="absolute -bottom-16 right-0 h-[400px] w-[400px] rounded-full bg-indigo-400/[0.07] blur-3xl" />
-      </div>
+    <section className="relative px-6 sm:px-10 lg:px-16 pt-28 pb-16 md:pt-36 md:pb-24">
 
-      <div className="relative mx-auto max-w-6xl">
-        {/* Breadcrumb */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}
-          className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-4"
-        >
-          Services / AI &amp; Business Automation
-        </motion.p>
+      <div className="relative mx-auto max-w-[1400px]">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}>
+          <Eyebrow index="01">AI &amp; Business Automation</Eyebrow>
+        </motion.div>
 
         {/* Main headline */}
         <motion.h1
           initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.06)}
-          className="text-4xl md:text-[3.4rem] font-medium leading-[1.08] tracking-tight text-gray-900 max-w-4xl"
+          className="mt-8 md:mt-12 max-w-5xl"
         >
-          Your business, working<br className="hidden md:block" />
-          <span className="text-blue-600"> while you sleep.</span>
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] font-extralight leading-[1.03] tracking-[-0.03em] text-[#050505]">Your business, working</span>
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] italic font-light leading-[1.03] tracking-[-0.01em] text-[#050505]/70 font-[family-name:var(--font-fraunces)] pl-[4vw] md:pl-[2vw]">while you sleep.</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.12)}
-          className="mt-5 text-gray-500 max-w-2xl leading-relaxed text-base md:text-lg"
+          className="mt-8 md:mt-10 max-w-xl text-base md:text-lg font-light text-[#666666] leading-[1.75]"
         >
           We build AI agents and automation systems that handle the repetitive,
           time-consuming work across your business — so your team can focus on the
@@ -103,7 +94,7 @@ function Hero() {
         {/* Trust strip */}
         <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fd(0.26)}
-          className="mt-8 flex flex-wrap gap-x-6 gap-y-2"
+          className="mt-12 flex flex-wrap gap-x-8 gap-y-3"
         >
           {[
             "Free workflow audit — no cost to start",
@@ -112,10 +103,7 @@ function Hero() {
             "6-week average from audit to live",
             "Clients across 12+ industries",
           ].map((t) => (
-            <span key={t} className="flex items-center gap-1.5 text-xs text-gray-400">
-              <span className="h-1 w-1 rounded-full bg-gray-300" />
-              {t}
-            </span>
+            <span key={t} className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em] text-[#666666]">{t}</span>
           ))}
         </motion.div>
 
@@ -171,58 +159,58 @@ function Hero() {
 // ═══════════════════════════════════════════════════════════════
 // SECTION 2 — WHAT WE AUTOMATE CAROUSEL
 // ═══════════════════════════════════════════════════════════════
-const WHAT_WE_AUTOMATE = [
+const WHAT_WE_AUTOMATE: { key: ConceptIconKey; title: string; who: string; desc: string; example?: string }[] = [
   {
-    icon: "🤖",
+    key: "agent",
     title: "AI Business Agents",
     who: "For any client-facing business",
     desc: "Conversational AI trained on your business that responds on WhatsApp, email, and web chat 24/7 — qualifying leads, answering questions, and booking appointments without human intervention.",
     example: "e.g. A law firm's AI agent that responds at 11pm, qualifies the enquiry, and books a consultation directly into the partner's calendar.",
   },
   {
-    icon: "🧾",
+    key: "document",
     title: "Intelligent Client Onboarding",
     who: "For regulated industries",
     desc: "AI that reads, verifies, and cross-references every onboarding document — ID, proof of address, company registration, bank statements — scores the risk level, and flags only the cases that need human review.",
     example: "e.g. A lending firm processing 70+ KYC applications per week, reducing per-application time from 3 hours to 9 minutes.",
   },
   {
-    icon: "🧠",
+    key: "model",
     title: "Custom Claude / ChatGPT Integration",
     who: "For knowledge-heavy businesses",
     desc: "AI connected directly to your internal documents, SOPs, and policies so your team — or your customers — get accurate, sourced answers about your actual business, not generic responses.",
     example: "e.g. A property management company whose 21-person team can now query 9 years of institutional knowledge instantly.",
   },
   {
-    icon: "📊",
+    key: "report",
     title: "Automated Reporting Pipelines",
     who: "For agencies and ops teams",
     desc: "Systems that pull from every data source you use, generate narrative commentary, and deliver formatted reports to the right inboxes on schedule — without a human pulling a single CSV.",
     example: "e.g. A marketing agency whose Monday morning reports now generate automatically at 6am, reviewed and sent by 8am.",
   },
   {
-    icon: "🔗",
+    key: "workflow",
     title: "CRM & Workflow Automation",
     who: "For sales and operations",
     desc: "Every trigger in one tool — a form submission, a payment, a booking — cascades automatically through your CRM, email platform, Slack, and database. Nothing manual, nothing missed.",
     example: "e.g. A B2B sales team where every inbound lead is scored, routed, and followed up before a human touches it.",
   },
   {
-    icon: "💬",
+    key: "message",
     title: "WhatsApp & Email Sequences",
     who: "For customer-facing teams",
     desc: "Personalised conversation flows, follow-up sequences, appointment reminders, and re-engagement campaigns on the channels your customers already use — triggered automatically.",
     example: "e.g. A clinic whose no-show rate dropped 40% after automated appointment reminders and rescheduling flows.",
   },
   {
-    icon: "📋",
+    key: "document",
     title: "Document Intelligence",
     who: "For professional services",
     desc: "AI that reads contracts, invoices, applications, and compliance documents — extracts key data, classifies content, routes to the right person, and flags anomalies automatically.",
     example: "e.g. An insurance broker whose policy renewal extraction went from 2 hours per case to under 4 minutes.",
   },
   {
-    icon: "🌐",
+    key: "api",
     title: "API & System Integrations",
     who: "For complex tech stacks",
     desc: "We connect any tool to any tool — legacy systems, custom APIs, government databases, payment gateways — so your automation stack works as one connected system.",
@@ -231,70 +219,46 @@ const WHAT_WE_AUTOMATE = [
 ];
 
 function WhatWeAutomateCarousel() {
-  const [active, setActive] = useState(0);
-  const total = WHAT_WE_AUTOMATE.length;
-  const prev = () => setActive((i) => (i - 1 + total) % total);
-  const next = () => setActive((i) => (i + 1) % total);
-
-  const visible = [
-    WHAT_WE_AUTOMATE[active % total],
-    WHAT_WE_AUTOMATE[(active + 1) % total],
-    WHAT_WE_AUTOMATE[(active + 2) % total],
-  ];
-
+  // Was a carousel showing three of 8 behind arrow controls, so most of the
+  // range was hidden. A grid lets someone find their own case at a glance.
   return (
-    <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 py-24 md:py-32")}>
+    <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10")}>
       <div className="mx-auto max-w-[1400px]">
-        <div className="flex items-end justify-between mb-8 gap-4">
-          <div>
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">What we automate</p>
-            <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-lg leading-snug">
-              Not sure what AI can actually do for your business?
-            </h2>
-            <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">
-              Here are eight types of automation we build. If any of these sound like your situation, we should talk.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button type="button" onClick={prev} className="h-9 w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition" aria-label="Previous">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
-            <span className="text-xs text-gray-400 font-mono w-12 text-center">{active + 1} / {total}</span>
-            <button type="button" onClick={next} className="h-9 w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition" aria-label="Next">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-            </button>
-          </div>
+        <div className="max-w-2xl">
+          <Eyebrow index="02">What we automate</Eyebrow>
+          <h2 className="mt-6 text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] leading-[1.1]">
+            Where automation actually pays for itself.
+          </h2>
+          <p className="mt-5 text-base font-light text-[#666666] leading-[1.75]">
+            Eight kinds of work we take off a team. If your people are doing any of this by hand every week, it is worth a conversation.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {visible.map((item, i) => (
-            <motion.div key={`${active}-${i}`} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35, ease, delay: i * 0.05 }}
-              className={`rounded-2xl border border-black/10 bg-white p-5 flex flex-col ${i > 0 ? "hidden md:flex" : ""}`}
-              style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 border border-black/10 rounded-full px-2.5 py-1 truncate max-w-[160px]">{item.who}</span>
-              </div>
-              <p className="text-base font-semibold text-gray-900 mb-2">{item.title}</p>
-              <p className="text-sm text-gray-500 leading-relaxed flex-1">{item.desc}</p>
-              <div className="mt-4 pt-4 border-t border-black/[0.06]">
-                <p className="text-xs text-gray-400 leading-relaxed italic">{item.example}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="mt-5 flex items-center justify-center gap-1.5">
-          {WHAT_WE_AUTOMATE.map((_, i) => (
-            <button key={i} type="button" onClick={() => setActive(i)}
-              className={`transition-all duration-200 rounded-full ${i === active ? "h-1.5 w-5 bg-black" : "h-1.5 w-1.5 bg-black/20"}`}
-              aria-label={`Go to slide ${i + 1}`} />
-          ))}
-        </div>
-
-        <div className="mt-8 rounded-2xl border border-black/10 bg-black/[0.02] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-sm text-gray-600">Don't see your use case? If your team is doing anything repeatedly — responding, reviewing, reporting, routing — there's almost certainly a viable automation. Tell us what's slowing you down.</p>
-          <Link href="/contact" className="flex-shrink-0 inline-flex items-center justify-center rounded-xl bg-black text-white px-5 py-2.5 text-sm font-medium hover:opacity-80 transition whitespace-nowrap">Tell us what you need</Link>
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-14">
+          {WHAT_WE_AUTOMATE.map((item, i) => {
+            const Icon = CONCEPT_ICONS[item.key];
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, ease, delay: (i % 4) * 0.06 }}
+                className="group"
+              >
+                <Icon className="w-10 h-10 text-[#050505] transition-transform duration-500 ease-out group-hover:-translate-y-0.5" />
+                <p className="mt-6 font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em] text-[#666666]">
+                  {item.who}
+                </p>
+                <h3 className="mt-2 text-lg font-light tracking-tight text-[#050505]">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">
+                  {item.desc}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

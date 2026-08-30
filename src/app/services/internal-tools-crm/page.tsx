@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { CONCEPT_ICONS, type ConceptIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -588,51 +589,34 @@ function Hero() {
   const rm = useReducedMotion();
   const fd = (d: number) => ({ duration: rm ? 0 : 0.7, ease, delay: d });
   return (
-    <section className="relative px-6 pt-28 pb-16 md:pt-36 md:pb-20 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-indigo-500/8 blur-3xl" />
-        <div className="absolute top-48 -left-32 h-[380px] w-[380px] rounded-full bg-violet-400/6 blur-3xl" />
-        <div className="absolute -bottom-16 right-0 h-[400px] w-[400px] rounded-full bg-purple-400/7 blur-3xl" />
-      </div>
-      <div className="relative mx-auto max-w-6xl">
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}
-          className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-4">
-          Services / Internal Tools &amp; CRM
-        </motion.p>
+    <section className="relative px-6 sm:px-10 lg:px-16 pt-28 pb-16 md:pt-36 md:pb-24">
+      <div className="relative mx-auto max-w-[1400px]">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}>
+          <Eyebrow index="01">Internal Tools &amp; CRM</Eyebrow>
+        </motion.div>
         <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.06)}
-          className="text-4xl md:text-[3.4rem] font-medium leading-[1.08] tracking-tight text-gray-900 max-w-4xl">
-          Your team shouldn&apos;t adapt<br className="hidden md:block" />
-          <span style={{ color: "#4f46e5" }}> to software that doesn&apos;t fit.</span>
+          className="mt-8 md:mt-12 max-w-5xl">
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] font-extralight leading-[1.03] tracking-[-0.03em] text-[#050505]">Your team shouldn&apos;t adapt</span>
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] italic font-light leading-[1.03] tracking-[-0.01em] text-[#050505]/70 font-[family-name:var(--font-fraunces)] pl-[4vw] md:pl-[2vw]">to software that doesn&apos;t fit.</span>
         </motion.h1>
         <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.12)}
-          className="mt-5 text-gray-500 max-w-2xl leading-relaxed text-base md:text-lg">
+          className="mt-8 md:mt-10 max-w-xl text-base md:text-lg font-light text-[#666666] leading-[1.75]">
           Generic CRMs and off-the-shelf tools were built for the average business. If your sales process, team structure, or client workflow is even slightly unique, they create friction instead of removing it. We build internal tools designed around exactly how your team works.
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0.18)}
           className="mt-8 flex flex-wrap items-center gap-3">
-          <Link href="/contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-80 transition">
-            Start with a discovery call
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-          <a href="#case-studies"
-            className="inline-flex items-center gap-2 rounded-xl border border-black/12 bg-white px-6 py-3 text-sm font-medium text-gray-700 hover:bg-black/[0.03] transition">
-            See what we&apos;ve built
-          </a>
+          <EditorialButton href="/contact">Start with a discovery call</EditorialButton>
+          <EditorialButton href="#case-studies" variant="ghost">See what we&apos;ve built</EditorialButton>
         </motion.div>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={fd(0.26)}
-          className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
+          className="mt-12 flex flex-wrap gap-x-8 gap-y-3">
           {[
             "Built for your exact workflow — not the average one",
             "Full source code ownership on every project",
             "Role-based access and permissions as standard",
             "3–8 week typical delivery",
           ].map(t => (
-            <span key={t} className="flex items-center gap-1.5 text-xs text-gray-400">
-              <span className="h-1 w-1 rounded-full bg-gray-300" />{t}
-            </span>
+            <span key={t} className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em] text-[#666666]">{t}</span>
           ))}
         </motion.div>
         {/* Explainer card */}
@@ -681,94 +665,58 @@ function Hero() {
 // ═══════════════════════════════════════════════════════════════
 // CAROUSEL — internal tool types
 // ═══════════════════════════════════════════════════════════════
-const WHAT_WE_BUILD = [
-  { icon: "🗂️", title: "Custom CRM Systems", who: "Sales & service teams", desc: "Pipeline management, lead tracking, deal stages, activity logging, and follow-up reminders — built around your exact sales process, not a generic template.", example: "e.g. A real estate agency with custom pipeline stages, property matching, and automated site visit scheduling." },
-  { icon: "👥", title: "Staff & HR Management", who: "Hospitality, retail & ops", desc: "Shift scheduling, attendance tracking, leave management, and payroll inputs — replacing WhatsApp rosters and paper leave forms with a single system.", example: "e.g. A hotel group managing 80+ staff across three properties with automated shift conflict detection." },
-  { icon: "🎫", title: "Ticketing & Service Desks", who: "Facilities & support teams", desc: "Internal and client-facing ticketing systems with SLA tracking, vendor assignment, escalation workflows, and self-service client portals.", example: "e.g. A facilities management company tracking maintenance requests across 12 client properties." },
-  { icon: "📋", title: "Project & Operations Dashboards", who: "Agencies & project businesses", desc: "Custom project tracking, task assignment, milestone management, and client reporting — built for how your team manages delivery, not how Jira thinks you should.", example: "e.g. A construction firm tracking materials, approvals, and site progress across 4 active projects." },
-  { icon: "📦", title: "Inventory & Stock Management", who: "Retail, manufacturing & distribution", desc: "Multi-location stock tracking, low-stock alerts, purchase order workflows, and supplier management — connected to your sales and fulfilment systems.", example: "e.g. A distributor managing 400+ SKUs across two warehouses with automated reorder triggers." },
-  { icon: "💰", title: "Quotation & Invoicing Tools", who: "Professional services", desc: "Custom quote builders, approval workflows, invoice generation, and payment tracking — replacing email threads and spreadsheet templates.", example: "e.g. An engineering firm generating site-specific quotes with automated approval routing to directors." },
-  { icon: "📊", title: "Business Intelligence Dashboards", who: "Owner-managed businesses", desc: "Live reporting dashboards that pull from your POS, CRM, and operations tools — giving management a single real-time view of the whole business.", example: "e.g. A retail chain owner seeing revenue, stock, and staff metrics across 3 locations in one screen." },
-  { icon: "🔐", title: "Client & Vendor Portals", who: "B2B service companies", desc: "Self-service portals where clients track orders, submit requests, download documents, and manage their account — reducing your team&apos;s inbound support load.", example: "e.g. A logistics company where clients track shipments and generate delivery reports without calling ops." },
+const WHAT_WE_BUILD: { key: ConceptIconKey; title: string; who: string; desc: string; example?: string }[] = [
+  { key: "crm", title: "Custom CRM Systems", who: "Sales & service teams", desc: "Pipeline management, lead tracking, deal stages, activity logging, and follow-up reminders — built around your exact sales process, not a generic template.", example: "e.g. A real estate agency with custom pipeline stages, property matching, and automated site visit scheduling." },
+  { key: "people", title: "Staff & HR Management", who: "Hospitality, retail & ops", desc: "Shift scheduling, attendance tracking, leave management, and payroll inputs — replacing WhatsApp rosters and paper leave forms with a single system.", example: "e.g. A hotel group managing 80+ staff across three properties with automated shift conflict detection." },
+  { key: "ticket", title: "Ticketing & Service Desks", who: "Facilities & support teams", desc: "Internal and client-facing ticketing systems with SLA tracking, vendor assignment, escalation workflows, and self-service client portals.", example: "e.g. A facilities management company tracking maintenance requests across 12 client properties." },
+  { key: "dashboard", title: "Project & Operations Dashboards", who: "Agencies & project businesses", desc: "Custom project tracking, task assignment, milestone management, and client reporting — built for how your team manages delivery, not how Jira thinks you should.", example: "e.g. A construction firm tracking materials, approvals, and site progress across 4 active projects." },
+  { key: "inventory", title: "Inventory & Stock Management", who: "Retail, manufacturing & distribution", desc: "Multi-location stock tracking, low-stock alerts, purchase order workflows, and supplier management — connected to your sales and fulfilment systems.", example: "e.g. A distributor managing 400+ SKUs across two warehouses with automated reorder triggers." },
+  { key: "invoice", title: "Quotation & Invoicing Tools", who: "Professional services", desc: "Custom quote builders, approval workflows, invoice generation, and payment tracking — replacing email threads and spreadsheet templates.", example: "e.g. An engineering firm generating site-specific quotes with automated approval routing to directors." },
+  { key: "analytics", title: "Business Intelligence Dashboards", who: "Owner-managed businesses", desc: "Live reporting dashboards that pull from your POS, CRM, and operations tools — giving management a single real-time view of the whole business.", example: "e.g. A retail chain owner seeing revenue, stock, and staff metrics across 3 locations in one screen." },
+  { key: "portal", title: "Client & Vendor Portals", who: "B2B service companies", desc: "Self-service portals where clients track orders, submit requests, download documents, and manage their account — reducing your team&apos;s inbound support load.", example: "e.g. A logistics company where clients track shipments and generate delivery reports without calling ops." },
 ];
 
 function WhatWeBuildCarousel() {
-  const [active, setActive] = useState(0);
-  const total = WHAT_WE_BUILD.length;
-  const prev = () => setActive(i => (i - 1 + total) % total);
-  const next = () => setActive(i => (i + 1) % total);
-  const visible = [
-    WHAT_WE_BUILD[active % total],
-    WHAT_WE_BUILD[(active + 1) % total],
-    WHAT_WE_BUILD[(active + 2) % total],
-  ];
+  // Was a carousel showing three of 8 behind arrow controls, so most of the
+  // range was hidden. A grid lets someone find their own case at a glance.
   return (
     <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10")}>
       <div className="mx-auto max-w-[1400px]">
-        <div className="flex items-end justify-between mb-8 gap-4">
-          <div>
-            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">Tool types</p>
-            <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-lg leading-snug">
-              Not sure what kind of internal tool you need?
-            </h2>
-            <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">
-              Here are eight types of internal tools we build. If any of these describe work your team is currently doing manually or through a tool that doesn&apos;t quite fit, we should talk.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button type="button" onClick={prev}
-              className="h-9 w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition"
-              aria-label="Previous">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M8 2L4 6l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <span className="text-xs text-gray-400 font-mono w-12 text-center">{active + 1} / {total}</span>
-            <button type="button" onClick={next}
-              className="h-9 w-9 rounded-xl border border-black/10 flex items-center justify-center text-gray-500 hover:bg-black hover:text-white hover:border-black transition"
-              aria-label="Next">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M4 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {visible.map((item, i) => (
-            <motion.div key={`${active}-${i}`}
-              initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.32, ease, delay: i * 0.05 }}
-              className={`rounded-2xl border border-black/10 bg-white p-5 flex flex-col ${i > 0 ? "hidden md:flex" : ""}`}
-              style={{ boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}>
-              <div className="flex items-start justify-between mb-3">
-                <span className="text-2xl">{item.icon}</span>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 border border-black/10 rounded-full px-2.5 py-1">
-                  {item.who}
-                </span>
-              </div>
-              <p className="text-base font-semibold text-gray-900 mb-2">{item.title}</p>
-              <p className="text-sm text-gray-500 leading-relaxed flex-1">{item.desc}</p>
-              <div className="mt-4 pt-4 border-t border-black/[0.06]">
-                <p className="text-xs text-gray-400 leading-relaxed italic">{item.example}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        <div className="mt-5 flex items-center justify-center gap-1.5">
-          {WHAT_WE_BUILD.map((_, i) => (
-            <button key={i} type="button" onClick={() => setActive(i)}
-              className={`transition-all duration-200 rounded-full ${i === active ? "h-1.5 w-5 bg-black" : "h-1.5 w-1.5 bg-black/20"}`}
-              aria-label={`Slide ${i + 1}`} />
-          ))}
-        </div>
-        <div className="mt-8 rounded-2xl border border-black/10 bg-black/[0.02] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-sm text-gray-600 max-w-xl">
-            If your team has a process that involves copying between tools, maintaining a spreadsheet, or sending information over WhatsApp — that&apos;s a candidate for a custom internal tool. We&apos;ve built for all of the above.
+        <div className="max-w-2xl">
+          <Eyebrow index="02">What we build</Eyebrow>
+          <h2 className="mt-6 text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] leading-[1.1]">
+            Tools shaped around how your team already works.
+          </h2>
+          <p className="mt-5 text-base font-light text-[#666666] leading-[1.75]">
+            Eight kinds of internal system we build. If your team is working around a tool rather than with it, one of these is the fix.
           </p>
-          <Link href="/contact"
-            className="flex-shrink-0 inline-flex items-center justify-center rounded-xl bg-black text-white px-5 py-2.5 text-sm font-medium hover:opacity-80 transition whitespace-nowrap">
-            Describe your process
-          </Link>
+        </div>
+
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-14">
+          {WHAT_WE_BUILD.map((item, i) => {
+            const Icon = CONCEPT_ICONS[item.key];
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, ease, delay: (i % 4) * 0.06 }}
+                className="group"
+              >
+                <Icon className="w-10 h-10 text-[#050505] transition-transform duration-500 ease-out group-hover:-translate-y-0.5" />
+                <p className="mt-6 font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em] text-[#666666]">
+                  {item.who}
+                </p>
+                <h3 className="mt-2 text-lg font-light tracking-tight text-[#050505]">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">
+                  {item.desc}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
