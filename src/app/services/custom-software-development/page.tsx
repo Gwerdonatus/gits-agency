@@ -1381,6 +1381,7 @@ const SECTIONS: NavSection[] = [
 export default function CustomSoftwareDevelopmentPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
+      <SectionNav sections={SECTIONS} />
       <Hero />
       {/* Photograph sits between the hero and the dense content below, so the
             page opens with something other than a wall of type. */}
@@ -1390,7 +1391,6 @@ export default function CustomSoftwareDevelopmentPage() {
         caption="Software built around an operation, not around a template"
         className="pb-4"
       />
-      <SectionNav sections={SECTIONS} />
       <WhatWeBuildCarousel />
       <CaseStudiesSection />
       <section id="faq" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 pb-28 pt-4")}>

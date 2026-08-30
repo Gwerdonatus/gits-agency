@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
-import { editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { EditorialButton, Eyebrow, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -27,84 +27,112 @@ const FONT = 'var(--font-instrument), system-ui, sans-serif';
 function Hero() {
   const rm = useReducedMotion();
   const fd = (d: number) => ({ duration: rm ? 0 : 0.8, ease, delay: d });
+
+  // Same lockup as the other four service pages: left-aligned, extralight
+  // display over a Fraunces italic second line, square buttons, mono trust
+  // strip. This page was previously centred with a semibold headline and a
+  // radial wash, which read as a different site.
+  const notes = [
+    {
+      n: "01",
+      title: "Designed, not templated",
+      body: "Every page is drawn for your business. No theme, no page builder, nothing another company can buy the same version of.",
+    },
+    {
+      n: "02",
+      title: "Built to be found",
+      body: "Structured markup, real metadata and fast first paint, so the site earns search traffic instead of relying on ads to be seen.",
+    },
+    {
+      n: "03",
+      title: "Yours to keep",
+      body: "Full source code ownership on handover. No licence, no platform lock-in, no monthly fee to keep your own site online.",
+    },
+  ];
+
   return (
-    <section className="relative px-6 pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden text-center">
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 h-[560px] w-[900px] rounded-full opacity-[0.05]"
-          style={{ background: "radial-gradient(circle, #000 0%, transparent 70%)" }}
-        />
-      </div>
-      <div className="relative mx-auto max-w-3xl">
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={fd(0)}
-          className="text-[13px] font-medium uppercase tracking-[0.14em] mb-5"
-          style={{ color: GRAPHITE }}
-        >
-          Services — Websites &amp; Digital Experiences
-        </motion.p>
+    <section className="relative px-6 sm:px-10 lg:px-16 pt-28 pb-16 md:pt-36 md:pb-24">
+      <div className="relative mx-auto max-w-[1400px]">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}>
+          <Eyebrow index="01">Websites &amp; Digital Experiences</Eyebrow>
+        </motion.div>
+
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={fd(0.08)}
-          className="text-[2.6rem] md:text-[4.4rem] font-semibold leading-[1.04] tracking-[-0.035em]"
-          style={{ color: INK }}
+          className="mt-8 md:mt-12 max-w-5xl"
         >
-          Your website is the first
-          <br />
-          conversation your business has.
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] font-extralight leading-[1.03] tracking-[-0.03em] text-[#050505]">
+            Your website is the first
+          </span>
+          <span className="block text-[clamp(2.2rem,6vw,4.6rem)] italic font-light leading-[1.03] tracking-[-0.01em] text-[#050505]/70 font-[family-name:var(--font-fraunces)] pl-[4vw] md:pl-[2vw]">
+            conversation your business has.
+          </span>
         </motion.h1>
+
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={fd(0.16)}
-          className="mt-6 mx-auto max-w-xl text-[17px] md:text-[19px] leading-relaxed"
-          style={{ color: GRAPHITE }}
+          className="mt-8 md:mt-10 max-w-xl text-base md:text-lg font-light text-[#666666] leading-[1.75]"
         >
           Templates make every business look the same. We design and build from
           scratch — every page, every interaction, every detail considered — so
           your site looks like it belongs to a company twice your size.
         </motion.p>
+
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={fd(0.24)}
-          className="mt-9 flex flex-wrap items-center justify-center gap-3"
+          className="mt-10 flex flex-wrap items-center gap-4"
         >
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[15px] font-medium text-white transition-opacity hover:opacity-80"
-            style={{ background: INK }}
-          >
-            Start a project
-          </Link>
-          <a
-            href="#examples"
-            className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[15px] font-medium transition-colors"
-            style={{ color: INK, border: `1px solid ${HAIR_STRONG}` }}
-          >
-            See our work
-          </a>
+          <EditorialButton href="/contact">Start a project</EditorialButton>
+          <EditorialButton href="#examples" variant="ghost">See selected work</EditorialButton>
         </motion.div>
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={fd(0.32)}
-          className="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[13px]"
-          style={{ color: FAINT }}
+          className="mt-12 flex flex-wrap gap-x-8 gap-y-3"
         >
           {[
-            "Zero templates",
-            "Mobile-first",
-            "90+ Lighthouse",
-            "WCAG 2.2 AA",
-          ].map((t, i) => (
-            <span key={t} className="flex items-center gap-3">
-              {i > 0 && <span aria-hidden="true">·</span>}
-              <span>{t}</span>
+            "Designed from scratch — never a template",
+            "Full source code ownership",
+            "Built for search from day one",
+            "Live in 2–6 weeks",
+          ].map((t) => (
+            <span
+              key={t}
+              className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em] text-[#666666]"
+            >
+              {t}
             </span>
+          ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={fd(0.36)}
+          className="mt-16 md:mt-20 grid gap-10 md:gap-0 md:grid-cols-3 border-t border-[#050505]/10 pt-10"
+        >
+          {notes.map((note, i) => (
+            <div
+              key={note.n}
+              className={cx(
+                "md:px-8",
+                i === 0 && "md:pl-0",
+                i === 2 && "md:pr-0",
+                i > 0 && "md:border-l md:border-[#050505]/10"
+              )}
+            >
+              <span className="font-[family-name:var(--font-mono)] text-xs text-[#666666]">{note.n}</span>
+              <p className="mt-3 text-lg font-light tracking-tight text-[#050505]">{note.title}</p>
+              <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">{note.body}</p>
+            </div>
           ))}
         </motion.div>
       </div>
@@ -112,9 +140,6 @@ function Hero() {
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
-// SERVICES
-// ═══════════════════════════════════════════════════════════════
 const SERVICES = [
   {
     icon: (
@@ -259,26 +284,28 @@ function useCountUp(target: number, active: boolean, duration = 1200) {
 function NotgateDemo() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
-  const projects = useCountUp(148, inView);
-  const sites = useCountUp(6, inView, 900);
-  const years = useCountUp(12, inView, 1000);
+  const projects = useCountUp(120, inView);
+  const value = useCountUp(65, inView, 900);
+  const years = useCountUp(25, inView, 1000);
 
   return (
     <div ref={ref} className="h-full w-full flex flex-col justify-center px-6 sm:px-8" style={{ background: "#0B0B0D" }}>
       <p className="text-[9px] uppercase tracking-[0.3em] text-white/40">Notgate Construction</p>
       <p className="mt-3 text-white text-[clamp(1.1rem,3.4vw,1.7rem)] font-semibold leading-[1.1] tracking-[-0.02em]">
-        We build at
+        Building
         <br />
-        infrastructure scale.
+        Nigeria&rsquo;s future.
       </p>
       <div className="mt-6 grid grid-cols-3 gap-3">
         {[
-          { v: projects, suffix: "+", l: "Projects delivered" },
-          { v: sites, suffix: "", l: "Active sites" },
-          { v: years, suffix: "yr", l: "Operating" },
+          // Figures as published on the live NOTGATE site.
+          { v: years, suffix: "+", l: "Years" },
+          { v: projects, suffix: "+", l: "Projects" },
+          { v: value, prefix: "\u20A6", suffix: "B+", l: "Delivered" },
         ].map((st) => (
           <div key={st.l} className="border-t border-white/15 pt-2.5">
             <p className="text-white text-lg sm:text-2xl font-semibold leading-none tabular-nums">
+              {"prefix" in st ? st.prefix : ""}
               {st.v}
               {st.suffix}
             </p>
@@ -477,7 +504,7 @@ const WEBSITES = [
     index: "03",
     title: "Elowen Living",
     category: "Luxury Real Estate",
-    url: "https://elowen-living.vercel.app/",
+    url: "/elowen-living",
     story:
       "A real estate brand that sells a feeling before it sells square footage. We leaned into editorial typography and full-bleed property imagery, giving every listing room to breathe the way a magazine spread would.",
     tags: ["Editorial layout", "Property tours", "Typography-led"],
@@ -528,7 +555,7 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
                 className="text-[10px] rounded px-3 py-0.5 truncate max-w-[70%]"
                 style={{ color: GRAPHITE, border: `1px solid ${HAIR}`, background: "#fff" }}
               >
-                {site.url.replace("https://", "")}
+                {site.url.replace("https://", "") || site.url}
               </span>
             </div>
           </div>
@@ -544,8 +571,8 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
               would swallow clicks meant for the demo itself. */}
           <motion.a
             href={site.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={site.url.startsWith("http") ? "_blank" : undefined}
+            rel={site.url.startsWith("http") ? "noopener noreferrer" : undefined}
             initial={{ opacity: 0 }}
             animate={{ opacity: hovered ? 1 : 0 }}
             transition={{ duration: 0.25 }}
@@ -582,8 +609,8 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
         </div>
         <a
           href={site.url}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={site.url.startsWith("http") ? "_blank" : undefined}
+          rel={site.url.startsWith("http") ? "noopener noreferrer" : undefined}
           className="inline-flex items-center gap-1.5 text-[15px] font-medium border-b pb-0.5 transition-opacity hover:opacity-60"
           style={{ color: INK, borderColor: HAIR_STRONG }}
         >
@@ -850,6 +877,7 @@ const SECTIONS: NavSection[] = [
 export default function WebsitesDigitalExperiencesPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white")} style={{ fontFamily: FONT, color: INK }}>
+      <SectionNav sections={SECTIONS} />
       <Hero />
       <ImageBand
         src="/services/web.webp"
@@ -857,7 +885,6 @@ export default function WebsitesDigitalExperiencesPage() {
         caption="Sites built to convert, not merely to look finished"
         className="pb-4"
       />
-      <SectionNav sections={SECTIONS} />
       <ServicesSection />
       <ExamplesSection />
       <ProcessSection />

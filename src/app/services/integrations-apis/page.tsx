@@ -1470,6 +1470,7 @@ const SECTIONS: NavSection[] = [
 export default function IntegrationsAPIsPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
+      <SectionNav sections={SECTIONS} />
       <Hero />
       <ImageBand
         src="/services/integrations.webp"
@@ -1477,7 +1478,6 @@ export default function IntegrationsAPIsPage() {
         caption="The connective tissue between systems"
         className="pb-4"
       />
-      <SectionNav sections={SECTIONS} />
       <WhatWeIntegrateCarousel />
       <CaseStudiesSection />
       <section id="faq" className={cx(SECTION_SCROLL_MT, "px-4 sm:px-6 pb-16 sm:pb-20 md:pb-24 pt-2 sm:pt-4")}>

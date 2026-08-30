@@ -1282,6 +1282,7 @@ const SECTIONS: NavSection[] = [
 export default function InternalToolsCRMPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
+      <SectionNav sections={SECTIONS} />
       <Hero />
       <ImageBand
         src="/services/tools.webp"
@@ -1289,7 +1290,6 @@ export default function InternalToolsCRMPage() {
         caption="Tools shaped around how a team already works"
         className="pb-4"
       />
-      <SectionNav sections={SECTIONS} />
       <WhatWeBuildCarousel />
       <CaseStudiesSection />
       <section id="faq" className={cx(SECTION_SCROLL_MT, "px-6 pb-24 pt-4")}>

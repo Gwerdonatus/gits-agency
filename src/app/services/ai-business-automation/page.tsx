@@ -1628,6 +1628,7 @@ const SECTIONS: NavSection[] = [
 export default function AIAutomationPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
+      <SectionNav sections={SECTIONS} />
       <Hero />
       <ImageBand
         src="/services/ai.webp"
@@ -1635,7 +1636,6 @@ export default function AIAutomationPage() {
         caption="Automation with guardrails, not a black box"
         className="pb-4"
       />
-      <SectionNav sections={SECTIONS} />
       <WhatWeAutomateCarousel />
       <CaseStudiesSection />
       <section id="faq" className={cx(SECTION_SCROLL_MT, "px-4 md:px-6 pb-24 pt-4")}>
