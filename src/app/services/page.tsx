@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Inter } from "next/font/google";
-import { editorialRoot, cx } from "@/components/editorial";
+import { Eyebrow, editorialRoot, cx } from "@/components/editorial";
 
 const bodyFont = Inter({ subsets: ["latin"], weight: "400" });
 
@@ -719,70 +719,83 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ─── CAPABILITIES ─── */}
-      <section className="bg-white px-4 sm:px-6 pb-24 pt-8">
-        <div className="max-w-7xl mx-auto">
+      {/* ─── CAPABILITIES ───────────────────────────────────────────────
+          Rebuilt. It was a brown (#2B1B12) floating slab with a 44px radius,
+          a 120px drop shadow and two blurred orbs — one of them blue — none of
+          which appear anywhere else on the site.
+
+          It also said everything twice: a marquee scrolled all fourteen
+          capabilities while the grid beneath repeated the first twelve. The two
+          it did not repeat were visible only in the marquee, which is hidden
+          below md, so on a phone they did not appear at all.
+
+          Now a single full-bleed ink band, every capability listed once, on the
+          same inverted treatment as the About page's principles.
+          ──────────────────────────────────────────────────────────────── */}
+      <section className={cx(editorialRoot, "bg-[#050505] px-6 sm:px-10 lg:px-16 py-24 md:py-32")}>
+        <div className="mx-auto max-w-[1400px]">
           <motion.div
-            initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-120px" }} transition={{ duration: 0.7, ease: easeOut }}
-            className="relative"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: reducedMotion ? 0 : 0.6, ease: easeOut }}
+            className="max-w-2xl"
           >
-            <div className="relative overflow-hidden rounded-[34px] sm:rounded-[44px] px-6 sm:px-10 py-10 sm:py-12 shadow-[0_40px_120px_rgba(0,0,0,0.20)] border border-black/10" style={{ background: "#2B1B12" }}>
-              <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-                <div className="absolute -top-32 -left-40 h-[420px] w-[420px] rounded-full blur-3xl opacity-70" style={{ background: "rgba(255,255,255,0.08)" }} />
-                <div className="absolute -bottom-40 -right-40 h-[520px] w-[520px] rounded-full blur-3xl opacity-70" style={{ background: "rgba(37,99,235,0.14)" }} />
-              </div>
-              <div className="relative z-10">
-                <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-                  <div className="max-w-2xl">
-                    <p className="text-sm uppercase tracking-widest text-white/65">Capabilities</p>
-                    <h3 className="mt-3 text-2xl md:text-3xl font-medium text-white">A full-spectrum delivery team — from strategy to launch.</h3>
-                    <p className="mt-3 text-white/75 leading-relaxed">We don't just build. We help you make the right decisions, ship faster, and scale with confidence.</p>
-                  </div>
-                  <a href="/#contact" className="inline-flex items-center justify-center rounded-xl bg-white text-black px-6 py-3 text-sm font-medium hover:opacity-90 transition">Talk to us</a>
-                </div>
-                <div className="mt-10">
-                  <div className="relative hidden md:block">
-                    <motion.div
-                      className="flex gap-3 whitespace-nowrap"
-                      animate={reducedMotion ? undefined : { x: ["0%", "-50%"] }}
-                      transition={reducedMotion ? undefined : { duration: 26, repeat: Infinity, ease: "linear" }}
-                      style={{ willChange: "transform" }}
-                    >
-                      {[...CAPABILITIES, ...CAPABILITIES].map((item, idx) => (
-                        <span key={`${item}-${idx}`} className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/85">
-                          <span className="mr-2 h-1.5 w-1.5 rounded-full bg-blue-300/90" />{item}
-                        </span>
-                      ))}
-                    </motion.div>
-                    <div className="pointer-events-none absolute left-0 top-0 h-full w-16" style={{ background: "linear-gradient(to right, #2B1B12, rgba(43,27,18,0))" }} />
-                    <div className="pointer-events-none absolute right-0 top-0 h-full w-16" style={{ background: "linear-gradient(to left, #2B1B12, rgba(43,27,18,0))" }} />
-                  </div>
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ duration: 0.6, ease: easeOut }}
-                    className="mt-0 md:mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                  >
-                    {CAPABILITIES.slice(0, 12).map((item, i) => (
-                      <motion.div
-                        key={item}
-                        initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }} transition={{ duration: 0.55, ease: easeOut, delay: Math.min(i * 0.03, 0.18) }}
-                        className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-white/80"
-                      >
-                        <div className="flex items-start gap-3">
-                          <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-blue-300/90" />
-                          <span className="leading-relaxed">{item}</span>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-5 flex justify-center">
-              <div className="h-px w-[96%] sm:w-[92%] bg-black/10" />
-            </div>
+            <Eyebrow invert>Capabilities</Eyebrow>
+            <h2 className="mt-6 text-3xl md:text-4xl lg:text-[2.75rem] font-extralight leading-[1.1] tracking-tight text-white">
+              A full-spectrum delivery team — from strategy to launch.
+            </h2>
+            <p className="mt-5 text-base font-light leading-[1.75] text-white/55">
+              We don&rsquo;t just build. We help you make the right decisions, ship faster,
+              and scale with confidence.
+            </p>
+          </motion.div>
+
+          {/* Every capability, once. Hairline rules and a mono numeral carry the
+              structure, so nothing needs a chip, a dot or a border box. */}
+          <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-12">
+            {CAPABILITIES.map((item, i) => (
+              <motion.div
+                key={item}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{
+                  duration: reducedMotion ? 0 : 0.45,
+                  ease: easeOut,
+                  delay: reducedMotion ? 0 : Math.min((i % 3) * 0.05, 0.15),
+                }}
+                className="flex items-baseline gap-4 border-t border-white/10 py-5"
+              >
+                <span className="font-[family-name:var(--font-mono)] text-[11px] tracking-[0.12em] text-white/30">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="text-[15px] font-light leading-snug text-white/85">
+                  {item}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: reducedMotion ? 0 : 0.5, ease: easeOut }}
+            className="mt-16 border-t border-white/10 pt-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6"
+          >
+            <p className="max-w-md text-sm font-light leading-[1.75] text-white/50">
+              Not sure which of these your project needs? That is usually the first
+              thing worth working out together.
+            </p>
+            {/* Was /#contact — there is no element with id="contact" on the
+                homepage, so it landed at the top of the page and did nothing. */}
+            <a
+              href="/contact"
+              className="inline-flex flex-shrink-0 items-center justify-center border border-white/25 px-8 py-4 text-sm font-normal tracking-wide text-white transition-colors duration-300 hover:bg-white hover:text-[#050505] hover:border-white"
+            >
+              Talk to us
+            </a>
           </motion.div>
         </div>
       </section>
