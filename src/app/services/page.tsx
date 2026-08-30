@@ -103,9 +103,13 @@ const CAPABILITIES = [
 // scrolling. The jump from step 3 to step 4 inverts to white-on-ink rather
 // than passing through the mid-greys, which carry neither text colour well.
 const MOBILE_SHADES = [
-  { bg: "#FFFFFF", ink: "#050505", quiet: "#666666", rule: "rgba(5,5,5,0.12)", invert: false },
-  { bg: "#F4F4F4", ink: "#050505", quiet: "#666666", rule: "rgba(5,5,5,0.12)", invert: false },
-  { bg: "#E7E7E7", ink: "#050505", quiet: "#5A5A5A", rule: "rgba(5,5,5,0.14)", invert: false },
+  // The first two steps were #FFFFFF and #F4F4F4 — about 4% apart, which is
+  // below the threshold at which a step reads as a step while scrolling. The
+  // light half is spread wider now so each band is legibly its own, and the
+  // quiet tone darkens with the ground to hold contrast as the steps deepen.
+  { bg: "#FFFFFF", ink: "#050505", quiet: "#6B6B6B", rule: "rgba(5,5,5,0.12)", invert: false },
+  { bg: "#EDEDEA", ink: "#050505", quiet: "#5F5F5C", rule: "rgba(5,5,5,0.14)", invert: false },
+  { bg: "#D8D8D4", ink: "#050505", quiet: "#4E4E4B", rule: "rgba(5,5,5,0.18)", invert: false },
   { bg: "#1F1F1F", ink: "#FFFFFF", quiet: "#A2A2A2", rule: "rgba(255,255,255,0.16)", invert: true },
   { bg: "#050505", ink: "#FFFFFF", quiet: "#8A8A8A", rule: "rgba(255,255,255,0.16)", invert: true },
 ];
@@ -729,11 +733,14 @@ export default function ServicesPage() {
           it did not repeat were visible only in the marquee, which is hidden
           below md, so on a phone they did not appear at all.
 
-          Now a single full-bleed ink band, every capability listed once, on the
-          same inverted treatment as the About page's principles.
+          Now an ink panel inset in white, every capability listed once, on the
+          same inverted treatment as the About page's principles. The white
+          margin matters: edge to edge, this ran into the dark end of the
+          mobile tonal ramp above and the black footer below, and the page
+          finished as one unbroken black stretch.
           ──────────────────────────────────────────────────────────────── */}
-      <section className={cx(editorialRoot, "bg-[#050505] px-6 sm:px-10 lg:px-16 py-24 md:py-32")}>
-        <div className="mx-auto max-w-[1400px]">
+      <section className={cx(editorialRoot, "bg-white px-5 sm:px-8 lg:px-16 py-16 md:py-24")}>
+        <div className="mx-auto max-w-[1400px] bg-[#050505] px-6 sm:px-10 lg:px-14 py-16 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
