@@ -12,6 +12,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
+// Groq decommissioned llama-3.1-8b-instant; requests for it now fail with
+// model_not_found, and the route's catch-all turned that into the visitor-facing
+// "Something went wrong" message. Override with GROQ_MODEL if this one is
+// retired too — `curl https://api.groq.com/openai/v1/models` lists what a key
+// can actually reach.
+const CHAT_MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-20b";
+
 const SANITY_PROJECT_ID  = process.env.SANITY_PROJECT_ID  ?? "vih4pg3q";
 const SANITY_DATASET     = process.env.SANITY_DATASET     ?? "production";
 const SANITY_API_VERSION = process.env.SANITY_API_VERSION ?? "2025-05-21";
@@ -243,7 +250,9 @@ export async function POST(req: NextRequest) {
 
     /* ── Call Groq with dynamic token limit by stage ── */
     const stageForTokens = (context?.discoveryStage as string) ?? "goal";
-    const maxTokens = stageForTokens === "recommendation" ? 450 : 160;
+    // Headroom above the old budget: some of this is spent on reasoning
+    // tokens before any content is produced.
+    const maxTokens = stageForTokens === "recommendation" ? 700 : 320;
 
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -252,13 +261,18 @@ export async function POST(req: NextRequest) {
         "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model:       "llama-3.1-8b-instant",
+        model:       CHAT_MODEL,
         messages: [
           { role: "system", content: systemPromptFinal },
           ...messages.slice(-12),
         ],
         max_tokens:  maxTokens,
         temperature: 0.7,
+        // gpt-oss spends completion tokens on reasoning before it writes any
+        // content. Left at the default, a 160-token budget was fully consumed
+        // by reasoning and the reply came back empty, which is what surfaced
+        // to visitors as "Something went wrong".
+        reasoning_effort: "low",
         stream:      false,
       }),
     });
@@ -269,8 +283,11 @@ export async function POST(req: NextRequest) {
       const groqData = await groqRes.json();
       reply = groqData.choices?.[0]?.message?.content?.trim() ?? reply;
     } else {
+      // Log status as well as body: a model_not_found here is indistinguishable
+      // from a network failure in the visitor-facing message, so the status is
+      // the only thing that makes it diagnosable from the logs.
       const err = await groqRes.text();
-      console.error("[Groq] error:", err);
+      console.error(`[Groq] ${groqRes.status} ${groqRes.statusText} using model ${CHAT_MODEL}:`, err);
     }
 
     /* ── Background Sanity sync — get summary back for localStorage ── */
@@ -322,10 +339,11 @@ async function syncToSanity(opts: {
           "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
         },
         body: JSON.stringify({
-          model:       "llama-3.1-8b-instant",
+          model:       CHAT_MODEL,
           messages: [{ role: "user", content: buildExtractionPrompt(fullMessages) }],
           max_tokens:  600,
           temperature: 0.1,
+          reasoning_effort: "low",
           stream:      false,
         }),
       });
