@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Inter } from "next/font/google";
+import { editorialRoot, cx } from "@/components/editorial";
 
 const bodyFont = Inter({ subsets: ["latin"], weight: "400" });
 
@@ -96,6 +97,18 @@ const CAPABILITIES = [
   "Cloud deployment & DevOps","Performance optimization","Maintenance & support",
   "Security best practices","Analytics & tracking setup",
 ] as const;
+
+// Tonal ramp for the mobile service list. Each service sits one step darker
+// than the last, so position in the list is readable at a glance while
+// scrolling. The jump from step 3 to step 4 inverts to white-on-ink rather
+// than passing through the mid-greys, which carry neither text colour well.
+const MOBILE_SHADES = [
+  { bg: "#FFFFFF", ink: "#050505", quiet: "#666666", rule: "rgba(5,5,5,0.12)", invert: false },
+  { bg: "#F4F4F4", ink: "#050505", quiet: "#666666", rule: "rgba(5,5,5,0.12)", invert: false },
+  { bg: "#E7E7E7", ink: "#050505", quiet: "#5A5A5A", rule: "rgba(5,5,5,0.14)", invert: false },
+  { bg: "#1F1F1F", ink: "#FFFFFF", quiet: "#A2A2A2", rule: "rgba(255,255,255,0.16)", invert: true },
+  { bg: "#050505", ink: "#FFFFFF", quiet: "#8A8A8A", rule: "rgba(255,255,255,0.16)", invert: true },
+];
 
 const TRUST_STATS = [
   { value: "40+", label: "Businesses served" },
@@ -326,15 +339,11 @@ export default function ServicesPage() {
                     loading="eager"
                     draggable={false}
                   />
-                  {/* Dark gradient right-edge fade into content */}
+                  {/* Scrim confined to the lower third: enough to carry the
+                      overlaid title, without washing the photograph out. */}
                   <div
-                    className="absolute inset-0"
-                    style={{ background: "linear-gradient(to right, transparent 40%, rgba(255,255,255,0.97) 100%)" }}
-                  />
-                  {/* Bottom overlay with service name */}
-                  <div
-                    className="absolute inset-0"
-                    style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%)" }}
+                    className="absolute inset-x-0 bottom-0 h-1/3"
+                    style={{ background: "linear-gradient(to top, rgba(0,0,0,0.62) 0%, transparent 100%)" }}
                   />
                   {/* Badge top-left */}
                   <div className="absolute top-4 left-4 z-10">
@@ -481,8 +490,10 @@ export default function ServicesPage() {
       {/* ═══════════════════════════════════════════════════
           MOBILE CARDS — unchanged
       ═══════════════════════════════════════════════════ */}
-      <section className="lg:hidden bg-white px-6 pb-16">
-        <div className="max-w-7xl mx-auto">
+      {/* Mobile service list. Full-bleed tonal bands rather than a stack of
+          identical floating cards — the shade tells you where you are. */}
+      <section className={cx(editorialRoot, "lg:hidden bg-white")}>
+        <div className="px-6 pb-10">
           <motion.div
             initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6, ease: easeOut }}
@@ -492,98 +503,133 @@ export default function ServicesPage() {
               <div key={stat.label} className="flex items-center gap-3">
                 {i > 0 && <div className="h-5 w-px bg-black/15" />}
                 <div>
-                  <span className="text-xl font-semibold text-gray-900 tracking-tight">{stat.value}</span>
-                  <span className="ml-1.5 text-sm text-gray-500">{stat.label}</span>
+                  <span className="text-xl font-light text-[#050505] tracking-tight">{stat.value}</span>
+                  <span className="ml-1.5 text-sm text-[#666666]">{stat.label}</span>
                 </div>
               </div>
             ))}
           </motion.div>
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-6">What we deliver</p>
-          <div className="space-y-6">
-            {SERVICES.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.65, ease: easeOut }}
-                className="relative overflow-hidden rounded-3xl border border-black/10 bg-white"
-                style={{ boxShadow: i === 0 ? `0 20px 60px rgba(0,0,0,0.12), 0 6px 20px ${s.accentHex}22` : "0 8px 32px rgba(0,0,0,0.07)" }}
-              >
-                {i === 0 && (
-                  <div className="absolute top-4 right-4 z-20">
-                    <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold text-white" style={{ background: s.accentHex }}>★ Most requested</span>
-                  </div>
-                )}
-                <div className="relative w-full aspect-[16/8] overflow-hidden">
-                  <img src={s.image} alt={s.imageAlt} className="absolute inset-0 h-full w-full object-cover" loading={i === 0 ? "eager" : "lazy"} draggable={false} />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.20) 50%, transparent 100%)" }} />
-                  <div className="pointer-events-none absolute inset-0" aria-hidden="true" style={{ background: `radial-gradient(500px 280px at 0% 100%, ${s.accent}, transparent 60%)` }} />
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur px-3 py-1.5 text-[11px] font-medium text-white/90">
-                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: s.accentHex }} />
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div className="absolute left-4 right-4 bottom-4 flex items-end gap-3 z-10">
-                    <div className="inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-white/10 backdrop-blur text-xl border border-white/15">{s.icon}</div>
-                    <div>
-                      <h3 className="text-white font-semibold text-[18px] leading-tight">{s.title}</h3>
-                      <p className="text-white/70 text-[13px] leading-snug mt-0.5">{s.shortValue}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="px-5 pb-6 pt-5 space-y-5">
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">What We Build</p>
-                    <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-                      {s.whatWeBuild.map((item) => (
-                        <div key={item} className="flex items-start gap-1.5">
-                          <span className="mt-[6px] h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{ background: s.accentHex }} />
-                          <span className="text-[13px] text-gray-700 leading-snug">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="h-px w-full bg-black/[0.07]" />
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-2.5">Ideal For</p>
-                      <ul className="space-y-2">
-                        {s.idealFor.map((item) => (
-                          <li key={item} className="flex items-start gap-1.5">
-                            <span className="mt-[5px] text-[9px] flex-shrink-0" style={{ color: s.accentHex }}>◆</span>
-                            <span className="text-[13px] text-gray-700 leading-snug">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-2.5">Benefits</p>
-                      <ul className="space-y-2">
-                        {s.benefits.map((item) => (
-                          <li key={item} className="flex items-start gap-1.5">
-                            <span className="mt-[3px] text-[13px] flex-shrink-0 font-medium" style={{ color: s.accentHex }}>✓</span>
-                            <span className="text-[13px] text-gray-700 leading-snug">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="h-px w-full bg-black/[0.07]" />
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <a href="/contact" className="inline-flex items-center gap-2 rounded-xl text-white px-5 py-2.5 text-[13px] font-semibold hover:opacity-90 transition" style={{ background: s.accentHex }}>
-                      {s.cta} <span aria-hidden>→</span>
-                    </a>
-                    <a href={`/services/${s.slug}`} className="inline-flex items-center gap-1.5 rounded-xl border px-4 py-2.5 text-[13px] font-medium text-gray-700 hover:bg-gray-50 transition" style={{ borderColor: "rgba(17,24,39,0.14)" }}>
-                      View full page
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666]">
+            What we deliver
+          </p>
         </div>
+
+        {SERVICES.map((s, i) => {
+          const shade = MOBILE_SHADES[i % MOBILE_SHADES.length];
+          return (
+            <motion.div
+              key={s.title}
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.6, ease: easeOut }}
+              style={{ background: shade.bg, color: shade.ink }}
+              className="px-6 py-14"
+            >
+              {/* Position marker: the numeral does the work the emoji tile did,
+                  and reinforces where you are in the ramp. */}
+              <div className="flex items-baseline justify-between">
+                <span
+                  className="font-[family-name:var(--font-mono)] text-[11px] tracking-[0.22em]"
+                  style={{ color: shade.quiet }}
+                >
+                  {String(i + 1).padStart(2, "0")} / {String(SERVICES.length).padStart(2, "0")}
+                </span>
+                {i === 0 && (
+                  <span
+                    className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em]"
+                    style={{ color: shade.quiet }}
+                  >
+                    Most requested
+                  </span>
+                )}
+              </div>
+
+              <h3 className="mt-5 text-[1.75rem] font-extralight leading-[1.15] tracking-tight">
+                {s.title}
+              </h3>
+              <p className="mt-3 text-[15px] font-light leading-[1.7]" style={{ color: shade.quiet }}>
+                {s.shortValue}
+              </p>
+
+              {/* Photograph, uncovered — no colour glow, no wash. */}
+              <div className="mt-7 relative w-full aspect-[16/10] overflow-hidden">
+                <img
+                  src={s.image}
+                  alt={s.imageAlt}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  style={{ filter: "grayscale(1) contrast(1.04)" }}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  draggable={false}
+                />
+              </div>
+
+              <div className="mt-8">
+                <p
+                  className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
+                  style={{ color: shade.quiet }}
+                >
+                  What we build
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-2.5">
+                  {s.whatWeBuild.map((item) => (
+                    <span key={item} className="text-[13px] font-light leading-snug">
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-8 h-px w-full" style={{ background: shade.rule }} />
+
+              <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-6">
+                <div>
+                  <p
+                    className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
+                    style={{ color: shade.quiet }}
+                  >
+                    Ideal for
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {s.idealFor.map((item) => (
+                      <li key={item} className="text-[13px] font-light leading-snug">{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p
+                    className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
+                    style={{ color: shade.quiet }}
+                  >
+                    Benefits
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {s.benefits.map((item) => (
+                      <li key={item} className="text-[13px] font-light leading-snug">{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                <a
+                  href="/contact"
+                  className="inline-flex items-center justify-center px-6 py-3.5 text-[13px] font-normal tracking-wide transition-colors duration-300"
+                  style={{ background: shade.ink, color: shade.bg }}
+                >
+                  {s.cta}
+                </a>
+                <a
+                  href={`/services/${s.slug}`}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 text-[13px] font-normal tracking-wide border transition-colors duration-300"
+                  style={{ borderColor: shade.rule, color: shade.ink }}
+                >
+                  View full page
+                  <span aria-hidden>&rarr;</span>
+                </a>
+              </div>
+            </motion.div>
+          );
+        })}
       </section>
 
       {/* ─── CONVERSION STRIP ─── */}
