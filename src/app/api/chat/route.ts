@@ -17,6 +17,61 @@ import { NextRequest, NextResponse } from "next/server";
 // "Something went wrong" message. Override with GROQ_MODEL if this one is
 // retired too — `curl https://api.groq.com/openai/v1/models` lists what a key
 // can actually reach.
+/* ─── Real client work ───────────────────────────────────────────
+   The only projects the advisor is allowed to cite. Every entry here is
+   a named client with a page or a live URL on this site, so anything the
+   advisor says can be checked by the person reading it.
+
+   Without this the model invented case studies unprompted, complete with
+   fabricated metrics ("cut out-of-stock incidents by 35%" for a health-care
+   chain that does not exist). Keep this list in sync with /what-we-build and
+   the websites service page — and never add a metric that is not published.
+   ───────────────────────────────────────────────────────────────── */
+const REAL_CLIENT_WORK = `
+REAL GITS PROJECTS — the only work you may ever reference:
+
+1. Sanmark Luxury (sanmarkluxury.com) — premium fashion store in Lagos.
+   Editorial product photography, clean taxonomy, conversion-focused checkout.
+2. Blakdhut Exchange (blakdhut.com) — dark-mode crypto trading platform.
+   Live pricing and a secure transaction flow.
+3. Lamed Pharmacy (lamed-pharmacy.vercel.app) — patient-facing pharmacy platform
+   in Jos. Prescription upload, branch finder, PLASCHEMA verification.
+4. NOTGATE (notgate-w6l1.vercel.app) — corporate site for a construction firm.
+   Project gallery and partner trust signals. The firm publishes 25+ years,
+   120+ projects and over N65B delivered.
+5. Selo (selo-red.vercel.app) — a curated store selling only purple clothing,
+   accessories and bags.
+6. Elowen Living (gits.technology/elowen-living) — luxury real estate.
+   Editorial layout, full-bleed property imagery, virtual tours.
+
+RULES FOR USING THESE — these override anything else in this prompt:
+- Reference a project ONLY from this list. Never any other company.
+- Never state a metric, percentage, timeline or money figure for a client
+  unless it appears above. Do not estimate one, and do not illustrate with a
+  hypothetical that reads like a real result.
+- If nothing here matches what they are describing, say so plainly and talk
+  about the approach instead. "We have not built exactly that" is a better
+  answer than an invented one, and it is the honest one.
+- Never invent a client name, industry or outcome under any circumstances.
+`;
+
+/* ─── Contact facts ──────────────────────────────────────────────
+   The prompt instructs the advisor to close with a WhatsApp or booking CTA
+   but never gave it the actual details, so it invented them — it offered a
+   prospect "+123-456-7890". Anything the advisor hands out has to come from
+   here. Keep in sync with components/Footer.tsx and app/contact/page.tsx.
+   ───────────────────────────────────────────────────────────────── */
+const CONTACT_FACTS = `
+GITS CONTACT DETAILS — the only ones you may ever give out:
+- WhatsApp: https://wa.me/2348116276212  (+234 811 627 6212)
+- Book a call: https://calendly.com/donatusgwer
+- Contact page: https://gits.technology/contact
+- Free audit: https://gits.technology/audit
+
+NEVER invent or guess a phone number, email address, link or booking URL.
+If you need a detail that is not listed above, send them to the contact page.
+`;
+
 const CHAT_MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-20b";
 
 const SANITY_PROJECT_ID  = process.env.SANITY_PROJECT_ID  ?? "vih4pg3q";
@@ -173,7 +228,7 @@ Keep your reply under 80 words. End with exactly one question.`,
 CURRENT DISCOVERY STAGE: 5 — QUALIFICATION
 You understand goal, situation, pain, and impact. Now qualify the opportunity.
 ONE question about timeline, budget, or decision process.
-You MAY now reference a past GITS project — but ONLY if it genuinely matches their situation, ONLY once, and ONLY in one sentence woven naturally into your reply. Example: "We built something similar for a lending firm — cut their processing time from 3 hours to 9 minutes." Do not lead with it.
+You MAY now reference a past GITS project — but ONLY from the REAL GITS PROJECTS list, ONLY if it genuinely matches their situation, ONLY once, and ONLY in one sentence woven naturally into your reply. Name the client. Do not attach a metric to it unless that figure appears in the list. If nothing in the list fits, reference nothing. Do not lead with it.
 Good questions: "Do you have a target date you're working toward?" / "Have you set aside a rough budget?" / "Who else would be involved in the final decision?"
 Keep your reply under 90 words. End with exactly one question.`,
 
@@ -223,6 +278,8 @@ export async function POST(req: NextRequest) {
       source?:       string;
     };
 
+    /* ── Real client work is appended to every prompt, so the model cannot
+       reach for an invented case study at any stage ── */
     /* ── Use client systemPrompt if present ── */
     const basePrompt = (systemPrompt && systemPrompt.trim().length > 50)
       ? systemPrompt
@@ -245,6 +302,10 @@ export async function POST(req: NextRequest) {
 
     const systemPromptFinal =
       basePrompt
+      // Appended at every stage, not just qualification: without it the
+      // model reached for invented case studies wherever it felt one fit.
+      + `\n\n--- ${REAL_CLIENT_WORK}`
+      + `\n\n--- ${CONTACT_FACTS}`
       + (contextNote ? `\n\n--- CURRENT VISITOR CONTEXT ---${contextNote}` : "")
       + `\n\n--- THIS TURN'S INSTRUCTION ---${stageInstruction}`;
 
