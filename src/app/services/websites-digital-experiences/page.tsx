@@ -488,6 +488,7 @@ const WEBSITES = [
     story:
       "A construction brand that needed to feel like it builds at scale. We wrote a dark, editorial layout with dramatic type and count-up stats that animate in as you scroll, so the site communicates precision before a single word is read.",
     tags: ["Framer Motion", "Dark UI", "Animated counters"],
+    shot: "/services/work/notgate.webp",
     Demo: NotgateDemo,
   },
   {
@@ -498,6 +499,7 @@ const WEBSITES = [
     story:
       "A pharmacy platform where trust and clarity matter more than flourish. We built a prescription upload flow, a branch finder, and PLASCHEMA verification into a clean interface that reads well for every age group, on any device.",
     tags: ["Prescription upload", "Branch finder", "PLASCHEMA"],
+    shot: "/services/work/lamed.webp",
     Demo: LamedDemo,
   },
   {
@@ -508,6 +510,7 @@ const WEBSITES = [
     story:
       "A real estate brand that sells a feeling before it sells square footage. We leaned into editorial typography and full-bleed property imagery, giving every listing room to breathe the way a magazine spread would.",
     tags: ["Editorial layout", "Property tours", "Typography-led"],
+    shot: "/services/work/elowen.webp",
     Demo: ElowenDemo,
   },
 ];
@@ -515,6 +518,7 @@ const WEBSITES = [
 function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number }) {
   const rm = useReducedMotion();
   const [hovered, setHovered] = useState(false);
+  const [mode, setMode] = useState<"site" | "demo">("site");
   const reversed = i % 2 === 1;
 
   return (
@@ -532,7 +536,7 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           className="group relative rounded-[28px] overflow-hidden aspect-[4/3]"
-          style={{ background: MIST, border: `1px solid ${HAIR}` }}
+          style={{ background: "#fff", border: `1px solid ${HAIR}` }}
         >
           {/* ghost index number */}
           <span
@@ -552,18 +556,47 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
             </div>
             <div className="flex-1 flex items-center justify-center">
               <span
-                className="text-[10px] rounded px-3 py-0.5 truncate max-w-[70%]"
+                className="text-[10px] rounded px-3 py-0.5 truncate max-w-[60%]"
                 style={{ color: GRAPHITE, border: `1px solid ${HAIR}`, background: "#fff" }}
               >
                 {site.url.replace("https://", "") || site.url}
               </span>
             </div>
+            <div className="flex items-center gap-0.5">
+              {(["site", "demo"] as const).map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setMode(m)}
+                  aria-pressed={mode === m}
+                  className="px-1.5 py-0.5 text-[8.5px] uppercase tracking-[0.14em] rounded-sm transition-colors"
+                  style={{
+                    background: mode === m ? INK : "transparent",
+                    color: mode === m ? "#fff" : GRAPHITE,
+                  }}
+                >
+                  {m}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Live demo. Replaces a frame that previously showed only the
-              client's name — a mockup of a mockup. */}
+          {/* The real site by default; the interactive demo on request. A
+              screenshot is the honest primary — it is what the client actually
+              shipped — and the demo stays one click away rather than replacing it. */}
           <div className="absolute inset-x-0 bottom-0 top-[38px]">
-            <site.Demo />
+            {mode === "site" ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={site.shot}
+                alt={`${site.title} — live site`}
+                className="h-full w-full object-cover object-top"
+                loading="lazy"
+                draggable={false}
+              />
+            ) : (
+              <site.Demo />
+            )}
           </div>
 
           {/* hover overlay */}
