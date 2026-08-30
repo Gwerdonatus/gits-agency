@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -54,7 +55,7 @@ function Hero() {
         {/* Breadcrumb */}
         <motion.p
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}
-          className="text-xs uppercase tracking-widest text-gray-400 mb-4"
+          className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-4"
         >
           Services / AI &amp; Business Automation
         </motion.p>
@@ -242,12 +243,12 @@ function WhatWeAutomateCarousel() {
   ];
 
   return (
-    <section className="px-6 py-16 md:py-20">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-6 sm:px-10 lg:px-16 py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px]">
         <div className="flex items-end justify-between mb-8 gap-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">What we automate</p>
-            <h2 className="text-2xl md:text-3xl font-medium text-gray-900 max-w-lg leading-snug">
+            <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">What we automate</p>
+            <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-lg leading-snug">
               Not sure what AI can actually do for your business?
             </h2>
             <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">
@@ -1539,10 +1540,10 @@ function CaseStudiesSection() {
 
   return (
     <section id="case-studies" className="px-4 md:px-6 py-12 md:py-20">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[1400px]">
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">Built &amp; shipped</p>
-          <h2 className="text-2xl md:text-3xl font-medium text-gray-900 max-w-2xl leading-snug">
+          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">Built &amp; shipped</p>
+          <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-2xl leading-snug">
             Three businesses. Real problems. Here's exactly how we solved them.
           </h2>
           <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">
@@ -1656,14 +1657,14 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // ═══════════════════════════════════════════════════════════════
 export default function AIAutomationPage() {
   return (
-    <main className="min-h-screen bg-white text-black">
+    <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <Hero />
       <WhatWeAutomateCarousel />
       <CaseStudiesSection />
       <section className="px-4 md:px-6 pb-24 pt-4">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">FAQ</p>
-          <h2 className="text-2xl md:text-3xl font-medium text-gray-900 mb-2">Questions we get asked every time.</h2>
+        <div className="mx-auto max-w-[1400px]">
+          <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">FAQ</p>
+          <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] mb-2">Questions we get asked every time.</h2>
           <p className="text-sm text-gray-500 mb-8 max-w-xl leading-relaxed">Answered here so your consultation time goes towards your actual project.</p>
           <div className="grid gap-3">
             {FAQS.map((f) => <FaqItem key={f.q} q={f.q} a={f.a} />)}

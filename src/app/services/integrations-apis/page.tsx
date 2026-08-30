@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -45,7 +46,7 @@ function Hero() {
 
       <div className="relative mx-auto max-w-6xl">
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={fd(0)}
-          className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-400 mb-3 sm:mb-4">
+          className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-3 sm:mb-4">
           Services / Integrations &amp; APIs
         </motion.p>
 
@@ -256,11 +257,11 @@ function WhatWeIntegrateCarousel() {
 
   return (
     <section className="px-4 sm:px-6 py-12 sm:py-16 md:py-20">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[1400px]">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4">
           <div>
-            <p className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-400 mb-2">What we integrate</p>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-gray-900 max-w-lg leading-snug">
+            <p className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">What we integrate</p>
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-lg leading-snug">
               12 types of API integration. Find your situation.
             </h2>
             <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">
@@ -1411,10 +1412,10 @@ function CaseStudiesSection() {
   const [openId, setOpenId] = useState<CaseId | null>(null);
   return (
     <section id="case-studies" className="px-4 sm:px-6 py-12 sm:py-16 md:py-20">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[1400px]">
         <div className="mb-8 sm:mb-10">
-          <p className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-400 mb-2">Built &amp; deployed</p>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-gray-900 max-w-2xl leading-snug">
+          <p className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">Built &amp; deployed</p>
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] max-w-2xl leading-snug">
             Three businesses. Real integration problems. Here's exactly what we connected — and what it changed.
           </h2>
           <p className="mt-2 text-sm text-gray-500 max-w-xl leading-relaxed">
@@ -1527,14 +1528,14 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // ═══════════════════════════════════════════════════════════════
 export default function IntegrationsAPIsPage() {
   return (
-    <main className="min-h-screen bg-white text-black">
+    <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <Hero />
       <WhatWeIntegrateCarousel />
       <CaseStudiesSection />
       <section className="px-4 sm:px-6 pb-16 sm:pb-20 md:pb-24 pt-2 sm:pt-4">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-[10px] sm:text-xs uppercase tracking-widest text-gray-400 mb-2">FAQ</p>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-gray-900 mb-2">API and integration questions, answered.</h2>
+        <div className="mx-auto max-w-[1400px]">
+          <p className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">FAQ</p>
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] mb-2">API and integration questions, answered.</h2>
           <p className="text-sm text-gray-500 mb-6 sm:mb-8 max-w-xl leading-relaxed">Straight answers about how integrations work, what they cost, and what's included on every project.</p>
           <div className="grid gap-2.5 sm:gap-3">
             {FAQS.map((f) => <FaqItem key={f.q} q={f.q} a={f.a} />)}

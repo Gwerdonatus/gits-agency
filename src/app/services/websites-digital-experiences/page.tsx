@@ -3,21 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
 // ═══════════════════════════════════════════════════════════════
 // DESIGN TOKENS — pure black & white, Apple-registered restraint
 // ═══════════════════════════════════════════════════════════════
-const INK = "#1D1D1F";        // Apple's near-black, never pure #000 on light bg
-const GRAPHITE = "#86868B";   // secondary copy
+const INK = "#050505";        // matches the About page ink, so the section reads as one system
+const GRAPHITE = "#666666";   // matches the About page "quiet"
 const FAINT = "#C7C7CC";      // tertiary / ghost type
 const MIST = "#F5F5F7";       // section wash
 const HAIR = "rgba(0,0,0,0.08)";
 const HAIR_STRONG = "rgba(0,0,0,0.14)";
 
-const FONT =
-  '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif';
+// Was a system font stack, which resolved to Arial here via the body default
+// in globals.css. Points at the Instrument Sans variable that editorialRoot loads.
+const FONT = 'var(--font-instrument), system-ui, sans-serif';
 
 // ═══════════════════════════════════════════════════════════════
 // HERO
@@ -181,7 +183,7 @@ function ServicesSection() {
   const rm = useReducedMotion();
   return (
     <section className="px-6 py-20 md:py-28 border-t" style={{ background: MIST, borderColor: HAIR }}>
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[1400px]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -581,7 +583,7 @@ function CTASection() {
   const rm = useReducedMotion();
   return (
     <section className="px-6 py-20 md:py-28">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[1400px]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -624,7 +626,7 @@ function CTASection() {
 // ═══════════════════════════════════════════════════════════════
 export default function WebsitesDigitalExperiencesPage() {
   return (
-    <main className="min-h-screen bg-white" style={{ fontFamily: FONT, color: INK }}>
+    <main className={cx(editorialRoot, "min-h-screen bg-white")} style={{ fontFamily: FONT, color: INK }}>
       <Hero />
       <ServicesSection />
       <ExamplesSection />
