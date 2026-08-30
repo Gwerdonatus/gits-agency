@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
+import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 import { SERVICE_ICONS, type ServiceIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
@@ -181,7 +181,7 @@ function WhatWeBuildCarousel() {
   // A plain grid lets someone recognise their own industry at a glance, which
   // is the only job this section has.
   return (
-    <section className="px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10">
+    <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10")}>
       <div className="mx-auto max-w-[1400px]">
         <div className="max-w-2xl">
           <Eyebrow index="02">What we build</Eyebrow>
@@ -1288,7 +1288,7 @@ function CaseCard({ study, isOpen, onToggle, index }: { study: typeof CASES[numb
 function CaseStudiesSection() {
   const [openId, setOpenId] = useState<CaseId | null>(null);
   return (
-    <section id="case-studies" className="px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10">
+    <section id="case-studies" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 py-24 md:py-32 border-t border-[#050505]/10")}>
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-10">
           <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">Operational systems — built & shipped</p>
@@ -1372,13 +1372,28 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // ═══════════════════════════════════════════════════════════════
 // PAGE EXPORT
 // ═══════════════════════════════════════════════════════════════
+const SECTIONS: NavSection[] = [
+  { id: "what-we-build", label: "What we build" },
+  { id: "case-studies", label: "Live demos" },
+  { id: "faq", label: "FAQ" },
+];
+
 export default function CustomSoftwareDevelopmentPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <Hero />
+      {/* Photograph sits between the hero and the dense content below, so the
+            page opens with something other than a wall of type. */}
+      <ImageBand
+        src="/services/software.webp"
+        alt="Custom software being used in a working business environment"
+        caption="Software built around an operation, not around a template"
+        className="pb-4"
+      />
+      <SectionNav sections={SECTIONS} />
       <WhatWeBuildCarousel />
       <CaseStudiesSection />
-      <section className="px-6 sm:px-10 lg:px-16 pb-28 pt-4">
+      <section id="faq" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 pb-28 pt-4")}>
         <div className="mx-auto max-w-[1400px]">
           <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">FAQ</p>
           <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] mb-2">Questions we hear before every project starts.</h2>

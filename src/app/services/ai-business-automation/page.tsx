@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
+import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -243,7 +243,7 @@ function WhatWeAutomateCarousel() {
   ];
 
   return (
-    <section className="px-6 sm:px-10 lg:px-16 py-24 md:py-32">
+    <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 py-24 md:py-32")}>
       <div className="mx-auto max-w-[1400px]">
         <div className="flex items-end justify-between mb-8 gap-4">
           <div>
@@ -1539,7 +1539,7 @@ function CaseStudiesSection() {
   const [openId, setOpenId] = useState<CaseId | null>(null);
 
   return (
-    <section id="case-studies" className="px-4 md:px-6 py-12 md:py-20">
+    <section id="case-studies" className={cx(SECTION_SCROLL_MT, "px-4 md:px-6 py-12 md:py-20")}>
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-10">
           <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">Built &amp; shipped</p>
@@ -1655,13 +1655,26 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // ═══════════════════════════════════════════════════════════════
 // PAGE EXPORT
 // ═══════════════════════════════════════════════════════════════
+const SECTIONS: NavSection[] = [
+  { id: "what-we-build", label: "What we automate" },
+  { id: "case-studies", label: "Live demos" },
+  { id: "faq", label: "FAQ" },
+];
+
 export default function AIAutomationPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <Hero />
+      <ImageBand
+        src="/services/ai.webp"
+        alt="AI automation running inside a working business process"
+        caption="Automation with guardrails, not a black box"
+        className="pb-4"
+      />
+      <SectionNav sections={SECTIONS} />
       <WhatWeAutomateCarousel />
       <CaseStudiesSection />
-      <section className="px-4 md:px-6 pb-24 pt-4">
+      <section id="faq" className={cx(SECTION_SCROLL_MT, "px-4 md:px-6 pb-24 pt-4")}>
         <div className="mx-auto max-w-[1400px]">
           <p className="font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">FAQ</p>
           <h2 className="text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] mb-2">Questions we get asked every time.</h2>

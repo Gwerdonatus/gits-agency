@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
+import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -256,7 +256,7 @@ function WhatWeIntegrateCarousel() {
   const visible = [WHAT_WE_INTEGRATE[active % total], WHAT_WE_INTEGRATE[(active + 1) % total], WHAT_WE_INTEGRATE[(active + 2) % total]];
 
   return (
-    <section className="px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+    <section id="what-we-build" className={cx(SECTION_SCROLL_MT, "px-4 sm:px-6 py-12 sm:py-16 md:py-20")}>
       <div className="mx-auto max-w-[1400px]">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4">
           <div>
@@ -1411,7 +1411,7 @@ const CASES = [
 function CaseStudiesSection() {
   const [openId, setOpenId] = useState<CaseId | null>(null);
   return (
-    <section id="case-studies" className="px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+    <section id="case-studies" className={cx(SECTION_SCROLL_MT, "px-4 sm:px-6 py-12 sm:py-16 md:py-20")}>
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-8 sm:mb-10">
           <p className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">Built &amp; deployed</p>
@@ -1526,13 +1526,26 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 // ═══════════════════════════════════════════════════════════════
 // PAGE EXPORT
 // ═══════════════════════════════════════════════════════════════
+const SECTIONS: NavSection[] = [
+  { id: "what-we-build", label: "What we integrate" },
+  { id: "case-studies", label: "Live demos" },
+  { id: "faq", label: "FAQ" },
+];
+
 export default function IntegrationsAPIsPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <Hero />
+      <ImageBand
+        src="/services/integrations.webp"
+        alt="Systems connected across a business operation"
+        caption="The connective tissue between systems"
+        className="pb-4"
+      />
+      <SectionNav sections={SECTIONS} />
       <WhatWeIntegrateCarousel />
       <CaseStudiesSection />
-      <section className="px-4 sm:px-6 pb-16 sm:pb-20 md:pb-24 pt-2 sm:pt-4">
+      <section id="faq" className={cx(SECTION_SCROLL_MT, "px-4 sm:px-6 pb-16 sm:pb-20 md:pb-24 pt-2 sm:pt-4")}>
         <div className="mx-auto max-w-[1400px]">
           <p className="text-[10px] sm:font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em] text-[#666666] mb-2">FAQ</p>
           <h2 className="text-xl sm:text-3xl md:text-4xl font-extralight tracking-tight text-[#050505] mb-2">API and integration questions, answered.</h2>

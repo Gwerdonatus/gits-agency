@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow, EditorialButton, editorialRoot, cx } from "@/components/editorial";
+import { editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -182,7 +182,7 @@ const SERVICES = [
 function ServicesSection() {
   const rm = useReducedMotion();
   return (
-    <section className="px-6 py-20 md:py-28 border-t" style={{ background: MIST, borderColor: HAIR }}>
+    <section id="services" className={cx(SECTION_SCROLL_MT, "px-6 py-20 md:py-28 border-t")} style={{ background: MIST, borderColor: HAIR }}>
       <div className="mx-auto max-w-[1400px]">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -384,7 +384,7 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
 function ExamplesSection() {
   const rm = useReducedMotion();
   return (
-    <section id="examples" className="px-6 py-20 md:py-28">
+    <section id="examples" className={cx(SECTION_SCROLL_MT, "px-6 py-20 md:py-28")}>
       <div className="mx-auto max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -449,7 +449,7 @@ const STEPS = [
 function ProcessSection() {
   const rm = useReducedMotion();
   return (
-    <section className="px-6 py-20 md:py-28 border-t" style={{ borderColor: HAIR }}>
+    <section id="process" className={cx(SECTION_SCROLL_MT, "px-6 py-20 md:py-28 border-t")} style={{ borderColor: HAIR }}>
       <div className="mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -555,7 +555,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 function FaqSection() {
   return (
-    <section className="px-6 py-20 md:py-28 border-t" style={{ borderColor: HAIR }}>
+    <section id="faq" className={cx(SECTION_SCROLL_MT, "px-6 py-20 md:py-28 border-t")} style={{ borderColor: HAIR }}>
       <div className="mx-auto max-w-3xl">
         <p className="text-[13px] font-medium uppercase tracking-[0.14em] mb-3" style={{ color: GRAPHITE }}>
           FAQ
@@ -624,10 +624,24 @@ function CTASection() {
 // ═══════════════════════════════════════════════════════════════
 // PAGE EXPORT
 // ═══════════════════════════════════════════════════════════════
+const SECTIONS: NavSection[] = [
+  { id: "services", label: "What we build" },
+  { id: "examples", label: "Examples" },
+  { id: "process", label: "Process" },
+  { id: "faq", label: "FAQ" },
+];
+
 export default function WebsitesDigitalExperiencesPage() {
   return (
     <main className={cx(editorialRoot, "min-h-screen bg-white")} style={{ fontFamily: FONT, color: INK }}>
       <Hero />
+      <ImageBand
+        src="/services/web.webp"
+        alt="A website and digital experience shown in use"
+        caption="Sites built to convert, not merely to look finished"
+        className="pb-4"
+      />
+      <SectionNav sections={SECTIONS} />
       <ServicesSection />
       <ExamplesSection />
       <ProcessSection />
