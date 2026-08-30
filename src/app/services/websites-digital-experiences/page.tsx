@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
 import { editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
@@ -234,6 +234,224 @@ function ServicesSection() {
 // ═══════════════════════════════════════════════════════════════
 // CASE STUDIES — the signature element
 // ═══════════════════════════════════════════════════════════════
+/** Counts to a target once the demo scrolls into view. */
+function useCountUp(target: number, active: boolean, duration = 1200) {
+  const [n, setN] = useState(0);
+  const rm = useReducedMotion();
+  useEffect(() => {
+    if (!active) return;
+    if (rm) { setN(target); return; }
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      // ease-out so the number settles rather than stopping dead
+      setN(Math.round(target * (1 - Math.pow(1 - t, 3))));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, active, duration, rm]);
+  return n;
+}
+
+/** NOTGATE — dark editorial construction site with stats that count up. */
+function NotgateDemo() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const projects = useCountUp(148, inView);
+  const sites = useCountUp(6, inView, 900);
+  const years = useCountUp(12, inView, 1000);
+
+  return (
+    <div ref={ref} className="h-full w-full flex flex-col justify-center px-6 sm:px-8" style={{ background: "#0B0B0D" }}>
+      <p className="text-[9px] uppercase tracking-[0.3em] text-white/40">Notgate Construction</p>
+      <p className="mt-3 text-white text-[clamp(1.1rem,3.4vw,1.7rem)] font-semibold leading-[1.1] tracking-[-0.02em]">
+        We build at
+        <br />
+        infrastructure scale.
+      </p>
+      <div className="mt-6 grid grid-cols-3 gap-3">
+        {[
+          { v: projects, suffix: "+", l: "Projects delivered" },
+          { v: sites, suffix: "", l: "Active sites" },
+          { v: years, suffix: "yr", l: "Operating" },
+        ].map((st) => (
+          <div key={st.l} className="border-t border-white/15 pt-2.5">
+            <p className="text-white text-lg sm:text-2xl font-semibold leading-none tabular-nums">
+              {st.v}
+              {st.suffix}
+            </p>
+            <p className="mt-1.5 text-[8.5px] uppercase tracking-[0.14em] text-white/40 leading-tight">{st.l}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** LaMed Pharmacy — the prescription journey, step by step. */
+function LamedDemo() {
+  const [step, setStep] = useState(0); // 0 upload · 1 verifying · 2 verified/branch
+  const rm = useReducedMotion();
+
+  useEffect(() => {
+    if (step !== 1) return;
+    const t = setTimeout(() => setStep(2), rm ? 0 : 1100);
+    return () => clearTimeout(t);
+  }, [step, rm]);
+
+  const branches = [
+    { name: "Lamed · Rayfield", km: "1.2 km", open: true },
+    { name: "Lamed · Terminus", km: "3.8 km", open: true },
+    { name: "Lamed · Bukuru", km: "9.4 km", open: false },
+  ];
+
+  return (
+    <div className="h-full w-full flex flex-col px-5 sm:px-6 py-5 bg-white">
+      <div className="flex items-center gap-1.5">
+        {["Upload", "Verify", "Collect"].map((lbl, i) => (
+          <div key={lbl} className="flex items-center gap-1.5">
+            {i > 0 && <span className="h-px w-4" style={{ background: step >= i ? "#0F7B5A" : HAIR_STRONG }} />}
+            <span
+              className="text-[8.5px] uppercase tracking-[0.14em] px-1.5 py-0.5 rounded"
+              style={{
+                color: step >= i ? "#0F7B5A" : GRAPHITE,
+                background: step >= i ? "rgba(15,123,90,0.08)" : "transparent",
+              }}
+            >
+              {lbl}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-4 flex-1 flex flex-col justify-center">
+        {step === 0 && (
+          <button
+            type="button"
+            onClick={() => setStep(1)}
+            className="w-full rounded-xl border border-dashed py-6 text-center transition-colors hover:bg-black/[0.02]"
+            style={{ borderColor: HAIR_STRONG }}
+          >
+            <span className="block text-[13px] font-medium" style={{ color: INK }}>
+              Upload your prescription
+            </span>
+            <span className="mt-1 block text-[10.5px]" style={{ color: GRAPHITE }}>
+              Photo or PDF · verified by a pharmacist
+            </span>
+          </button>
+        )}
+
+        {step === 1 && (
+          <div className="text-center">
+            <div className="mx-auto h-8 w-8 rounded-full border-2 border-black/10 border-t-[#0F7B5A] animate-spin" />
+            <p className="mt-3 text-[11.5px]" style={{ color: GRAPHITE }}>
+              Checking PLASCHEMA coverage&hellip;
+            </p>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div>
+            <div
+              className="flex items-center gap-2 rounded-lg px-3 py-2"
+              style={{ background: "rgba(15,123,90,0.08)" }}
+            >
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#0F7B5A" strokeWidth="2">
+                <path d="M3 8.5l3.2 3.2L13 5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="text-[11px] font-medium" style={{ color: "#0F7B5A" }}>
+                PLASCHEMA verified &middot; covered
+              </span>
+            </div>
+            <p className="mt-3 text-[9px] uppercase tracking-[0.16em]" style={{ color: GRAPHITE }}>
+              Collect from
+            </p>
+            <div className="mt-1.5 space-y-1">
+              {branches.map((b) => (
+                <div key={b.name} className="flex items-center justify-between py-1.5 border-b" style={{ borderColor: HAIR }}>
+                  <span className="text-[11.5px]" style={{ color: b.open ? INK : FAINT }}>
+                    {b.name}
+                  </span>
+                  <span className="text-[10px] tabular-nums" style={{ color: b.open ? GRAPHITE : FAINT }}>
+                    {b.open ? b.km : "Closed"}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setStep(0)}
+              className="mt-3 text-[10px] underline underline-offset-2"
+              style={{ color: GRAPHITE }}
+            >
+              Reset demo
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** Elowen Living — an editorial listing that switches view. */
+function ElowenDemo() {
+  const [view, setView] = useState<"exterior" | "interior" | "plan">("exterior");
+  const views = {
+    exterior: { grad: "linear-gradient(135deg,#8E8578 0%,#3E3A34 100%)", cap: "North elevation" },
+    interior: { grad: "linear-gradient(135deg,#C9C0B4 0%,#6E6559 100%)", cap: "Principal reception" },
+    plan: { grad: "linear-gradient(135deg,#E8E4DC 0%,#B9B2A6 100%)", cap: "Ground floor plan" },
+  } as const;
+
+  return (
+    <div className="h-full w-full flex flex-col bg-white">
+      <div className="relative flex-1 overflow-hidden">
+        <motion.div
+          key={view}
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease }}
+          className="absolute inset-0"
+          style={{ background: views[view].grad }}
+        />
+        <div className="absolute left-4 bottom-3">
+          <p className="text-[8.5px] uppercase tracking-[0.2em] text-white/70">{views[view].cap}</p>
+        </div>
+        <div className="absolute right-3 top-3 flex gap-1">
+          {(Object.keys(views) as (keyof typeof views)[]).map((k) => (
+            <button
+              key={k}
+              type="button"
+              onClick={() => setView(k)}
+              className="px-2 py-1 text-[8.5px] uppercase tracking-[0.12em] rounded-sm backdrop-blur transition-colors"
+              style={{
+                background: view === k ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.22)",
+                color: view === k ? INK : "#fff",
+              }}
+            >
+              {k}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="px-5 py-3.5 flex items-end justify-between">
+        <div>
+          <p className="text-[8.5px] uppercase tracking-[0.2em]" style={{ color: GRAPHITE }}>
+            Maitama, Abuja
+          </p>
+          <p className="mt-1 text-[15px] tracking-[-0.01em]" style={{ color: INK }}>
+            Five-bedroom residence
+          </p>
+        </div>
+        <p className="text-[13px] tabular-nums" style={{ color: INK }}>
+          &#8358;480m
+        </p>
+      </div>
+    </div>
+  );
+}
+
 const WEBSITES = [
   {
     index: "01",
@@ -243,6 +461,7 @@ const WEBSITES = [
     story:
       "A construction brand that needed to feel like it builds at scale. We wrote a dark, editorial layout with dramatic type and count-up stats that animate in as you scroll, so the site communicates precision before a single word is read.",
     tags: ["Framer Motion", "Dark UI", "Animated counters"],
+    Demo: NotgateDemo,
   },
   {
     index: "02",
@@ -252,6 +471,7 @@ const WEBSITES = [
     story:
       "A pharmacy platform where trust and clarity matter more than flourish. We built a prescription upload flow, a branch finder, and PLASCHEMA verification into a clean interface that reads well for every age group, on any device.",
     tags: ["Prescription upload", "Branch finder", "PLASCHEMA"],
+    Demo: LamedDemo,
   },
   {
     index: "03",
@@ -261,6 +481,7 @@ const WEBSITES = [
     story:
       "A real estate brand that sells a feeling before it sells square footage. We leaned into editorial typography and full-bleed property imagery, giving every listing room to breathe the way a magazine spread would.",
     tags: ["Editorial layout", "Property tours", "Typography-led"],
+    Demo: ElowenDemo,
   },
 ];
 
@@ -312,19 +533,15 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
             </div>
           </div>
 
-          {/* center label */}
-          <div className="relative h-full flex flex-col items-center justify-center px-6 text-center">
-            <motion.div animate={hovered ? { y: -6 } : { y: 0 }} transition={{ duration: 0.4, ease }}>
-              <p className="text-[11px] uppercase tracking-[0.16em] mb-2" style={{ color: GRAPHITE }}>
-                {site.category}
-              </p>
-              <h3 className="text-3xl font-semibold tracking-[-0.02em]" style={{ color: INK }}>
-                {site.title}
-              </h3>
-            </motion.div>
+          {/* Live demo. Replaces a frame that previously showed only the
+              client's name — a mockup of a mockup. */}
+          <div className="absolute inset-x-0 bottom-0 top-[38px]">
+            <site.Demo />
           </div>
 
           {/* hover overlay */}
+          {/* Sits in the chrome bar, not over the demo: a full-cover overlay
+              would swallow clicks meant for the demo itself. */}
           <motion.a
             href={site.url}
             target="_blank"
@@ -332,10 +549,9 @@ function CaseStudyRow({ site, i }: { site: (typeof WEBSITES)[number]; i: number 
             initial={{ opacity: 0 }}
             animate={{ opacity: hovered ? 1 : 0 }}
             transition={{ duration: 0.25 }}
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ background: "rgba(29,29,31,0.88)" }}
+            className="absolute right-3 top-1.5 z-10 flex items-center justify-center"
           >
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[14px] font-medium" style={{ color: INK }}>
+            <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-medium" style={{ color: "#fff", background: INK }}>
               View live site
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M7 17L17 7M17 7H7M17 7V17" />
