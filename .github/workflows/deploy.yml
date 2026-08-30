@@ -1,0 +1,83 @@
+name: Deploy
+
+# Builds on Linux, which is the point: the OpenNext Cloudflare adapter is not
+# fully supported on Windows and its build fails there with
+# ERR_UNSUPPORTED_ESM_URL_SCHEME on absolute C:\ paths.
+#
+# Pull requests are checked but never deployed. Only a push to main ships.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  # A newer push supersedes an in-flight deploy rather than racing it.
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build${{ github.event_name == 'push' && ' and deploy' || ' (check only)' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      # Public values, inlined into the client bundle at build time. They are
+      # readable in the shipped JS either way, so they are repository variables
+      # rather than secrets — with the same fallbacks the code uses.
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vih4pg3q' }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET || 'production' }}
+      NEXT_PUBLIC_SANITY_API_VERSION: ${{ vars.NEXT_PUBLIC_SANITY_API_VERSION || '2025-05-21' }}
+      # Read token: the blog reads from Sanity during the build.
+      SANITY_API_READ_TOKEN: ${{ secrets.SANITY_API_READ_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+        env:
+          # puppeteer is only used by scripts/capture-work-screenshots.mjs, which
+          # is run by hand. Without this it downloads a ~170MB Chromium on every
+          # CI run for nothing.
+          PUPPETEER_SKIP_DOWNLOAD: "true"
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build worker
+        run: npm run build:worker
+
+      # Deploy only from main, and only once the build above has passed.
+      - name: Deploy to Cloudflare
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --config wrangler.toml
+          # The build already ran above; do not repeat it.
+          packageManager: npm
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### ${{ github.event_name == 'push' && 'Deploy' || 'Check' }}"
+            echo ""
+            echo "- commit: \`${{ github.sha }}\`"
+            echo "- typecheck and worker build: completed"
+            if [ "${{ github.event_name }}" = "push" ]; then
+              echo "- deployed to Cloudflare Workers"
+            else
+              echo "- pull request: checked, not deployed"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
