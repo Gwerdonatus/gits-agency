@@ -1,0 +1,18 @@
+# Normalise line endings.
+#
+# CRLF inside a multi-line className is a real bug in a React app: HTML parsing
+# strips the CR from attribute values, so the string React holds on the client
+# and the attribute it finds in the parsed DOM differ, and React reports a
+# hydration mismatch on every affected element. Keeping the working tree on LF
+# removes that whole class of failure.
+* text=auto eol=lf
+
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.ico  binary
+*.mp4  binary
+*.ttf  binary
+*.woff binary
+*.woff2 binary

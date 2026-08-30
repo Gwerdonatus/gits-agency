@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useId, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   animate,
   motion,
@@ -78,11 +78,12 @@ export default function ProcessCarouselPerfect() {
   // For drag resistance
   const dragStartX = useRef(0);
 
-  // Unique IDs per component instance (avoids SVG id collisions if rendered twice)
-  const uid = useMemo(
-    () => `gits-${Math.random().toString(36).slice(2, 9)}`,
-    []
-  );
+  // Unique IDs per component instance (avoids SVG id collisions if rendered
+  // twice). useId rather than Math.random: a random value differs between
+  // the server render and the client render, which made React bail out of
+  // hydration for this whole subtree.
+  const reactId = useId();
+  const uid = `gits-${reactId.replace(/:/g, "")}`;
   const clipId = `${uid}-waveClip`;
   const gradId = `${uid}-waveGrad`;
 

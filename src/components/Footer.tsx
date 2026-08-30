@@ -182,11 +182,7 @@ function NewsletterSignup() {
                     placeholder="your@email.com"
                     autoComplete="email"
                     inputMode="email"
-                    className="flex-1 min-w-0 rounded-full border border-white/10 bg-white/[0.05]
-                               px-4 py-[9px] text-[12.5px] text-white/80
-                               placeholder:text-white/20 outline-none
-                               focus:border-white/20 focus:bg-white/[0.07]
-                               transition-all duration-200"
+                    className="flex-1 min-w-0 rounded-full border border-white/10 bg-white/[0.05] px-4 py-[9px] text-[12.5px] text-white/80 placeholder:text-white/20 outline-none focus:border-white/20 focus:bg-white/[0.07] transition-all duration-200"
                     style={{ fontFamily: "DM Sans, sans-serif" }}
                   />
                   <motion.button
@@ -194,9 +190,7 @@ function NewsletterSignup() {
                     disabled={!canSend}
                     whileHover={canSend ? { y: -1 } : {}}
                     transition={{ duration: 0.18, ease: spring }}
-                    className="rounded-full px-5 py-[9px] text-[12.5px] font-medium
-                               transition-all duration-200 whitespace-nowrap
-                               disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="rounded-full px-5 py-[9px] text-[12.5px] font-medium transition-all duration-200 whitespace-nowrap disabled:opacity-40 disabled:cursor-not-allowed"
                     style={{
                       fontFamily: "DM Sans, sans-serif",
                       backgroundColor: status === "sending" ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.9)",
@@ -275,9 +269,7 @@ export default function Footer() {
             <motion.div whileHover={{ y: -1 }} transition={{ duration: 0.18, ease: spring }}>
               <Link
                 href="/audit"
-                className="inline-flex items-center gap-2 bg-white text-black
-                           px-6 py-[11px] rounded-full text-[12.5px] font-medium
-                           hover:bg-white/90 transition-colors duration-200"
+                className="inline-flex items-center gap-2 bg-white text-black px-6 py-[11px] rounded-full text-[12.5px] font-medium hover:bg-white/90 transition-colors duration-200"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 Get a free audit ↗
@@ -286,10 +278,7 @@ export default function Footer() {
             <motion.div whileHover={{ y: -1 }} transition={{ duration: 0.18, ease: spring }}>
               <Link
                 href="mailto:hello@gits.technology"
-                className="inline-flex items-center gap-2 border border-white/14 rounded-full
-                           px-6 py-[11px] text-[12.5px] text-white/55 hover:text-white
-                           hover:border-white/35 hover:bg-white/[0.04]
-                           transition-all duration-[250ms]"
+                className="inline-flex items-center gap-2 border border-white/14 rounded-full px-6 py-[11px] text-[12.5px] text-white/55 hover:text-white hover:border-white/35 hover:bg-white/[0.04] transition-all duration-[250ms]"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 hello@gits.technology
@@ -365,9 +354,7 @@ export default function Footer() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: spring, delay: 0.3 + i * 0.07 }}
                   whileHover={{ y: -2, color: "#ffffff" }}
-                  className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center
-                             text-white/35 hover:text-white hover:border-white/30 hover:bg-white/[0.05]
-                             transition-colors duration-200"
+                  className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/35 hover:text-white hover:border-white/30 hover:bg-white/[0.05] transition-colors duration-200"
                 >
                   <Icon />
                 </motion.a>
