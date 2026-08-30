@@ -1203,6 +1203,45 @@ export default function GITSAdvisor3D() {
     setUnread(u => u + 1);
   }, [setRobotMode]);
 
+  /* ── Keyboard-aware sheet height ──────────────────────────────
+       On a phone the software keyboard does not change 100vh, so a sheet
+       sized in vh keeps its full height and the composer ends up underneath
+       the keyboard. visualViewport reports the actually-visible area, so the
+       sheet can shrink to it and keep the input in view. */
+    useEffect(() => {
+      const vv = window.visualViewport;
+      if (!vv) return;
+
+      const apply = () => {
+        // Offset matters when the browser scrolls the page under a fixed
+        // element to make room for the keyboard.
+        const h = Math.round(vv.height);
+        document.documentElement.style.setProperty("--g3d-vvh", `${h}px`);
+      };
+
+      apply();
+      vv.addEventListener("resize", apply);
+      vv.addEventListener("scroll", apply);
+      return () => {
+        vv.removeEventListener("resize", apply);
+        vv.removeEventListener("scroll", apply);
+      };
+    }, []);
+
+    /* Keep the latest message visible when the keyboard opens or closes. */
+    useEffect(() => {
+      if (!chatOpen) return;
+      const vv = window.visualViewport;
+      if (!vv) return;
+      const onResize = () => {
+        window.requestAnimationFrame(() => {
+          msgsEndRef.current?.scrollIntoView({ block: "end" });
+        });
+      };
+      vv.addEventListener("resize", onResize);
+      return () => vv.removeEventListener("resize", onResize);
+    }, [chatOpen]);
+
   /* ── Open / Close ── */
   const openChat = useCallback(() => {
     setChatOpen(true);
@@ -1212,7 +1251,10 @@ export default function GITSAdvisor3D() {
     setBubble(b => ({ ...b, show: false }));
     setRobotMode("handsup");
     setTimeout(() => setRobotMode("excited", 900), 800);
-    if (window.innerWidth < 600) document.body.style.overflow = "hidden";
+    if (window.innerWidth < 600) {
+      document.body.style.overflow = "hidden";
+      document.body.classList.add("g3d-sheet-open");
+    }
 
     if (!chatStarted.current) {
       chatStarted.current = true;
@@ -1272,7 +1314,12 @@ export default function GITSAdvisor3D() {
     }
 
     setTimeout(() => {
-      textareaRef.current?.focus();
+      // Desktop only. Focusing on a phone throws the keyboard up the moment
+      // the panel opens, which covers the conversation before the visitor has
+      // read a word of it. On touch, let them tap the field themselves.
+      const isTouch = window.matchMedia("(max-width: 600px)").matches
+        || window.matchMedia("(pointer: coarse)").matches;
+      if (!isTouch) textareaRef.current?.focus();
       msgsEndRef.current?.scrollIntoView({ behavior: "instant" });
     }, 600);
   }, [setRobotMode]);
@@ -1283,6 +1330,7 @@ export default function GITSAdvisor3D() {
     setConfirmClear(false);
     setRobotMode("idle");
     document.body.style.overflow = "";
+    document.body.classList.remove("g3d-sheet-open");
   }, [setRobotMode]);
 
   /* ── Text formatting ── */
@@ -1810,4 +1858,64 @@ const CSS = `
 .g3d-confirm-no { color:#86868f; }
 .g3d-scroll-btn { background:#ffffff; border:1px solid rgba(5,5,5,0.10); color:#1a1a1f; }
 .g3d-typing-label { color:#86868f; }
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE: bottom sheet
+   The panel used to float 180px above the bottom on a phone, which spent a
+   fifth of a small screen on nothing and left the conversation cramped. It is
+   now a sheet anchored to the bottom edge, sized to the visual viewport so the
+   software keyboard shrinks it rather than covering the composer.
+   ══════════════════════════════════════════════════════════════ */
+@media(max-width:600px){
+  .g3d-chat{
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+    width:100vw !important;
+    /* --g3d-vvh is the visible viewport height, updated as the keyboard
+       opens and closes; the vh fallback covers browsers without the API. */
+    height:calc(var(--g3d-vvh, 100vh) - 56px) !important;
+    max-height:calc(var(--g3d-vvh, 100vh) - 56px) !important;
+    min-height:0 !important;
+    border-radius:24px 24px 0 0 !important;
+    border-left:none !important;
+    border-right:none !important;
+    border-bottom:none !important;
+    transform-origin:bottom center;
+  }
+  /* Give the composer room above the home indicator. */
+  .g3d-input-row{ padding-bottom:calc(12px + env(safe-area-inset-bottom)) !important; }
+
+  /* A grab handle, so the sheet reads as a sheet. */
+  .g3d-head::before{
+    content:'';
+    position:absolute;
+    top:6px; left:50%;
+    width:36px; height:4px;
+    margin-left:-18px;
+    border-radius:100px;
+    background:rgba(5,5,5,0.14);
+  }
+  .g3d-head{ padding-top:18px !important; }
+
+  /* The robot is the thing you tapped to get here; it competes with the sheet
+     and eats a corner of it while open. */
+  body.g3d-sheet-open .g3d-canvas,
+  body.g3d-sheet-open .g3d-bubble,
+  body.g3d-sheet-open .g3d-badge{
+    opacity:0 !important;
+    pointer-events:none !important;
+  }
+
+  /* Comfortable touch targets. */
+  .g3d-q{ padding:10px 15px !important; font-size:12.5px !important; }
+  .g3d-send{ width:44px !important; height:44px !important; }
+  .g3d-input{ font-size:16px !important; }  /* 16px stops iOS zooming on focus */
+}
+
+/* A short conversation should sit down by the composer, the way every
+   messaging app behaves, rather than stranded at the top of a tall sheet.
+   The auto-margin on a pseudo-element does this without the clipped-scrollback
+   that justify-content:flex-end causes on an overflowing flex container. */
+.g3d-msgs::before { content:''; margin-top:auto; }
 `;
