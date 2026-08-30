@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Inter } from "next/font/google";
 import { editorialRoot, cx } from "@/components/editorial";
 
@@ -141,6 +141,178 @@ function useIsMobile() {
 }
 
 const easeOut = [0.22, 0.61, 0.36, 1] as const;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Mobile service band.
+   Its own component so each band can hold its own scroll progress: the
+   photograph drifts against the band as it passes, which gives the list a
+   sense of depth while scrolling without any of it being decorative noise.
+   Photographs keep their colour — only the background steps through the ramp.
+   ───────────────────────────────────────────────────────────────────────── */
+function MobileServiceBand({
+  s,
+  i,
+  total,
+  shade,
+}: {
+  s: (typeof SERVICES)[number];
+  i: number;
+  total: number;
+  shade: (typeof MOBILE_SHADES)[number];
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  // Gentle counter-drift. Kept small: enough to feel alive, not enough to read
+  // as a gimmick or to shift the crop noticeably.
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+
+  const stagger = (d: number) => ({
+    initial: { opacity: 0, y: 14 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-40px" },
+    transition: { duration: reduced ? 0 : 0.55, ease: easeOut, delay: reduced ? 0 : d },
+  });
+
+  return (
+    <div
+      ref={ref}
+      style={{ background: shade.bg, color: shade.ink }}
+      className="px-6 py-16 overflow-hidden"
+    >
+      <motion.div {...stagger(0)} className="flex items-baseline justify-between">
+        <span
+          className="font-[family-name:var(--font-mono)] text-[11px] tracking-[0.22em]"
+          style={{ color: shade.quiet }}
+        >
+          {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+        </span>
+        {i === 0 && (
+          <span
+            className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em]"
+            style={{ color: shade.quiet }}
+          >
+            Most requested
+          </span>
+        )}
+      </motion.div>
+
+      {/* Rule draws itself across as the band enters. */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: reduced ? 0 : 0.8, ease: easeOut, delay: reduced ? 0 : 0.05 }}
+        style={{ background: shade.rule, transformOrigin: "left" }}
+        className="mt-4 h-px w-full"
+      />
+
+      <motion.h3
+        {...stagger(0.06)}
+        className="mt-7 text-[1.8rem] font-extralight leading-[1.12] tracking-tight"
+      >
+        {s.title}
+      </motion.h3>
+      <motion.p
+        {...stagger(0.1)}
+        className="mt-3 text-[15px] font-light leading-[1.7]"
+        style={{ color: shade.quiet }}
+      >
+        {s.shortValue}
+      </motion.p>
+
+      {/* Photograph in colour, drifting slightly against the band. */}
+      <motion.div
+        {...stagger(0.14)}
+        className="mt-8 relative w-full aspect-[16/10] overflow-hidden"
+      >
+        <motion.img
+          src={s.image}
+          alt={s.imageAlt}
+          className="absolute inset-0 h-full w-full object-cover"
+          style={reduced ? undefined : { y: imageY, scale: 1.12 }}
+          loading={i === 0 ? "eager" : "lazy"}
+          draggable={false}
+        />
+      </motion.div>
+
+      <motion.div {...stagger(0.06)} className="mt-9">
+        <p
+          className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
+          style={{ color: shade.quiet }}
+        >
+          What we build
+        </p>
+        <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-2.5">
+          {s.whatWeBuild.map((item, n) => (
+            <motion.span
+              key={item}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: reduced ? 0 : 0.4, ease: easeOut, delay: reduced ? 0 : n * 0.03 }}
+              className="text-[13px] font-light leading-snug"
+            >
+              {item}
+            </motion.span>
+          ))}
+        </div>
+      </motion.div>
+
+      <div className="mt-9 h-px w-full" style={{ background: shade.rule }} />
+
+      <motion.div {...stagger(0.06)} className="mt-9 grid grid-cols-2 gap-x-5 gap-y-6">
+        <div>
+          <p
+            className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
+            style={{ color: shade.quiet }}
+          >
+            Ideal for
+          </p>
+          <ul className="mt-3 space-y-2">
+            {s.idealFor.map((item) => (
+              <li key={item} className="text-[13px] font-light leading-snug">{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p
+            className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
+            style={{ color: shade.quiet }}
+          >
+            Benefits
+          </p>
+          <ul className="mt-3 space-y-2">
+            {s.benefits.map((item) => (
+              <li key={item} className="text-[13px] font-light leading-snug">{item}</li>
+            ))}
+          </ul>
+        </div>
+      </motion.div>
+
+      <motion.div {...stagger(0.08)} className="mt-11 flex flex-wrap items-center gap-3">
+        <a
+          href="/contact"
+          className="inline-flex items-center justify-center px-6 py-3.5 text-[13px] font-normal tracking-wide transition-opacity duration-300 hover:opacity-85"
+          style={{ background: shade.ink, color: shade.bg }}
+        >
+          {s.cta}
+        </a>
+        <a
+          href={`/services/${s.slug}`}
+          className="inline-flex items-center gap-2 px-6 py-3.5 text-[13px] font-normal tracking-wide border transition-opacity duration-300 hover:opacity-70"
+          style={{ borderColor: shade.rule, color: shade.ink }}
+        >
+          View full page
+          <span aria-hidden>&rarr;</span>
+        </a>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function ServicesPage() {
   const reducedMotion = usePrefersReducedMotion();
@@ -514,122 +686,15 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        {SERVICES.map((s, i) => {
-          const shade = MOBILE_SHADES[i % MOBILE_SHADES.length];
-          return (
-            <motion.div
-              key={s.title}
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, ease: easeOut }}
-              style={{ background: shade.bg, color: shade.ink }}
-              className="px-6 py-14"
-            >
-              {/* Position marker: the numeral does the work the emoji tile did,
-                  and reinforces where you are in the ramp. */}
-              <div className="flex items-baseline justify-between">
-                <span
-                  className="font-[family-name:var(--font-mono)] text-[11px] tracking-[0.22em]"
-                  style={{ color: shade.quiet }}
-                >
-                  {String(i + 1).padStart(2, "0")} / {String(SERVICES.length).padStart(2, "0")}
-                </span>
-                {i === 0 && (
-                  <span
-                    className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.18em]"
-                    style={{ color: shade.quiet }}
-                  >
-                    Most requested
-                  </span>
-                )}
-              </div>
-
-              <h3 className="mt-5 text-[1.75rem] font-extralight leading-[1.15] tracking-tight">
-                {s.title}
-              </h3>
-              <p className="mt-3 text-[15px] font-light leading-[1.7]" style={{ color: shade.quiet }}>
-                {s.shortValue}
-              </p>
-
-              {/* Photograph, uncovered — no colour glow, no wash. */}
-              <div className="mt-7 relative w-full aspect-[16/10] overflow-hidden">
-                <img
-                  src={s.image}
-                  alt={s.imageAlt}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  style={{ filter: "grayscale(1) contrast(1.04)" }}
-                  loading={i === 0 ? "eager" : "lazy"}
-                  draggable={false}
-                />
-              </div>
-
-              <div className="mt-8">
-                <p
-                  className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
-                  style={{ color: shade.quiet }}
-                >
-                  What we build
-                </p>
-                <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-2.5">
-                  {s.whatWeBuild.map((item) => (
-                    <span key={item} className="text-[13px] font-light leading-snug">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-8 h-px w-full" style={{ background: shade.rule }} />
-
-              <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-6">
-                <div>
-                  <p
-                    className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
-                    style={{ color: shade.quiet }}
-                  >
-                    Ideal for
-                  </p>
-                  <ul className="mt-3 space-y-2">
-                    {s.idealFor.map((item) => (
-                      <li key={item} className="text-[13px] font-light leading-snug">{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p
-                    className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.2em]"
-                    style={{ color: shade.quiet }}
-                  >
-                    Benefits
-                  </p>
-                  <ul className="mt-3 space-y-2">
-                    {s.benefits.map((item) => (
-                      <li key={item} className="text-[13px] font-light leading-snug">{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="mt-10 flex flex-wrap items-center gap-3">
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center px-6 py-3.5 text-[13px] font-normal tracking-wide transition-colors duration-300"
-                  style={{ background: shade.ink, color: shade.bg }}
-                >
-                  {s.cta}
-                </a>
-                <a
-                  href={`/services/${s.slug}`}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 text-[13px] font-normal tracking-wide border transition-colors duration-300"
-                  style={{ borderColor: shade.rule, color: shade.ink }}
-                >
-                  View full page
-                  <span aria-hidden>&rarr;</span>
-                </a>
-              </div>
-            </motion.div>
-          );
-        })}
+        {SERVICES.map((s, i) => (
+          <MobileServiceBand
+            key={s.title}
+            s={s}
+            i={i}
+            total={SERVICES.length}
+            shade={MOBILE_SHADES[i % MOBILE_SHADES.length]}
+          />
+        ))}
       </section>
 
       {/* ─── CONVERSION STRIP ─── */}
