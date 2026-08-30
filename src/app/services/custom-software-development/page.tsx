@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 import { SERVICE_ICONS, type ServiceIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
@@ -1385,12 +1385,6 @@ export default function CustomSoftwareDevelopmentPage() {
       <Hero />
       {/* Photograph sits between the hero and the dense content below, so the
             page opens with something other than a wall of type. */}
-      <ImageBand
-        src="/services/software.webp"
-        alt="Custom software being used in a working business environment"
-        caption="Software built around an operation, not around a template"
-        className="pb-4"
-      />
       <WhatWeBuildCarousel />
       <CaseStudiesSection />
       <section id="faq" className={cx(SECTION_SCROLL_MT, "px-6 sm:px-10 lg:px-16 pb-28 pt-4")}>

@@ -1528,42 +1528,29 @@ export default function GITSAdvisor3D() {
 ═══════════════════════════════════════════════════════════════ */
 const CSS = `
 :root {
-  --gb:   #080807;
-  --gb2:  #111110;
-  --gb3:  #1c1c1a;
-  --gb4:  #272725;
-  --gb5:  #323230;
-  --gw:   #f2f2ee;
-  --gw2:  #c8c8c4;
-  --gw3:  #888884;
-  --gw4:  #4a4a48;
-  --gbr:  rgba(255,255,255,0.08);
-  --gbr2: rgba(255,255,255,0.14);
-  --gbr3: rgba(255,255,255,0.24);
-  --gsh:  0 32px 80px rgba(0,0,0,0.92), 0 6px 22px rgba(0,0,0,0.65);
-  --gsh2: 0 12px 40px rgba(0,0,0,0.8);
+  /* Light by default. This widget used to take its palette from
+     prefers-color-scheme, so it rendered near-black for anyone whose OS was
+     in dark mode — on a site that is always light. Surfaces are now fixed. */
+  --gb:   #ffffff;
+  --gb2:  #ffffff;
+  --gb3:  #ffffff;
+  --gb4:  rgba(5,5,5,0.05);
+  --gb5:  rgba(5,5,5,0.08);
+  --gw:   #1a1a1f;
+  --gw2:  #55555f;
+  --gw3:  #86868f;
+  --gw4:  #a9a9b2;
+  --gbr:  rgba(5,5,5,0.07);
+  --gbr2: rgba(5,5,5,0.12);
+  --gbr3: rgba(5,5,5,0.18);
+  --gsh:  0 32px 70px rgba(20,20,40,0.16), 0 6px 20px rgba(20,20,40,0.08);
+  --gsh2: 0 18px 46px rgba(20,20,40,0.16);
   --gf:   'Syne','Bricolage Grotesque',system-ui,sans-serif;
   --gm:   'DM Mono',monospace;
   --gdanger: #e05252;
 }
-@media(prefers-color-scheme:light) {
-  :root {
-    --gb:   #f8f8f6;
-    --gb2:  #ffffff;
-    --gb3:  #f0f0ec;
-    --gb4:  #e8e8e4;
-    --gb5:  #e0e0dc;
-    --gw:   #111110;
-    --gw2:  #333330;
-    --gw3:  #777774;
-    --gw4:  #aaaaaa;
-    --gbr:  rgba(0,0,0,0.08);
-    --gbr2: rgba(0,0,0,0.12);
-    --gbr3: rgba(0,0,0,0.2);
-    --gsh:  0 32px 80px rgba(0,0,0,0.18), 0 6px 22px rgba(0,0,0,0.1);
-    --gsh2: 0 12px 40px rgba(0,0,0,0.12);
-  }
-}
+/* (the prefers-color-scheme override is gone: the palette above is fixed) */
+
 #g3d-root {
   position: fixed !important;
   bottom: 24px !important;
@@ -1752,4 +1739,75 @@ const CSS = `
   .g3d-bubble { transition:opacity .15s!important; }
   .g3d-chat   { transition:opacity .15s!important; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   SOFT LIGHT TREATMENT
+   A white card, a pale spectrum wash behind the conversation, pill
+   controls and dark text on light ground.
+   ══════════════════════════════════════════════════════════════ */
+.g3d-chat { background:#ffffff; border:1px solid rgba(5,5,5,0.07); border-radius:28px; }
+.g3d-head { background:#ffffff; border-bottom:1px solid rgba(5,5,5,0.06); padding:14px 14px 12px; }
+.g3d-head-name { color:#1a1a1f; }
+.g3d-head-sub  { color:#86868f; }
+
+/* The conversation sits on a pale spectrum, which is what gives the panel
+   its warmth without introducing a brand colour. */
+.g3d-msgs {
+  padding:18px 14px 10px;
+  background:
+    radial-gradient(120% 80% at 8% 92%,  rgba(184,236,196,0.30) 0%, rgba(184,236,196,0) 55%),
+    radial-gradient(110% 70% at 92% 88%, rgba(190,196,250,0.34) 0%, rgba(190,196,250,0) 58%),
+    radial-gradient(90% 60% at 88% 12%,  rgba(250,206,222,0.30) 0%, rgba(250,206,222,0) 60%),
+    radial-gradient(80% 55% at 12% 8%,   rgba(252,232,198,0.26) 0%, rgba(252,232,198,0) 62%),
+    #ffffff;
+}
+.g3d-msgs::-webkit-scrollbar-thumb { background:rgba(5,5,5,0.14); }
+
+.g3d-bub { background:rgba(255,255,255,0.86); border:1px solid rgba(5,5,5,0.07); color:#1a1a1f; border-radius:18px; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+.g3d-bub strong { color:#1a1a1f; }
+.g3d-row.user .g3d-bub { background:#1a1a1f; border-color:#1a1a1f; color:#ffffff; }
+.g3d-row.user .g3d-bub strong { color:#ffffff; }
+.g3d-ts, .g3d-you { color:#86868f; }
+
+/* Quick prompts as pills */
+.g3d-quicks { padding:6px 14px 12px; }
+.g3d-q { background:rgba(5,5,5,0.045); border:1px solid transparent; color:#55555f; font-size:11.5px; padding:8px 14px; border-radius:100px; }
+.g3d-q:hover { background:rgba(5,5,5,0.075); border-color:rgba(5,5,5,0.10); color:#1a1a1f; }
+
+/* Composer: pill field, round send */
+.g3d-input-row { background:#ffffff; border-top:1px solid rgba(5,5,5,0.06); padding:10px 12px 12px; gap:8px; }
+.g3d-input { background:rgba(5,5,5,0.04); border:1px solid transparent; border-radius:100px; color:#1a1a1f; padding:11px 16px; }
+.g3d-input::placeholder { color:#86868f; }
+.g3d-input:focus { background:#ffffff; border-color:rgba(5,5,5,0.14); box-shadow:0 0 0 3px rgba(108,116,248,0.10); }
+.g3d-send { background:#1a1a1f; color:#ffffff; border:none; border-radius:50%; }
+.g3d-send:hover:not(:disabled) { background:#000000; }
+.g3d-send:disabled { background:rgba(5,5,5,0.10); color:#a9a9b2; }
+
+.g3d-icon-btn, .g3d-close { color:#86868f; }
+.g3d-icon-btn:hover, .g3d-close:hover { color:#1a1a1f; background:rgba(5,5,5,0.05); }
+.g3d-footer, .g3d-footer-hint { background:#ffffff; color:#86868f; border-top-color:rgba(5,5,5,0.06); }
+.g3d-menu { background:#ffffff; border:1px solid rgba(5,5,5,0.08); }
+.g3d-menu-item { color:#55555f; }
+.g3d-menu-item:hover { background:rgba(5,5,5,0.05); color:#1a1a1f; }
+.g3d-menu-div { background:rgba(5,5,5,0.07); }
+.g3d-dot, .g3d-dots span { background:#86868f; }
+
+/* Teaser bubble beside the robot */
+.g3d-bubble { background:#ffffff; border:1px solid rgba(5,5,5,0.08); color:#1a1a1f; }
+.g3d-bubble::before { border-top-color:#ffffff; }
+.g3d-bubble::after  { border-top-color:rgba(5,5,5,0.10); }
+.g3d-bubble-txt, .g3d-bubble-txt strong { color:#1a1a1f; }
+.g3d-bubble-x { background:rgba(5,5,5,0.05); border-color:rgba(5,5,5,0.08); color:#86868f; }
+.g3d-bubble-x:hover { background:rgba(5,5,5,0.09); color:#1a1a1f; }
+.g3d-bubble-yes { background:#1a1a1f; color:#ffffff; }
+.g3d-bubble-yes:hover { background:#000000; }
+.g3d-bubble-no { color:#86868f; border-color:rgba(5,5,5,0.14); }
+.g3d-bubble-no:hover { color:#1a1a1f; border-color:rgba(5,5,5,0.24); }
+
+.g3d-confirm-strip { background:#ffffff; border-color:rgba(5,5,5,0.08); }
+.g3d-confirm-txt { color:#55555f; }
+.g3d-confirm-yes { background:#1a1a1f; color:#ffffff; }
+.g3d-confirm-no { color:#86868f; }
+.g3d-scroll-btn { background:#ffffff; border:1px solid rgba(5,5,5,0.10); color:#1a1a1f; }
+.g3d-typing-label { color:#86868f; }
 `;

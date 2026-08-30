@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useInView, useReducedMotion } from "framer-motion";
-import { EditorialButton, Eyebrow, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { EditorialButton, Eyebrow, editorialRoot, cx, SectionNav, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
 
@@ -912,12 +912,6 @@ export default function WebsitesDigitalExperiencesPage() {
     <main className={cx(editorialRoot, "min-h-screen bg-white")} style={{ fontFamily: FONT, color: INK }}>
       <SectionNav sections={SECTIONS} />
       <Hero />
-      <ImageBand
-        src="/services/web.webp"
-        alt="A website and digital experience shown in use"
-        caption="Sites built to convert, not merely to look finished"
-        className="pb-4"
-      />
       <ServicesSection />
       <ExamplesSection />
       <ProcessSection />

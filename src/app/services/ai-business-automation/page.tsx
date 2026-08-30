@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 import { CONCEPT_ICONS, type ConceptIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
@@ -1630,12 +1630,6 @@ export default function AIAutomationPage() {
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <SectionNav sections={SECTIONS} />
       <Hero />
-      <ImageBand
-        src="/services/ai.webp"
-        alt="AI automation running inside a working business process"
-        caption="Automation with guardrails, not a black box"
-        className="pb-4"
-      />
       <WhatWeAutomateCarousel />
       <CaseStudiesSection />
       <section id="faq" className={cx(SECTION_SCROLL_MT, "px-4 md:px-6 pb-24 pt-4")}>

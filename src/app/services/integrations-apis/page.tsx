@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, ImageBand, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
+import { Eyebrow, EditorialButton, editorialRoot, cx, SectionNav, SECTION_SCROLL_MT, type NavSection } from "@/components/editorial";
 import { CONCEPT_ICONS, type ConceptIconKey } from "@/components/service-icons";
 
 const ease = [0.22, 0.61, 0.36, 1] as const;
@@ -1472,12 +1472,6 @@ export default function IntegrationsAPIsPage() {
     <main className={cx(editorialRoot, "min-h-screen bg-white text-[#050505]")}>
       <SectionNav sections={SECTIONS} />
       <Hero />
-      <ImageBand
-        src="/services/integrations.webp"
-        alt="Systems connected across a business operation"
-        caption="The connective tissue between systems"
-        className="pb-4"
-      />
       <WhatWeIntegrateCarousel />
       <CaseStudiesSection />
       <section id="faq" className={cx(SECTION_SCROLL_MT, "px-4 sm:px-6 pb-16 sm:pb-20 md:pb-24 pt-2 sm:pt-4")}>
