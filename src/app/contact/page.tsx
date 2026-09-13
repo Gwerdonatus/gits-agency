@@ -147,7 +147,7 @@ export default function ContactPage() {
   const reduceMotion = useReducedMotion();
   const successRef = useRef<HTMLDivElement | null>(null);
 
-  const PRIMARY_EMAIL = "hellogits@outlook.com";
+  const PRIMARY_EMAIL = "hello@gits.technology";
   const PHONE_E164 = "+2348116276212";
   const WHATSAPP_E164 = "+2348116276212";
   const CALENDLY_URL = "https://calendly.com/donatusgwer";

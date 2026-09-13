@@ -164,7 +164,7 @@ export function OrganizationSchema() {
           availableLanguage: "English",
         },
       ],
-      email: "hellogits@outlook.com",
+      email: "hello@gits.technology",
       telephone: "+2348116276212",
       // Verified profiles only. sameAs is how Google and AI engines collapse
       // these accounts into one confident entity, so an unverifiable or dead
@@ -380,7 +380,7 @@ export function LocalBusinessSchema() {
       description: "Premium AI agency and digital product studio in Abuja, Nigeria. Building custom software, AI automation, and WhatsApp AI agents for global clients.",
       url: SITE_URL,
       telephone: "+2348116276212",
-      email: "hellogits@outlook.com",
+      email: "hello@gits.technology",
       address: {
         "@type": "PostalAddress",
         addressCountry: "NG",
