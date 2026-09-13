@@ -8,7 +8,11 @@
 //
 // Everything here must be checkable against a page on this site:
 //   services        → src/app/services/page.tsx + /services/* pages
-//   pricing floors  → src/app/faq-data.ts (published in JSON-LD on the home page)
+//   pricing floors  → src/app/faq-data.ts and src/app/page.tsx (both emitted as
+//                     FAQPage JSON-LD) + the Service offers in
+//                     src/app/structured-data.tsx. A floor quoted here must
+//                     match all three, or the advisor undercuts or oversells
+//                     what Google is showing for the same service.
 //   process         → src/components/ProcessFlow.tsx
 //   portfolio       → src/app/what-we-build/page.tsx
 //   contact         → src/components/Footer.tsx + src/app/contact/page.tsx
@@ -71,7 +75,7 @@ export const SERVICES: ServiceEntry[] = [
       "Professional firms and founders",
     ],
     pricing:
-      "from $500 for a one-pager; $800–$3,000 for a multi-page marketing site; $1,500–$5,000 for e-commerce; $1,500–$5,000 for a full UI/UX product design in Figma",
+      "from $200 for a one-pager; $800–$3,000 for a multi-page marketing site; $1,500–$5,000 for e-commerce; $1,500–$5,000 for a full UI/UX product design in Figma",
     timeline:
       "3–5 days for a one-pager, 1–3 weeks multi-page, 2–5 weeks e-commerce, 2–4 weeks for a full product design",
     path: "/services/websites-digital-experiences",

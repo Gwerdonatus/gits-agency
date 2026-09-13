@@ -1,10 +1,19 @@
-name: Deploy
+name: Build
 
 # Builds on Linux, which is the point: the OpenNext Cloudflare adapter is not
 # fully supported on Windows and its build fails there with
 # ERR_UNSUPPORTED_ESM_URL_SCHEME on absolute C:\ paths.
 #
-# Pull requests are checked but never deployed. Only a push to main ships.
+# This workflow does NOT deploy. Deployment belongs to the Cloudflare Workers
+# Git integration, which builds and ships every push itself — you can see it on
+# a pull request as the "Workers Builds: gits" check, with its own preview URL.
+#
+# It used to end in a `wrangler deploy` step, which meant two deploys racing on
+# every push to main. In practice it never got that far: CLOUDFLARE_API_TOKEN was
+# never set on the repository, so wrangler failed its credential check in about
+# three seconds and marked every push to main red. The build had already passed
+# by then, so the red X said nothing about the commit. Removing the step drops
+# the duplicate deploy and the false alarm together.
 
 on:
   push:
@@ -14,13 +23,13 @@ on:
   workflow_dispatch:
 
 concurrency:
-  # A newer push supersedes an in-flight deploy rather than racing it.
-  group: deploy-${{ github.ref }}
+  # A newer push supersedes an in-flight build rather than racing it.
+  group: build-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    name: Build${{ github.event_name == 'push' && ' and deploy' || ' (check only)' }}
+    name: Build
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -53,31 +62,22 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
 
+      # Guards the AI advisor's intent router: whether a visitor's message is
+      # answered or fed to the discovery ladder is decided by src/lib/advisor,
+      # and a regression there is invisible until a customer is stonewalled.
+      - name: Check advisor intents
+        run: npm run check:advisor
+
       - name: Build worker
         run: npm run build:worker
-
-      # Deploy only from main, and only once the build above has passed.
-      - name: Deploy to Cloudflare
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --config wrangler.toml
-          # The build already ran above; do not repeat it.
-          packageManager: npm
 
       - name: Summary
         if: always()
         run: |
           {
-            echo "### ${{ github.event_name == 'push' && 'Deploy' || 'Check' }}"
+            echo "### Build"
             echo ""
             echo "- commit: \`${{ github.sha }}\`"
-            echo "- typecheck and worker build: completed"
-            if [ "${{ github.event_name }}" = "push" ]; then
-              echo "- deployed to Cloudflare Workers"
-            else
-              echo "- pull request: checked, not deployed"
-            fi
+            echo "- typecheck, advisor intent checks and worker build: completed"
+            echo "- deployment is handled by the Cloudflare Workers Git integration"
           } >> "$GITHUB_STEP_SUMMARY"

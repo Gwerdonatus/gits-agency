@@ -222,7 +222,7 @@ export function ServicesSchema() {
       description:
         "Modern, conversion-first websites and digital experiences built with Next.js — business & corporate websites, e-commerce stores, landing pages, portfolio websites, event websites, and marketing websites. Mobile-first, fast-loading, and SEO-optimised.",
       url: `${SITE_URL}/services/websites-digital-experiences`,
-      offers: { price: "500", priceCurrency: "USD", priceSpecification: "Starting from $500" },
+      offers: { price: "200", priceCurrency: "USD", priceSpecification: "Starting from $200" },
     },
     {
       name: "AI Automation & Business Automation",

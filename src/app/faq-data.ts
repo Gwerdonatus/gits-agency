@@ -23,7 +23,7 @@ export const HOME_FAQS = [
   },
   {
     q: "How much does it cost to work with GITS?",
-    a: "Project costs vary by scope. Websites start from $500, AI automation and WhatsApp AI agents from $1,000, internal tools and CRM systems from $2,000, mobile apps from $3,000, and custom software development from $5,000. We scope every project individually and provide transparent pricing.",
+    a: "Project costs vary by scope. Websites start from $200, AI automation and WhatsApp AI agents from $1,000, internal tools and CRM systems from $2,000, mobile apps from $3,000, and custom software development from $5,000. We scope every project individually and provide transparent pricing.",
   },
   {
     q: "What industries does GITS specialize in?",
