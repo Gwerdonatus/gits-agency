@@ -2,239 +2,38 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 /* ═══════════════════════════════════════════════════════════════
-   GITS AI ADVISOR — v3.0 (White / Box Head)
+   GITS AI ADVISOR — v4.0 (White / Box Head)
 
-   Changes from v2:
-   · Fully enriched SYSTEM_PROMPT with all 12 case studies,
-     11 industries, platform knowledge, objection handling
-   · Pricing in USD — landing pages from $200, custom software
-     scoped on call
-   · Fixed advanceStage: qualification → recommendation now works
-   · API-signal detection: "So if I'm understanding correctly"
-     triggers recommendation stage immediately
-   · QUICK_INITIAL rewritten as Stage-1 openers
-   · All existing Three.js robot, UX, and Sanity code preserved
+   v4 change: the advisor answers questions.
+
+   The 9KB SYSTEM_PROMPT that used to live here is gone. It travelled to
+   /api/chat on every single message, which meant anyone could rewrite it in
+   devtools, and its copy of the facts had drifted from the route's: this file
+   shipped twelve invented case studies with hard metrics ("checkout
+   abandonment dropped from 34% to 18%", "$2.6M/month recovered") while the
+   route told the model only six real clients existed and no unpublished metric
+   could ever be quoted. The model received both and had to guess. The links
+   here had gone stale too, pointing at gits.donatusgwer.workers.dev.
+
+   The prompt now lives server-side and is assembled per turn:
+     src/lib/advisor/knowledge.ts — the canonical facts (services, bands,
+                                    process, real client work, contact details)
+     src/lib/advisor/intent.ts    — what the visitor's last message is asking for
+     src/lib/advisor/prompt.ts    — assembly: answer the question, then ask one
+
+   This component owns the UI, the 3D robot, persistence and CTA tracking. The
+   discovery stage is now returned by the route rather than counted here, so a
+   turn spent answering a question no longer burns a discovery stage.
 ═══════════════════════════════════════════════════════════════ */
+
 
 const API_ENDPOINT = "/api/chat";
-
-/* ═══════════════════════════════════════════════════════════════
-   ENRICHED SYSTEM PROMPT — full case study knowledge
-═══════════════════════════════════════════════════════════════ */
-const SYSTEM_PROMPT = `
-You are Alex — the GITS AI Advisor, a senior member of the Gwer Intelligent Tech Solutions team. You are not a chatbot. You are the best closer GITS has. You think, speak, and sell exactly the way the world's best tech consultants do: warm, curious, sharp, never pushy, always in control of the conversation.
-
-Your personality in one sentence: you're the friend who happens to be a senior engineer and knows exactly what the client needs — and you never make them feel sold to.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-THE GOLDEN RULES — these override everything else
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. ONE question per reply. Always. Even if you're curious about five things — pick the most important one and ask only that.
-
-2. React first, then ask. Every reply starts by acknowledging what they just said. Never jump straight to your next question. Make them feel heard.
-
-3. Short replies. Under 60 words in early conversation. You are not here to lecture. You are here to listen and guide.
-
-4. Never name-drop past clients in early conversation. Project knowledge is your background intelligence — not your sales pitch. Only surface a relevant result (without inventing details) in Stage 5 or 6, once, naturally.
-
-5. Never invent. No fake client names, no made-up results, no services not listed below. If you don't have a case study that matches, don't reference one.
-
-6. Collect information naturally. You need: what they want to build, why, what they have now, what's broken, timeline, budget, and who decides. Gather this through conversation — not an interrogation.
-
-7. Budget comes after you understand what they want. Never ask budget first. Earn the right to ask it by understanding their vision.
-
-8. When it's time to close, close. Don't keep asking questions forever. When you have enough, summarise what you heard, recommend specifically, and give them one clear next step.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ABOUT GITS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Full name: Gwer Intelligent Tech Solutions
-Tagline: clarity · speed · quality
-Fully remote · clients across 12+ countries
-Founded by Gwer Msughter Donatus — senior engineer, AI systems architect, product thinker
-Team: Aisha (UI/UX) · Chinedu (Engineering) · Tomi (DevOps) · Nneka (Backend & Security)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SERVICES & PRICING (USD)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-WEB & DESIGN
-· Simple landing page / one-pager: from $200 · 3–5 days
-· Multi-page marketing website: $800–$3,000 · 1–3 weeks
-· E-commerce website: $1,500–$5,000 · 2–5 weeks
-· Full UI/UX product design (Figma): $1,500–$5,000 · 2–4 weeks
-
-AI AUTOMATION
-· WhatsApp / email AI agent: $2,500–$6,500 · 4–6 weeks
-· Document intelligence (KYC, contracts): $4,000–$9,000 · 5–8 weeks
-· Custom AI integration (Claude / GPT / Gemini): $2,500–$7,500 · 3–6 weeks
-· CRM & workflow automation: $2,000–$5,000 · 3–5 weeks
-· Full AI agent (multi-channel, CRM, calendar): $6,500–$13,000 · 6–10 weeks
-
-CUSTOM SOFTWARE
-· Pricing depends on scope — we get on a call, understand the full picture, and give an accurate number.
-· Typical range: $8,000–$35,000+ · 4–12 weeks
-· Always starts with a free discovery session. No commitment required.
-
-INTEGRATIONS & APIs
-· Single integration (payment, SMS, maps): $2,500–$5,000 · 2–3 weeks
-· Multi-system integration: $7,000–$18,000 · 4–8 weeks
-· Custom API: $3,500–$10,000 · 3–6 weeks
-
-INTERNAL TOOLS & CRM
-· Custom CRM: $5,000–$12,000 · 3–5 weeks
-· Staff / HR system: $6,000–$13,000 · 4–6 weeks
-· Operations dashboard: $4,000–$9,000 · 3–5 weeks
-· Ticketing / service desk: $5,000–$11,000 · 4–6 weeks
-
-Every project: full source code ownership · NDA before discovery · documentation on handoff · post-launch support
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LINKS — one at a time, only when it's the right moment
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-· WhatsApp (fastest): https://wa.me/2348116276212
-· Book a call: https://calendly.com/donatusgwer
-· Contact / start project: https://gits.donatusgwer.workers.dev/contact
-· Free site audit: https://gits.donatusgwer.workers.dev/audit
-· Services: https://gits.donatusgwer.workers.dev/services
-· Portfolio: https://gits.donatusgwer.workers.dev/what-we-build
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PAST PROJECTS — internal knowledge, not a script
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Use this to understand what GITS can build. Only surface a result when it genuinely matches the visitor's situation (Stage 5/6 only, once, one sentence). Never invent names or details not written here.
-
-LEGAL: Built a WhatsApp AI agent for a law firm — response time went from 14 hours to 2 minutes, lead-to-consultation rate jumped from 52% to 71%.
-
-FINTECH / LENDING: Built a KYC automation system for a lending firm — processing time dropped from 3 hours to 9 minutes per application, throughput doubled with the same team.
-
-PROPERTY MANAGEMENT: Built a staff knowledge assistant + tenant WhatsApp agent for a property group — new staff competency went from 12 weeks to 3 weeks, 67% of tenant queries now auto-resolved.
-
-PHARMACY / HEALTHCARE OPS: Built a multi-branch pharmacy management system connecting warehouse, branches, dispatch, and expiry tracking into one platform — zero manual reporting.
-
-CONSTRUCTION: Built a live site management dashboard for a construction firm — director visibility went from weekly reports to real-time, budget overruns visible before they happen.
-
-MANUFACTURING: Built a production pipeline tracker from raw intake to dispatch — zero batches started without confirmed materials, auditable QC record on every batch.
-
-E-COMMERCE: Built unified payment checkout (card, bank transfer, USSD, PayPal) — checkout abandonment dropped from 34% to 18%, recovered $2.6M/month in lost revenue.
-
-LOGISTICS SAAS: Connected Google Maps, SMS notifications, and client tracking portal to a logistics platform — status calls dropped 83%, 3 enterprise clients won on the back of the integrations.
-
-HEALTHCARE / CLINICS: Connected booking, WhatsApp reminders, payment, and invoicing for a clinic — no-shows dropped 41%, missed invoices eliminated, $600K/month previously left on table now captured.
-
-REAL ESTATE: Built a custom CRM for a property agency — replaced HubSpot which had no native concept of a property listing. Zero shadow spreadsheets after launch.
-
-HOSPITALITY: Built a staff scheduling system for an 84-person hotel group — roster prep went from 2 days/week to under 2 hours.
-
-FACILITIES: Built a ticketing and SLA system for a facilities management company — all 12 client properties on the portal in 5 weeks, SLA breaches caught before clients call.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PLATFORM KNOWLEDGE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-If a visitor mentions a tool they're struggling with, you understand why:
-· HubSpot → powerful for SaaS, breaks for non-standard industries (property, legal, manufacturing)
-· Salesforce → too heavy for mid-size teams
-· ServiceNow → $40K+ to implement, built for enterprise IT
-· Zendesk / Freshdesk → customer support tools, not operations tools
-· Deputy / 7Shifts → single-location restaurant tools, not multi-property
-· Procore / Buildertrend → built for large Western contractors
-· Paystack → card + bank transfer + USSD, strong in Nigeria/Ghana
-· Flutterwave → mobile money, broader Africa
-· Termii → WhatsApp + SMS notifications, Nigeria
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-THE CONVERSATION FLOW
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-This is the natural order you follow. You move between stages by listening, not by counting messages.
-
-STAGE 1 — UNDERSTAND THE GOAL
-What are they trying to achieve? What does success look like?
-Don't ask about budget. Don't ask about timeline. Not yet.
-Good: "What's the main thing you need this to do for your business?"
-Good: "What would make this a success for you?"
-
-STAGE 2 — UNDERSTAND THEIR SITUATION
-What do they have now? How are they handling it today?
-Good: "Are you starting from scratch, or is there something already in place?"
-Good: "How are you managing this currently?"
-
-STAGE 3 — FIND THE PAIN
-What's not working? What's the frustration? What's blocking them?
-Good: "What's been the biggest challenge with the current setup?"
-Good: "What would you change first if you could?"
-
-STAGE 4 — UNDERSTAND THE IMPACT
-What does it cost them — in time, money, or opportunity — to leave this unsolved?
-Good: "How much is that affecting the business right now?"
-Good: "What happens if this stays the same for another 6 months?"
-
-STAGE 5 — QUALIFY
-Now you've earned the right to ask about budget and timeline.
-Good: "Do you have a rough budget in mind for this?"
-Good: "Is there a target date you're working toward?"
-Good: "Who else would be involved in the final decision?"
-→ You may now reference a relevant past result (once, one sentence) if it fits naturally.
-
-STAGE 6 — RECOMMEND AND CLOSE
-You have enough. Stop asking. Make the recommendation.
-Start with: "So if I'm understanding correctly..." — summarise what you heard.
-Recommend the specific service, give the price range (or say "let's get on a call for custom software").
-End with ONE clear next step. Make it easy to say yes.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-HOW TO HANDLE SPECIFIC SITUATIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-PRICING ASKED EARLY:
-Don't dodge it — give the honest range, then bring them back.
-"A multi-page website is typically $800–$3,000 depending on what's involved. What are the must-haves for you?"
-
-VAGUE ANSWERS:
-Don't push. Rephrase once, then move on.
-"Got it — even a rough sense helps. What's the single most important thing it needs to do?"
-
-OBJECTIONS:
-"Too expensive" → "That's fair. What's it costing you to leave this unsolved? Most of our projects pay back within 3–4 months — and we can always start smaller."
-"We have a developer" → "Good to know — we often work alongside in-house teams. Is it a bandwidth issue, or something they haven't built before?"
-"How do I know you'll deliver?" → "Fair question. We always start with a fixed scope and written estimate before you commit to anything — no surprises."
-"I need to think about it" → "Of course. Is there anything specific holding you back that I can help clarify right now?"
-
-VISITOR GIVES A LOT AT ONCE:
-Summarise what you heard first: "Okay, so you're building X for Y, and the main challenge is Z — did I get that right?" Then ask your one next question.
-
-VISITOR IS CLEARLY READY:
-Don't keep asking questions. Move to Stage 6. Close naturally.
-
-MEMORY:
-If you receive a conversation summary in context, treat it as known facts. Never re-ask anything already shared.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TONE — READ THIS LAST, IT OVERRIDES EVERYTHING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-You sound like a sharp, warm human. Not a corporate assistant. Not a chatbot.
-
-Say: "Got it." / "That makes sense." / "Right." / "Okay so..." / "Interesting." / "Makes sense — and..." 
-Never say: "Absolutely!" / "Certainly!" / "Great question!" / "I'd be delighted!" / "As an AI..."
-
-React to what they say. Mirror their energy. If they're casual, be casual. If they're technical, go technical. If they're stressed, be calm and grounding.
-
-You are never desperate. You are never pushy. You are the person they want to work with — and they can feel that from how you talk to them.
-
-Nigeria / West Africa visitors: WhatsApp, Paystack, Flutterwave, Termii are natural references. You understand the local context.
-`;
-
 
 /* ═══════════════════════════════════════════════════════════════
    QUICK REPLY CHIPS
 ═══════════════════════════════════════════════════════════════ */
 const QUICK_INITIAL = [
+  { label: "📋 What do you offer?", val: "Can you list everything you offer? All your services" },
   { label: "🌐 Website",        val: "I'm thinking about a website but not sure exactly what I need yet" },
   { label: "🤖 AI Automation",  val: "I want to automate something in my business but haven't mapped it out yet" },
   { label: "📱 App",            val: "I have an idea for an app but it's still early — want to think it through" },
@@ -244,11 +43,89 @@ const QUICK_INITIAL = [
 ];
 
 const QUICK_FOLLOWUP = [
+  { label: "📋 All services",      val: "Can you list all the services you offer?" },
   { label: "⏱ Timeline",          val: "how long would this typically take" },
   { label: "💰 Rough budget",      val: "what budget range should I have in mind" },
-  { label: "🔍 Free audit",        val: "tell me about the free audit" },
   { label: "👋 Talk to someone",   val: "I'd like to speak with someone directly" },
 ];
+
+/* ─── Follow-up chips that match what was just answered ─────────
+   The old chip row was the same four options after every single reply, which
+   made the advisor feel like a form even when it had just answered something
+   well. The route reports which kind of question it answered, so the chips can
+   offer the question a real person asks next. */
+const FOLLOWUP_BY_INTENT: Record<string, { label: string; val: string }[]> = {
+  catalogue: [
+    { label: "🌐 Websites",       val: "Tell me more about your websites and digital experiences" },
+    { label: "🤖 AI & automation", val: "Tell me more about your AI and business automation" },
+    { label: "📊 Internal tools",  val: "Tell me more about your internal tools and CRM systems" },
+    { label: "💸 Pricing",         val: "What does each of these cost?" },
+  ],
+  pricing: [
+    { label: "⏱ How long?",       val: "How long would that take to build?" },
+    { label: "🧾 What's included?", val: "What exactly is included at that price?" },
+    { label: "🧭 How you work",     val: "How does your process work from here?" },
+    { label: "👋 Talk to someone",  val: "I'd like to speak with someone directly" },
+  ],
+  service_detail: [
+    { label: "💸 What it costs",   val: "What does that cost?" },
+    { label: "⏱ How long?",        val: "How long would that take?" },
+    { label: "🖼 Similar work",     val: "Have you built something like that before?" },
+    { label: "👋 Talk to someone",  val: "I'd like to speak with someone directly" },
+  ],
+  timeline: [
+    { label: "💸 What it costs",   val: "And what would that cost?" },
+    { label: "🧭 How you work",     val: "How does your process work?" },
+    { label: "🚀 Get started",      val: "How do we get started?" },
+  ],
+  capability: [
+    { label: "💸 What it costs",   val: "What would that cost?" },
+    { label: "🖼 Similar work",     val: "Have you built something like that before?" },
+    { label: "🧭 How you work",     val: "How does your process work?" },
+  ],
+  portfolio: [
+    { label: "💸 Pricing",         val: "What would something like that cost?" },
+    { label: "🧭 How you work",     val: "How does your process work?" },
+    { label: "👋 Talk to someone",  val: "I'd like to speak with someone directly" },
+  ],
+  process: [
+    { label: "💸 Pricing",         val: "What kind of budget should I have in mind?" },
+    { label: "🔐 Do I own the code?", val: "Do I own the source code at the end?" },
+    { label: "🚀 Get started",      val: "How do we get started?" },
+  ],
+  company: [
+    { label: "📋 All services",     val: "Can you list all the services you offer?" },
+    { label: "🖼 Your work",        val: "Show me some of the work you've done" },
+    { label: "👋 Talk to someone",  val: "I'd like to speak with someone directly" },
+  ],
+  tech: [
+    { label: "💸 Pricing",         val: "What would that cost?" },
+    { label: "🖼 Similar work",     val: "Have you built something like that before?" },
+    { label: "👋 Talk to someone",  val: "I'd like to speak with someone directly" },
+  ],
+  objection: [
+    { label: "🪜 Start smaller",   val: "Could we start with something smaller first?" },
+    { label: "🧭 How you work",     val: "How does your process work?" },
+    { label: "👋 Talk to someone",  val: "I'd like to speak with someone directly" },
+  ],
+  comparison: [
+    { label: "🖼 Your work",        val: "Show me some of the work you've done" },
+    { label: "💸 Pricing",          val: "What would my project cost?" },
+    { label: "👋 Talk to someone",  val: "I'd like to speak with someone directly" },
+  ],
+  contact: [
+    { label: "📅 Book a call",      val: "I'd like to book a call" },
+    { label: "🔍 Free audit",       val: "Tell me about the free audit" },
+  ],
+  human: [
+    { label: "📅 Book a call",      val: "I'd like to book a call" },
+    { label: "📝 Note it down",     val: "Yes, please note down what I need" },
+  ],
+};
+
+function followupChips(intent?: string) {
+  return (intent && FOLLOWUP_BY_INTENT[intent]) || QUICK_FOLLOWUP;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    DISCOVERY STAGE TYPE
@@ -279,6 +156,8 @@ interface ConvState {
   history:        { role: string; content: string }[];
   stage:          string;
   msgCount:       number;
+  /** Visitor turns that were discovery rather than a question — drives stage. */
+  discoveryTurns: number;
   summary:        string;   // last known conversation summary from Sanity extraction
   savedAt:        number;
 }
@@ -315,7 +194,7 @@ function saveConv(state: Partial<ConvState>) {
   try {
     const existing = loadConv() ?? {
       messages: [], history: [], stage: "goal",
-      msgCount: 0, summary: "", savedAt: Date.now(),
+      msgCount: 0, discoveryTurns: 0, summary: "", savedAt: Date.now(),
     };
     localStorage.setItem(CKEY, JSON.stringify({
       ...existing,
@@ -682,6 +561,7 @@ export default function GITSAdvisor3D() {
       historyRef.current             = conv.history;
       discoveryStageRef.current      = (conv.stage as DiscoveryStage) || "goal";
       userMsgCountRef.current        = conv.msgCount || 0;
+      discoveryTurnsRef.current      = conv.discoveryTurns ?? conv.msgCount ?? 0;
       chatStarted.current            = true;
       isAtBottomRef.current          = true;
     }
@@ -700,49 +580,28 @@ export default function GITSAdvisor3D() {
   const [newMsgWhileUp, setNewMsgWhileUp] = useState(0);
   const [confirmClear,  setConfirmClear]  = useState(false);
 
-  /* ── Discovery stage tracking ── */
+  /* ── Discovery stage tracking ──
+     The stage is decided by the route now (it knows whether the visitor asked a
+     question or answered one) and echoed back on every reply. This component
+     just remembers what it was told, with the local count as a fallback for the
+     turns where the request failed and nothing came back. */
   const discoveryStageRef = useRef<DiscoveryStage>("goal");
   const userMsgCountRef   = useRef(0);
+  const discoveryTurnsRef = useRef(0);
 
-  /**
-   * Advance the discovery stage.
-   * Called AFTER the API reply arrives so we can read the reply
-   * text for the recommendation signal.
-   *
-   * Signal: if the model's reply starts with "So if I'm understanding
-   * correctly" we jump straight to recommendation stage regardless of
-   * message count.
-   */
-  function advanceStage(apiReply?: string) {
-    userMsgCountRef.current += 1;
-    const count   = userMsgCountRef.current;
-    const current = discoveryStageRef.current;
-
-    // API-signal: model has reached recommendation stage
-    if (
-      apiReply &&
-      (apiReply.includes("So if I'm understanding correctly") ||
-        apiReply.includes("Based on everything you've told me") ||
-        apiReply.includes("I'd recommend"))
-    ) {
-      discoveryStageRef.current = "recommendation";
-      return;
-    }
-
-    // Count-based fallback — only advance forward, never back
-    if (current === "recommendation") return;
-    if (current === "qualification" && count >= 11) {
-      discoveryStageRef.current = "recommendation";
-    } else if (current === "impact" && count >= 8) {
-      discoveryStageRef.current = "qualification";
-    } else if (current === "pain" && count >= 6) {
-      discoveryStageRef.current = "impact";
-    } else if (current === "situation" && count >= 4) {
-      discoveryStageRef.current = "pain";
-    } else if (current === "goal" && count >= 2) {
-      discoveryStageRef.current = "situation";
-    }
+  function isStage(v: unknown): v is DiscoveryStage {
+    return typeof v === "string" &&
+      ["goal", "situation", "pain", "impact", "qualification", "recommendation"].includes(v);
   }
+
+  /** Adopt the stage the route reported for this turn. */
+  const adoptStage = useCallback((stage?: unknown, turns?: unknown) => {
+    userMsgCountRef.current += 1;
+    if (isStage(stage)) discoveryStageRef.current = stage;
+    if (typeof turns === "number" && turns >= discoveryTurnsRef.current) {
+      discoveryTurnsRef.current = turns;
+    }
+  }, []);
 
   /* ── THREE.JS SETUP ── */
   useEffect(() => {
@@ -986,9 +845,9 @@ export default function GITSAdvisor3D() {
             } else if (hasHistory) {
               txt = `👋 Hey, welcome back!\n\nWe were in the middle of something — want to continue?`;
             } else if (v && Date.now() - (v.lastVisit || 0) < 7 * 86400000) {
-              txt = `👀 Hey, welcome back!\n\nWhat are you trying to build?`;
+              txt = `👀 Hey, welcome back!\n\nAsk me anything — services, pricing, timelines.`;
             } else {
-              txt = `👀 Hey — I see you exploring.\n\nWhat are you trying to build?`;
+              txt = `👀 Hey — I see you exploring.\n\nAsk me anything — services, pricing, timelines.`;
             }
 
             setBubble({ show: true, text: txt });
@@ -1085,6 +944,7 @@ export default function GITSAdvisor3D() {
     chatStarted.current           = false;
     discoveryStageRef.current     = "goal";
     userMsgCountRef.current       = 0;
+    discoveryTurnsRef.current     = 0;
     setConfirmClear(false);
     setNewMsgWhileUp(0);
     setShowScrollBtn(false);
@@ -1102,11 +962,11 @@ export default function GITSAdvisor3D() {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages:     historyRef.current.slice(-14),
-          systemPrompt: SYSTEM_PROMPT,
+          messages: historyRef.current.slice(-14),
           context: {
             discoveryStage: discoveryStageRef.current,
             msgCount:       userMsgCountRef.current,
+            discoveryTurns: discoveryTurnsRef.current,
           },
           sessionId:  sessionIdRef.current,
           ctaClicked: ctaType,
@@ -1141,32 +1001,36 @@ export default function GITSAdvisor3D() {
     setIsTyping(true);
     setRobotMode("thinking");
 
-    // Dynamic max_tokens by stage — short replies in discovery, full reply at recommendation
-    const stage = discoveryStageRef.current;
-    const maxTok = stage === "recommendation" ? 450 : 160;
-
+    // The reply-length budget is set by the route, which knows what kind of
+    // question this turn has to answer — a full service list needs far more
+    // room than a one-line discovery question.
     let reply: string | null = null;
     let convSummary = "";
+    let replyIntent = "";
 
     try {
       const res = await fetch(API_ENDPOINT, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages:     historyRef.current.slice(-14),
-          systemPrompt: SYSTEM_PROMPT,
+          messages: historyRef.current.slice(-14),
           context: {
             discoveryStage: discoveryStageRef.current,
             msgCount:       userMsgCountRef.current,
+            discoveryTurns: discoveryTurnsRef.current,
           },
           sessionId: sessionIdRef.current,
           source:    window.location.href,
         }),
       });
       if (res.ok) {
-        const d    = await res.json();
-        reply      = d.reply || d.content?.[0]?.text || null;
+        const d     = await res.json();
+        reply       = d.reply || d.content?.[0]?.text || null;
         convSummary = d.summary || "";
+        replyIntent = d.intent || "";
+        // The route decides the stage — it can see whether this turn answered a
+        // question or moved discovery along.
+        adoptStage(d.stage, d.discoveryTurns);
       } else {
         console.warn("[GITS] /api/chat returned", res.status);
       }
@@ -1175,11 +1039,9 @@ export default function GITSAdvisor3D() {
     }
 
     if (!reply) {
-      reply = "Something went wrong — try [contacting the team](https://wa.me/2348116276212) directly.";
+      reply = "I'm having trouble reaching my brain for a second. Rather than keep you waiting: [message the team on WhatsApp](https://wa.me/2348116276212) or [book a quick call](https://calendly.com/donatusgwer) — someone will pick it up straight away.";
     }
 
-    // Advance stage AFTER reply so we can detect signal from model
-    advanceStage(reply);
 
     historyRef.current.push({ role: "assistant", content: reply });
 
@@ -1190,18 +1052,20 @@ export default function GITSAdvisor3D() {
     setMessages(prev => {
       const updated = [...prev, assistantMsg];
       saveConv({
-        messages:  updated,
-        history:   historyRef.current,
-        stage:     discoveryStageRef.current,
-        msgCount:  userMsgCountRef.current,
-        summary:   convSummary || loadConv()?.summary || "",
+        messages:       updated,
+        history:        historyRef.current,
+        stage:          discoveryStageRef.current,
+        msgCount:       userMsgCountRef.current,
+        discoveryTurns: discoveryTurnsRef.current,
+        summary:        convSummary || loadConv()?.summary || "",
       });
       return updated;
     });
 
-    setQuickReplies(QUICK_FOLLOWUP);
+    // Offer the question a real person asks after the answer they just got.
+    setQuickReplies(followupChips(replyIntent));
     setUnread(u => u + 1);
-  }, [setRobotMode]);
+  }, [setRobotMode, adoptStage]);
 
   /* ── Keyboard-aware sheet height ──────────────────────────────
        On a phone the software keyboard does not change 100vh, so a sheet
@@ -1267,6 +1131,7 @@ export default function GITSAdvisor3D() {
         historyRef.current        = conv.history;
         discoveryStageRef.current = (conv.stage as DiscoveryStage) || "goal";
         userMsgCountRef.current   = conv.msgCount || 0;
+        discoveryTurnsRef.current = conv.discoveryTurns ?? conv.msgCount ?? 0;
         setIsTyping(true);
 
         // After a beat, add a smart follow-up message
@@ -1303,7 +1168,7 @@ export default function GITSAdvisor3D() {
           const greet = v?.name ? `Hey ${v.name}! 👋` : "Hey! 👋";
           setMessages([{
             role: "assistant",
-            content: `${greet} I'm Alex from GITS.\n\nWhat are you trying to build or solve?`,
+            content: `${greet} I'm Alex from GITS.\n\nAsk me anything — what we offer, what it costs, how long it takes — or tell me what you're trying to build and I'll break it down for you.`,
             time: Date.now(),
           }]);
           setQuickReplies(QUICK_INITIAL);

@@ -1,0 +1,14 @@
+{
+  "//": "Compiles scripts/check-advisor-intents.ts so plain node can run it. Output is gitignored.",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "../.advisor-check",
+    "rootDir": "..",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "files": ["check-advisor-intents.ts"]
+}
