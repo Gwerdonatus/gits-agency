@@ -34,6 +34,7 @@ export type Intent =
   | "human"            // "I want to talk to a person"
   | "objection"        // "too expensive" / "how do I know you'll deliver"
   | "comparison"       // "why you and not Fiverr?"
+  | "correction"       // "that's wrong" / "no, that's not what I asked"
   | "discovery";       // nothing asked — run the discovery ladder
 
 export interface IntentResult {
@@ -213,6 +214,25 @@ const COMPARISON_WORDS = [
   "freelancer", "other agencies", "another agency", "competitor",
 ];
 
+/* The visitor is telling us we got it wrong, or that we have misread them.
+   Worth its own branch: the instinct of a sales-trained prompt is to smooth it
+   over and carry on, which is exactly how a wrong answer survives a correction
+   and ends up in a quote. */
+const CORRECTION_WORDS = [
+  "that's wrong", "thats wrong", "that is wrong", "you're wrong", "youre wrong",
+  "you are wrong", "not correct", "incorrect", "that's not right",
+  "thats not right", "that is not right", "not right", "no that's not",
+  "not what i asked", "not what i said", "not what i meant", "you misunderstood",
+  "misunderstanding", "you didn't understand", "you didnt understand",
+  "you don't understand", "you dont understand", "read my question",
+  "i didn't ask", "i didnt ask", "that's not what", "thats not what",
+  "wrong answer", "that's false", "untrue", "you made that up", "made up",
+  "you're lying", "youre lying", "are you sure", "you sure about that",
+  "that doesn't sound right", "that doesnt sound right", "actually no",
+  "no, i meant", "no i meant", "i meant", "you already said", "you keep saying",
+  "stop repeating", "you're repeating", "answer my question",
+];
+
 const CAPABILITY_OPENERS = [
   "can you build", "can you do", "can you make", "can you create", "can you help",
   "can gits", "do you build", "do you do", "do you make", "do you offer",
@@ -270,6 +290,10 @@ export function detectIntent(lastUserMessage: string): IntentResult {
 
   // "I want to talk to a person" outranks everything — never argue with it.
   if (hasAny(text, HUMAN_WORDS)) return { ...base, intent: "human" };
+
+  // Being told we are wrong outranks the topic the words sit on. Whatever else
+  // this message is about, the turn owes them an admission first.
+  if (hasAny(text, CORRECTION_WORDS)) return { ...base, intent: "correction" };
 
   // The headline failure: asked to list what GITS offers.
   if (hasAny(text, CATALOGUE_PHRASES) || CATALOGUE_PATTERNS.some(re => re.test(text))) {

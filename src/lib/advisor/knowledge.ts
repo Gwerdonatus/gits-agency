@@ -38,6 +38,16 @@ export interface ServiceEntry {
   builds: string[];
   /** Who it tends to be right for. */
   idealFor: string[];
+  /**
+   * Concrete kinds of business that come to us for this, in the shape a
+   * visitor recognises themselves in ("a pharmacy with three branches"),
+   * because "ideal for multi-branch businesses" makes nobody think "that's me".
+   *
+   * These are ILLUSTRATIVE BUSINESS TYPES, not clients. The advisor is told
+   * never to present one as work GITS has done — real work lives in
+   * REAL_CLIENT_WORK and nowhere else.
+   */
+  exampleBusinesses: string[];
   /** Published price bands. Never quote a number that is not in here. */
   pricing: string;
   /** Published timeline bands. */
@@ -74,6 +84,12 @@ export const SERVICES: ServiceEntry[] = [
       "Service-based businesses",
       "Professional firms and founders",
     ],
+    exampleBusinesses: [
+      "a boutique selling through Instagram DMs that needs a real storefront and checkout",
+      "a law firm or clinic whose only web presence is an outdated one-pager",
+      "a founder who needs one sharp landing page for a launch next week",
+      "a company whose site looks nothing like the quality of its actual work",
+    ],
     pricing:
       "from $200 for a one-pager; $800–$3,000 for a multi-page marketing site; $1,500–$5,000 for e-commerce; $1,500–$5,000 for a full UI/UX product design in Figma",
     timeline:
@@ -105,6 +121,12 @@ export const SERVICES: ServiceEntry[] = [
       "Sales teams qualifying leads at scale",
       "Businesses trying to grow without extra headcount",
     ],
+    exampleBusinesses: [
+      "a business answering the same twenty WhatsApp questions every day",
+      "a sales team losing leads because nobody replies until the next morning",
+      "a support inbox where the team re-types the same answers by hand",
+      "an office keying details off documents into a spreadsheet all afternoon",
+    ],
     pricing:
       "from $1,000; WhatsApp or email AI agent $2,500–$6,500; CRM & workflow automation $2,000–$5,000; document intelligence $4,000–$9,000; full multi-channel agent $6,500–$13,000",
     timeline: "3–6 weeks for most automations, 6–10 weeks for a full multi-channel agent",
@@ -134,6 +156,12 @@ export const SERVICES: ServiceEntry[] = [
       "Growing businesses ready to scale",
       "Organisations replacing legacy systems",
       "Service providers needing custom workflows",
+    ],
+    exampleBusinesses: [
+      "a service business run out of spreadsheets and WhatsApp groups that has outgrown both",
+      "a founder with a product idea and no system built yet",
+      "a company whose customers keep asking for a portal to check their own status",
+      "a business paying for four tools that still do not talk to each other",
     ],
     pricing:
       "from $5,000; typical range $8,000–$35,000+ — scope decides the number, so this one is best pinned down on a call",
@@ -165,6 +193,12 @@ export const SERVICES: ServiceEntry[] = [
       "Educational institutions",
       "Organisations with complex operations",
     ],
+    exampleBusinesses: [
+      "a multi-branch pharmacy or store where head office finds out about stock too late",
+      "a team whose CRM has no idea what their industry actually sells",
+      "a manager preparing the same report by hand every Monday",
+      "a company where the roster, leave and shift swaps live in one person's head",
+    ],
     pricing:
       "from $2,000; custom CRM $5,000–$12,000; operations dashboard $4,000–$9,000; staff/HR system $6,000–$13,000; ticketing $5,000–$11,000",
     timeline: "3–6 weeks for most internal tools",
@@ -193,6 +227,12 @@ export const SERVICES: ServiceEntry[] = [
       "SaaS platforms expanding capabilities",
       "Teams running several disconnected tools",
     ],
+    exampleBusinesses: [
+      "an online store where payments and orders are reconciled by hand",
+      "a business re-entering the same customer into two systems",
+      "a platform that needs Paystack, WhatsApp or Maps wired in properly",
+      "a company whose accounting and sales figures never quite agree",
+    ],
     pricing:
       "single integration (payment, SMS, maps) $2,500–$5,000; custom API $3,500–$10,000; multi-system integration $7,000–$18,000",
     timeline: "2–3 weeks for a single integration, 4–8 weeks multi-system",
@@ -218,6 +258,12 @@ export const SERVICES: ServiceEntry[] = [
       "Founders validating a product idea",
       "Businesses whose customers live on their phones",
       "Teams working off-desk or in the field",
+    ],
+    exampleBusinesses: [
+      "a business whose customers would use an app but currently phone in",
+      "field or delivery staff working off paper and phone calls",
+      "a founder validating a product idea with a focused first version",
+      "a service with regulars who would reorder in two taps",
     ],
     pricing: "from $3,000; scoped like custom software once the feature list is clear",
     timeline: "4–8 weeks for an MVP",
@@ -364,38 +410,85 @@ If you need a detail that is not listed above, send them to the contact page.
 
 /* ─── Rendered catalogue for the prompt ──────────────────────────────── */
 
-/** Compact list — every service line on one line each. */
+/**
+ * Compact list with NO prices — what each line is, and the kind of business it
+ * is for. This is what a visitor asking "what do you offer?" gets.
+ *
+ * Prices are deliberately absent. Leading with money answers a question nobody
+ * asked, anchors the conversation on cost before the visitor has said what they
+ * need, and reads like a rate card rather than a person. They arrive the moment
+ * someone asks — see renderPricing().
+ */
 export function renderServiceList(): string {
-  return SERVICES.map(s => `- ${s.name} — ${s.oneLiner} (${s.pricing})`).join("\n");
+  return SERVICES.map(
+    s => `- ${s.name} — ${s.oneLiner}\n  Typically for: ${s.exampleBusinesses.slice(0, 2).join("; ")}.`
+  ).join("\n");
 }
 
-/** Full detail for one service line. */
-export function renderServiceDetail(id: ServiceId): string {
+/**
+ * Detail for one service line.
+ *
+ * The price band is omitted unless the caller asks for it. Telling the model
+ * "here is the number, do not say it" is a weaker guarantee than not putting the
+ * number in front of it: on a turn where nobody asked about money, the band
+ * simply is not in the prompt.
+ */
+export function renderServiceDetail(id: ServiceId, withPricing = false): string {
   const s = SERVICES.find(x => x.id === id);
   if (!s) return "";
   return [
     `${s.name} — ${s.oneLiner}`,
     `What this covers: ${s.builds.join(", ")}.`,
-    `Usually right for: ${s.idealFor.join("; ")}.`,
-    `Pricing: ${s.pricing}.`,
+    `The kinds of business that come to us for it: ${s.exampleBusinesses.join("; ")}.`,
     `Timeline: ${s.timeline}.`,
     `Page: https://gits.technology${s.path}`,
+    ...(withPricing ? [`Price band: ${s.pricing}.`] : []),
   ].join("\n");
 }
 
-/** Every service with its builds and bands — used for pricing/detail turns. */
-export function renderFullCatalogue(): string {
-  return SERVICES.map(s => renderServiceDetail(s.id)).join("\n\n");
+/** Every band, for a turn where the visitor actually asked about cost. */
+export function renderPricing(id?: ServiceId | null): string {
+  return (id ? SERVICES.filter(s => s.id === id) : SERVICES)
+    .map(s => `- ${s.name}: ${s.pricing}. Timeline: ${s.timeline}.`)
+    .join("\n");
+}
+
+/** Every service in full — builds, example businesses, timelines. */
+export function renderFullCatalogue(withPricing = false): string {
+  return SERVICES.map(s => renderServiceDetail(s.id, withPricing)).join("\n\n");
 }
 
 export const PRICING_RULES = `
 PRICING RULES:
+- DO NOT VOLUNTEER PRICES. Quote a band only when the visitor asks about cost,
+  price, budget or what something "goes for" — or has asked earlier in the
+  conversation. A list of services is not a price list, and money raised before
+  they have said what they need anchors the whole conversation on cost.
+- When they DO ask: lead with the number, in the first sentence. Never answer a
+  pricing question with a question.
 - Quote only the bands in this prompt. Never invent a number, and never quote a
   figure lower than a band's floor to make a sale look easier.
 - Say plainly that a band is a band: the final number comes out of scope.
+- Write money as $200, $1,000, $8,000 — comma thousands, never spaces.
 - Custom software and anything large: give the range, then say scope decides the
   number and a short call is the honest way to pin it down.
 - Never ask for their budget before you understand what they want built.
-- If they ask what something costs, answer with the number first. Do not answer
-  a pricing question with a question.
+`;
+
+export const HANDOFF_FACTS = `
+HANDING OVER TO A HUMAN — do this the moment you are out of your depth:
+- Trigger it when: you do not know; you are not certain; the visitor says you got
+  something wrong and this prompt does not tell you the right answer; they ask for
+  something GITS does not do; they want a firm quote, a contract or an NDA; they
+  ask about an existing project, invoice or deadline; or they simply ask for a
+  person.
+- Say it plainly: "I'm not certain about that one, and I'd rather not guess than
+  tell you something wrong." Never invent an answer to stay useful — guessing
+  costs more trust than not knowing ever does.
+- Hand over in the SAME message: WhatsApp https://wa.me/2348116276212 is the
+  fastest way to reach the team, or book a call at
+  https://calendly.com/donatusgwer.
+- Offer to summarise what they have told you so whoever picks it up is already up
+  to speed, and say the team carries on from there.
+- You are the GITS AI advisor. If asked, say so plainly. Never claim to be human.
 `;
