@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "SaaS, Mobile Apps & AI Automation Agency | GITS",
     description:
-      "Premium digital agency. SaaS, mobile apps, AI automation, websites, and internal tools. Senior-only team. Starting from $500. 40+ businesses, 12 countries.",
+      "Premium digital agency. SaaS, mobile apps, AI automation, websites, and internal tools. Senior-only team. Starting from $200. 40+ businesses, 12 countries.",
     url: SITE_URL,
     type: "website",
     // images MUST be repeated here. A page-level openGraph object replaces the
@@ -78,7 +78,7 @@ const HOMEPAGE_FAQS = [
   },
   {
     q: "How much does GITS charge?",
-    a: "GITS pricing ranges from $500 for a landing page to $20,000+ for a complex SaaS platform. Mobile app MVPs start at $3,000, AI automation from $1,000, and internal tools from $2,000. All pricing is transparent and quoted upfront.",
+    a: "GITS pricing ranges from $200 for a landing page to $20,000+ for a complex SaaS platform. Mobile app MVPs start at $3,000, AI automation from $1,000, and internal tools from $2,000. All pricing is transparent and quoted upfront.",
   },
   {
     q: "How do I contact GITS?",
