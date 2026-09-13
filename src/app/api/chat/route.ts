@@ -1,6 +1,21 @@
 // app/api/chat/route.ts
 // ─────────────────────────────────────────────────────────────────────────────
-// GITS AI Advisor — API route v3.0
+// GITS AI Advisor — API route v4.0
+//
+// v4 change: the advisor answers questions.
+//
+// Until now every turn was forced through a discovery-stage script ("your ONLY
+// job this turn is to ask one open question about their goal"), so a visitor who
+// asked a direct question got a question back. Asked to list the services, it
+// replied "tell me what you need first" — which reads as evasive and loses
+// people who were only shopping.
+//
+// Now each turn is routed by intent (src/lib/advisor/intent.ts): a question gets
+// answered from the canonical knowledge base (src/lib/advisor/knowledge.ts)
+// first, and only then does the advisor ask its one forward question. Discovery
+// still runs — it just no longer steamrolls a real question. The prompt is built
+// server-side (src/lib/advisor/prompt.ts) so the browser can neither ship nor
+// tamper with it.
 //
 // ENV VARS NEEDED (.env.local / Cloudflare secrets):
 //   GROQ_API_KEY
@@ -12,66 +27,19 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
+import { detectIntent } from "@/lib/advisor/intent";
+import {
+  buildSystemPrompt,
+  maxTokensFor,
+  type DiscoveryStage,
+} from "@/lib/advisor/prompt";
+import { isStage, nextStage } from "@/lib/advisor/stage";
+
 // Groq decommissioned llama-3.1-8b-instant; requests for it now fail with
 // model_not_found, and the route's catch-all turned that into the visitor-facing
 // "Something went wrong" message. Override with GROQ_MODEL if this one is
 // retired too — `curl https://api.groq.com/openai/v1/models` lists what a key
 // can actually reach.
-/* ─── Real client work ───────────────────────────────────────────
-   The only projects the advisor is allowed to cite. Every entry here is
-   a named client with a page or a live URL on this site, so anything the
-   advisor says can be checked by the person reading it.
-
-   Without this the model invented case studies unprompted, complete with
-   fabricated metrics ("cut out-of-stock incidents by 35%" for a health-care
-   chain that does not exist). Keep this list in sync with /what-we-build and
-   the websites service page — and never add a metric that is not published.
-   ───────────────────────────────────────────────────────────────── */
-const REAL_CLIENT_WORK = `
-REAL GITS PROJECTS — the only work you may ever reference:
-
-1. Sanmark Luxury (sanmarkluxury.com) — premium fashion store in Lagos.
-   Editorial product photography, clean taxonomy, conversion-focused checkout.
-2. Blakdhut Exchange (blakdhut.com) — dark-mode crypto trading platform.
-   Live pricing and a secure transaction flow.
-3. Lamed Pharmacy (lamed-pharmacy.vercel.app) — patient-facing pharmacy platform
-   in Jos. Prescription upload, branch finder, PLASCHEMA verification.
-4. NOTGATE (notgate-w6l1.vercel.app) — corporate site for a construction firm.
-   Project gallery and partner trust signals. The firm publishes 25+ years,
-   120+ projects and over N65B delivered.
-5. Selo (selo-red.vercel.app) — a curated store selling only purple clothing,
-   accessories and bags.
-6. Elowen Living (gits.technology/elowen-living) — luxury real estate.
-   Editorial layout, full-bleed property imagery, virtual tours.
-
-RULES FOR USING THESE — these override anything else in this prompt:
-- Reference a project ONLY from this list. Never any other company.
-- Never state a metric, percentage, timeline or money figure for a client
-  unless it appears above. Do not estimate one, and do not illustrate with a
-  hypothetical that reads like a real result.
-- If nothing here matches what they are describing, say so plainly and talk
-  about the approach instead. "We have not built exactly that" is a better
-  answer than an invented one, and it is the honest one.
-- Never invent a client name, industry or outcome under any circumstances.
-`;
-
-/* ─── Contact facts ──────────────────────────────────────────────
-   The prompt instructs the advisor to close with a WhatsApp or booking CTA
-   but never gave it the actual details, so it invented them — it offered a
-   prospect "+123-456-7890". Anything the advisor hands out has to come from
-   here. Keep in sync with components/Footer.tsx and app/contact/page.tsx.
-   ───────────────────────────────────────────────────────────────── */
-const CONTACT_FACTS = `
-GITS CONTACT DETAILS — the only ones you may ever give out:
-- WhatsApp: https://wa.me/2348116276212  (+234 811 627 6212)
-- Book a call: https://calendly.com/donatusgwer
-- Contact page: https://gits.technology/contact
-- Free audit: https://gits.technology/audit
-
-NEVER invent or guess a phone number, email address, link or booking URL.
-If you need a detail that is not listed above, send them to the contact page.
-`;
-
 const CHAT_MODEL = process.env.GROQ_MODEL ?? "openai/gpt-oss-20b";
 
 const SANITY_PROJECT_ID  = process.env.SANITY_PROJECT_ID  ?? "vih4pg3q";
@@ -178,84 +146,6 @@ CONVERSATION:
 ${transcript}`;
 }
 
-/* ─── Discovery stage types ─────────────────────────────────── */
-type DiscoveryStage =
-  | "goal"
-  | "situation"
-  | "pain"
-  | "impact"
-  | "qualification"
-  | "recommendation";
-
-/* ─── Stage instruction injector ────────────────────────────── */
-function buildStageInstruction(stage: DiscoveryStage, msgCount: number): string {
-  const instructions: Record<DiscoveryStage, string> = {
-    goal: `
-CURRENT DISCOVERY STAGE: 1 — GOAL
-Your ONLY job this turn is to understand what the visitor wants to achieve.
-React naturally to what they just said — acknowledge their specific situation in one sentence, then ask ONE open question about their goal.
-Do NOT mention any past GITS projects. Do NOT mention pricing. Do NOT pitch.
-Sound like a curious, warm human. Not a script.
-Good openers: "What's the main thing you want this to do for your business?" / "What made you start thinking about this now?" / "What does success look like for you here?"
-Keep your reply under 70 words. End with exactly one question.`,
-
-    situation: `
-CURRENT DISCOVERY STAGE: 2 — CURRENT SITUATION
-You know what they want. Now understand what exists today.
-React to their last message naturally before asking your question. ONE question about their current process, tools, or setup.
-Do NOT mention any past GITS projects yet. Do NOT pitch.
-Good questions: "How are you handling this today?" / "What tools are you working with right now?" / "Do you have anything in place already, or starting from scratch?"
-Keep your reply under 70 words. End with exactly one question.`,
-
-    pain: `
-CURRENT DISCOVERY STAGE: 3 — PAIN DISCOVERY
-You understand their goal and current setup. Now find the real friction.
-React to what they said. ONE question about what's not working, what's frustrating, or what's blocking them.
-Do NOT mention any past GITS projects yet. Do NOT pitch yet.
-Good questions: "What's been the biggest frustration with that?" / "What's stopping you from getting where you want to be?" / "Where does it actually break down?"
-Keep your reply under 80 words. End with exactly one question.`,
-
-    impact: `
-CURRENT DISCOVERY STAGE: 4 — IMPACT
-You know the pain. Now understand what it costs them to leave it unsolved.
-React naturally. ONE question about consequences — business, revenue, time, opportunity.
-Do NOT mention any past GITS projects yet. Do NOT pitch yet.
-If they mentioned a concrete problem, reflect it back: "So that's probably costing you [time/money] every [week/month]?"
-Good questions: "How is that affecting the business right now?" / "What happens if this stays the same another 6 months?" / "What's it actually costing you?"
-Keep your reply under 80 words. End with exactly one question.`,
-
-    qualification: `
-CURRENT DISCOVERY STAGE: 5 — QUALIFICATION
-You understand goal, situation, pain, and impact. Now qualify the opportunity.
-ONE question about timeline, budget, or decision process.
-You MAY now reference a past GITS project — but ONLY from the REAL GITS PROJECTS list, ONLY if it genuinely matches their situation, ONLY once, and ONLY in one sentence woven naturally into your reply. Name the client. Do not attach a metric to it unless that figure appears in the list. If nothing in the list fits, reference nothing. Do not lead with it.
-Good questions: "Do you have a target date you're working toward?" / "Have you set aside a rough budget?" / "Who else would be involved in the final decision?"
-Keep your reply under 90 words. End with exactly one question.`,
-
-    recommendation: `
-CURRENT DISCOVERY STAGE: 6 — RECOMMENDATION
-You have enough. This is the close. Be specific, warm, and confident.
-
-Structure your reply:
-1. Start EXACTLY with "So if I'm understanding correctly" — recap their goal, situation, core pain, and impact in 1–2 sentences.
-2. ONE past project reference if it matches (one sentence, woven in naturally — not bolted on).
-3. Recommend the specific GITS service, realistic USD price range, and timeline. For custom software: "pricing depends on scope — best to jump on a quick call and we can give you an accurate number."
-4. ONE clear CTA: WhatsApp for urgency, book a call for complex projects, contact page for formal next step.
-
-Keep the full reply under 180 words. Sound like a trusted advisor closing naturally — not a salesperson closing aggressively. The phrase "So if I'm understanding correctly" MUST appear to trigger recommendation detection.`,
-  };
-
-  const stalledWarning =
-    msgCount >= 12 && (stage === "goal" || stage === "situation")
-      ? `\nNOTE: This conversation has been going a while. The visitor may be hesitant or just browsing. Acknowledge it: "I realise I've asked a few questions — happy to just give you a rough sense of what something like this costs if that's more useful right now." Then wait.`
-      : "";
-
-  return instructions[stage] + stalledWarning;
-}
-
-/* ─── Fallback BASE_SYSTEM (used when no systemPrompt arrives) ─ */
-const BASE_SYSTEM = `You are the GITS AI Advisor — a sharp, warm, experienced member of the GITS team (Gwer Intelligent Tech Solutions). You think like a senior tech consultant. Your job is to understand the visitor's situation before recommending anything. Ask one question at a time. Be direct, human, and helpful. Never pitch immediately. Always diagnose before recommending.`;
-
 /* ═══════════════════════════════════════════════════════════════
    POST handler
 ═══════════════════════════════════════════════════════════════ */
@@ -264,56 +154,34 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const {
       messages      = [],
-      systemPrompt,
       context       = {},
       sessionId,
       ctaClicked,
       source,
     } = body as {
       messages:      { role: string; content: string }[];
-      systemPrompt?: string;
       context:       Record<string, unknown>;
       sessionId:     string;
       ctaClicked?:   string;
       source?:       string;
     };
 
-    /* ── Real client work is appended to every prompt, so the model cannot
-       reach for an invented case study at any stage ── */
-    /* ── Use client systemPrompt if present ── */
-    const basePrompt = (systemPrompt && systemPrompt.trim().length > 50)
-      ? systemPrompt
-      : BASE_SYSTEM;
+    /* ── What did the visitor actually just ask? ──
+       The prompt is assembled server-side from the canonical knowledge base.
+       A systemPrompt posted by the client is deliberately ignored: the two
+       copies had drifted (the client shipped twelve invented case studies with
+       hard metrics that the server's real-projects list contradicts), and
+       anything the browser sends can be rewritten in devtools. ── */
+    const lastUser = [...messages].reverse().find(m => m.role === "user")?.content ?? "";
+    const result   = detectIntent(lastUser);
 
-    /* ── Build context note ── */
-    let contextNote = "";
-    if (context?.userProjectType)               contextNote += `\nVisitor's stated interest: ${context.userProjectType}`;
-    if ((context?.userBudget as number) > 0)    contextNote += `\nVisitor's stated budget: $${(context.userBudget as number).toLocaleString()}`;
-    if (context?.visitorName)                   contextNote += `\nVisitor's name: ${context.visitorName}`;
-    if (context?.industry)                      contextNote += `\nVisitor's industry: ${context.industry}`;
-    if (context?.currentTools)                  contextNote += `\nTools they currently use: ${context.currentTools}`;
-    if ((context?.qualScore as number) >= 45)   contextNote += `\nHigh buying intent detected.`;
-    if (context?.conversationSummary)           contextNote += `\nKnown context:\n${context.conversationSummary}`;
+    const stage    = isStage(context?.discoveryStage) ? context.discoveryStage : "goal";
+    const msgCount = (context?.msgCount as number) ?? 0;
+    const discoveryTurns =
+      ((context?.discoveryTurns as number) ?? msgCount) + (result.intent === "discovery" ? 1 : 0);
 
-    /* ── Inject stage instruction ── */
-    const discoveryStage = (context?.discoveryStage as DiscoveryStage) ?? "goal";
-    const msgCount       = (context?.msgCount       as number)          ?? 0;
-    const stageInstruction = buildStageInstruction(discoveryStage, msgCount);
-
-    const systemPromptFinal =
-      basePrompt
-      // Appended at every stage, not just qualification: without it the
-      // model reached for invented case studies wherever it felt one fit.
-      + `\n\n--- ${REAL_CLIENT_WORK}`
-      + `\n\n--- ${CONTACT_FACTS}`
-      + (contextNote ? `\n\n--- CURRENT VISITOR CONTEXT ---${contextNote}` : "")
-      + `\n\n--- THIS TURN'S INSTRUCTION ---${stageInstruction}`;
-
-    /* ── Call Groq with dynamic token limit by stage ── */
-    const stageForTokens = (context?.discoveryStage as string) ?? "goal";
-    // Headroom above the old budget: some of this is spent on reasoning
-    // tokens before any content is produced.
-    const maxTokens = stageForTokens === "recommendation" ? 700 : 320;
+    const systemPromptFinal = buildSystemPrompt({ result, stage, msgCount, context });
+    const maxTokens         = maxTokensFor(result.intent, stage);
 
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -338,11 +206,18 @@ export async function POST(req: NextRequest) {
       }),
     });
 
-    let reply = "Something went wrong — please try [contacting the team](https://wa.me/2348116276212) directly.";
+    let reply = "I'm having trouble reaching my brain for a second. Rather than keep you waiting: [message the team on WhatsApp](https://wa.me/2348116276212) or [book a quick call](https://calendly.com/donatusgwer) — someone will pick it up straight away.";
+    let ok    = false;
 
     if (groqRes.ok) {
       const groqData = await groqRes.json();
-      reply = groqData.choices?.[0]?.message?.content?.trim() ?? reply;
+      const content  = groqData.choices?.[0]?.message?.content?.trim();
+      if (content) {
+        reply = content;
+        ok    = true;
+      } else {
+        console.error(`[Groq] empty content using model ${CHAT_MODEL} (finish_reason: ${groqData.choices?.[0]?.finish_reason})`);
+      }
     } else {
       // Log status as well as body: a model_not_found here is indistinguishable
       // from a network failure in the visitor-facing message, so the status is
@@ -351,19 +226,32 @@ export async function POST(req: NextRequest) {
       console.error(`[Groq] ${groqRes.status} ${groqRes.statusText} using model ${CHAT_MODEL}:`, err);
     }
 
+    // A failed turn must not push the conversation forward — the visitor never
+    // got an answer, so the stage they are at has not changed.
+    const stageOut = ok
+      ? nextStage({ stage, intent: result.intent, discoveryTurns, reply })
+      : stage;
+
     /* ── Background Sanity sync — get summary back for localStorage ── */
     let convSummary = "";
     if (sessionId) {
       try {
         convSummary = await syncToSanity({
-          sessionId, messages, reply, ctaClicked, source, context, discoveryStage,
+          sessionId, messages, reply, ctaClicked, source, context,
+          discoveryStage: stageOut,
         });
       } catch (e) {
         console.error("[Sanity sync]", e);
       }
     }
 
-    return NextResponse.json({ reply, summary: convSummary });
+    return NextResponse.json({
+      reply,
+      summary:        convSummary,
+      intent:         result.intent,
+      stage:          stageOut,
+      discoveryTurns: ok ? discoveryTurns : ((context?.discoveryTurns as number) ?? msgCount),
+    });
 
   } catch (e) {
     console.error("[API] route error:", e);

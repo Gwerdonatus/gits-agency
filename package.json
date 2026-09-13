@@ -9,7 +9,8 @@
     "deploy": "npm run build:worker && wrangler deploy --config wrangler.toml",
     "deploy:local": "npm run build:worker && wrangler deploy --config wrangler.toml",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:advisor": "tsc --project scripts/tsconfig.check.json && node .advisor-check/scripts/check-advisor-intents.js"
   },
   "dependencies": {
     "@fontsource/great-vibes": "^5.2.8",

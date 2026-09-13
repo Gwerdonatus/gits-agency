@@ -43,3 +43,6 @@ nul
 
 # OpenNext / Cloudflare worker build output
 .open-next/
+
+# Output of npm run check:advisor
+.advisor-check/
