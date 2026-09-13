@@ -17,6 +17,7 @@
 import { detectIntent, type Intent } from "../src/lib/advisor/intent";
 import { buildSystemPrompt, maxTokensFor } from "../src/lib/advisor/prompt";
 import { SERVICES } from "../src/lib/advisor/knowledge";
+import { buildContextNote } from "../src/lib/advisor/prompt";
 import { nextStage } from "../src/lib/advisor/stage";
 
 const CASES: [string, Intent][] = [
@@ -81,6 +82,14 @@ const CASES: [string, Intent][] = [
   ["Mostly it's the stock tracking that breaks down",      "discovery"],
   ["It costs us maybe two days a week",                    "discovery"],
   ["our deadline is sometime in March",                    "discovery"],
+
+  /* Being told we got it wrong outranks whatever the words are about — the turn
+     owes an admission, and a handoff when we cannot fix it. */
+  ["that's wrong, we don't sell online at all",             "correction"],
+  ["no, that's not what I asked",                           "correction"],
+  ["you misunderstood me",                                  "correction"],
+  ["are you sure about that?",                              "correction"],
+  ["you keep saying the same thing",                        "correction"],
   ["I'm thinking about a website but not sure exactly what I need yet", "discovery"],
   ["we don't know how to handle stock across the branches", "discovery"],
   ["I know something needs to change but I'm not sure what the solution is", "discovery"],
@@ -122,15 +131,62 @@ for (const s of SERVICES) {
   assert(`catalogue prompt names "${s.name}"`, prompt.includes(s.name));
 }
 assert("catalogue prompt requires all six lines", prompt.includes("ALL SIX service lines"));
-assert("catalogue prompt forbids deflecting", prompt.includes("Do NOT ask them to state their needs before listing"));
+
+/* The catalogue turn must not put money in front of a visitor who only asked
+   what we do — the whole point of the no-pricing rule. */
+assert("catalogue turn forbids prices outright", prompt.includes("NO PRICES ANYWHERE IN THIS REPLY"));
+assert("catalogue turn asks about their business", prompt.includes("what their business does"));
+assert(
+  "no price band is loaded on a catalogue turn",
+  !prompt.includes("PRICE BANDS — money is on the table")
+);
+for (const s of SERVICES) {
+  assert(
+    `catalogue prompt carries example businesses for ${s.id}`,
+    prompt.includes(s.exampleBusinesses[0])
+  );
+}
+
+/* A pricing question is the one turn that does get the bands. */
+const askedPrice = detectIntent("how much for a landing page?");
+const pricePrompt = buildSystemPrompt({ result: askedPrice, stage: "goal", msgCount: 2, context: {} });
+assert("a pricing turn loads the bands", pricePrompt.includes("PRICE BANDS — money is on the table"));
+assert("the landing-page floor is $200", pricePrompt.includes("from $200 for a one-pager"));
+assert("a pricing turn leads with the number", pricePrompt.includes("this is the one turn where you lead with money"));
+
+/* Not knowing, and handing over, has to be available on every turn. */
+for (const [label, p] of [["catalogue", prompt], ["pricing", pricePrompt]] as const) {
+  assert(`${label} turn carries the handoff script`, p.includes("HANDING OVER TO A HUMAN"));
+  assert(`${label} turn carries the WhatsApp number`, p.includes("https://wa.me/2348116276212"));
+}
+
+/* Being corrected: admit it, then hand over rather than inventing a recovery. */
+const corrected = detectIntent("that's wrong, we don't sell online at all");
+const correctionPrompt = buildSystemPrompt({ result: corrected, stage: "pain", msgCount: 5, context: {} });
+assert("a correction turn is told to accept it first", correctionPrompt.includes("Accept it in the first sentence"));
+assert("a correction turn forbids arguing", correctionPrompt.includes("Never argue"));
+assert("a correction turn offers the handoff", correctionPrompt.includes("would rather not guess"));
+
+/* Discovery must not drift into price talk before anyone asked. */
+const disc2 = detectIntent("we handle about forty orders a week by hand");
+const discPrompt = buildSystemPrompt({ result: disc2, stage: "situation", msgCount: 3, context: {} });
+assert("discovery turns are told not to raise money", discPrompt.includes("Do not mention money"));
+assert("no price band on a discovery turn", !discPrompt.includes("PRICE BANDS — money is on the table"));
+
+/* Known context must still suppress re-asking. */
+assert(
+  "a known budget reaches the prompt",
+  buildContextNote({ userBudget: 3000 }).includes("$3,000")
+);
+assert("catalogue prompt forbids deflecting", prompt.includes("Do NOT ask them to state their needs BEFORE listing"));
 assert("catalogue reply budget leaves room for a list", maxTokensFor("catalogue", "goal") >= 700);
 assert("contact details are always in the prompt", prompt.includes("https://wa.me/2348116276212"));
 assert("real-client guardrail is always in the prompt", prompt.includes("the only work you may ever reference"));
 
 const discovery = detectIntent("I run a pharmacy in Jos");
 const discoveryPrompt = buildSystemPrompt({ result: discovery, stage: "goal", msgCount: 1, context: {} });
-assert("a discovery turn still runs the ladder", discoveryPrompt.includes("DISCOVERY STAGE 1 — GOAL"));
-assert("an answer turn does not run the ladder", !prompt.includes("DISCOVERY STAGE 1 — GOAL"));
+assert("a discovery turn still runs the ladder", discoveryPrompt.includes("DISCOVERY STAGE 1"));
+assert("an answer turn does not run the ladder", !prompt.includes("DISCOVERY STAGE 1"));
 
 /* Stage progression: answering questions must not push the conversation toward
    a close the visitor was never interviewed for. */
