@@ -379,7 +379,7 @@ export default function ServicesPage() {
             className="mt-8 flex flex-wrap gap-3"
           >
             <a href="/contact" className="inline-flex items-center justify-center rounded-xl bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition">Start a project</a>
-            <a href="/what-we-do" className="inline-flex items-center justify-center rounded-xl border border-black/15 px-6 py-3 text-sm font-medium text-gray-900 hover:bg-black hover:text-white transition">See our process</a>
+            <a href="/#process" className="inline-flex items-center justify-center rounded-xl border border-black/15 px-6 py-3 text-sm font-medium text-gray-900 hover:bg-black hover:text-white transition">See our process</a>
           </motion.div>
 
           <motion.div

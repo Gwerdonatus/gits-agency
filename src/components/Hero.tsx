@@ -270,6 +270,7 @@ interface CardData {
   bgImage?: string;
   bgImageAlt?: string; // second image to crossfade with, for the software card
   bgGradient?: string;
+  bgVideo?: string;
   overlayGradient?: string;
   widget: React.ReactNode;
   href: string;
@@ -277,15 +278,69 @@ interface CardData {
 
 // Shared: renders both images stacked (both preloaded via `priority`) and
 // crossfades opacity between them — no remount, no flash, instant swap.
+function PanelVideo({ src, isActive }: { src: string; isActive: boolean }) {
+  const ref = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let visible = false;
+    const sync = () => {
+      if (isActive && visible && !document.hidden && !reducedMotion.matches) {
+        void video.play().catch(() => { /* Autoplay may be blocked by power-saving settings. */ });
+      } else {
+        video.pause();
+      }
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(video);
+    document.addEventListener("visibilitychange", sync);
+    reducedMotion.addEventListener("change", sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
+      reducedMotion.removeEventListener("change", sync);
+      video.pause();
+    };
+  }, [isActive]);
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      aria-hidden="true"
+      className="absolute inset-0 h-full w-full object-cover object-center pointer-events-none"
+      style={{ visibility: isActive ? "visible" : "hidden" }}
+    />
+  );
+}
+
 function CrossfadeBackground({
   card,
   showAlt,
   sizes,
+  isActive,
 }: {
   card: CardData;
   showAlt: boolean;
   sizes: string;
+  isActive: boolean;
 }) {
+  if (card.bgVideo) {
+    return (
+      <div className="absolute inset-0" style={{ background: card.bgGradient }}>
+        <PanelVideo src={card.bgVideo} isActive={isActive} />
+      </div>
+    );
+  }
   if (!card.bgImage) {
     return <div className="absolute inset-0" style={{ background: card.bgGradient }} />;
   }
@@ -336,7 +391,8 @@ const cardsData: CardData[] = [
     title: "Web & Platforms",
     description: "High-performance sites that convert. We design for speed, SEO, and revenue — not just aesthetics.",
     bgGradient: "linear-gradient(160deg, #334155 0%, #1e293b 60%, #0f172a 100%)",
-    overlayGradient: "linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0) 80%)",
+    bgVideo: "/hero/web-platforms.mp4",
+    overlayGradient: "linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.12) 45%, rgba(0,0,0,0.5) 100%)",
     widget: <PlatformWidget />,
     href: "/services/websites-digital-experiences",
   },
@@ -378,7 +434,7 @@ function DesktopCard({
       }}
     >
       {/* Background */}
-      <CrossfadeBackground card={card} showAlt={showAlt} sizes="55vw" />
+      <CrossfadeBackground card={card} showAlt={showAlt} sizes="55vw" isActive={isActive} />
 
       {/* Overlay */}
       <div className="absolute inset-0" style={{ background: card.overlayGradient }} />
@@ -467,7 +523,7 @@ function MobileAccordionCard({
       transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
     >
       {/* Background */}
-      <CrossfadeBackground card={card} showAlt={showAlt} sizes="55vw" />
+      <CrossfadeBackground card={card} showAlt={showAlt} sizes="55vw" isActive={isActive} />
 
       <div className="absolute inset-0" style={{ background: card.overlayGradient }} />
 
@@ -554,7 +610,7 @@ function MobileCarouselCard({
   return (
     <div className="relative w-full h-full rounded-[24px] overflow-hidden select-none flex-shrink-0 snap-center">
       {/* Background */}
-      <CrossfadeBackground card={card} showAlt={showAlt} sizes="100vw" />
+      <CrossfadeBackground card={card} showAlt={showAlt} sizes="100vw" isActive={isActive} />
 
       <div className="absolute inset-0" style={{ background: card.overlayGradient }} />
 
@@ -720,7 +776,7 @@ export default function Hero() {
             </div>
             <div className="flex items-center gap-3 shrink-0">
               <Link
-                href="/what-we-build"
+                href="/#process"
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition underline underline-offset-4 decoration-gray-300 hover:decoration-gray-900"
               >
                 See our process
@@ -820,7 +876,7 @@ export default function Hero() {
               </span>
             </Link>
             <Link
-              href="/what-we-do"
+              href="/#process"
               className="inline-flex items-center justify-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-900 transition underline underline-offset-4 decoration-gray-300 hover:decoration-gray-900 h-12"
             >
               See our process

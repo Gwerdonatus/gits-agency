@@ -267,12 +267,12 @@ export default function ProcessCarouselPerfect() {
       if (wheelAccum.current > threshold) {
         wheelLock.current = true;
         wheelAccum.current = 0;
-        next();
+        goTo(Math.min(active + 1, total - 1));
         setTimeout(() => (wheelLock.current = false), 280);
       } else if (wheelAccum.current < -threshold) {
         wheelLock.current = true;
         wheelAccum.current = 0;
-        prev();
+        goTo(Math.max(active - 1, 0));
         setTimeout(() => (wheelLock.current = false), 280);
       }
     };
@@ -291,10 +291,19 @@ export default function ProcessCarouselPerfect() {
     };
 
     const onWheel = (e: WheelEvent) => {
+      // Preserve browser zoom and release page scrolling at either end.
+      if (e.ctrlKey) return;
+      const rawDelta =
+        Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      const delta = rawDelta * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
+      if (!delta) return;
+      if ((delta > 0 && active === total - 1) || (delta < 0 && active === 0)) {
+        wheelAccum.current = 0;
+        return;
+      }
       e.preventDefault();
 
-      const delta =
-        Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (wheelAccum.current * delta < 0) wheelAccum.current = 0;
 
       wheelAccum.current += delta;
 
@@ -338,8 +347,9 @@ export default function ProcessCarouselPerfect() {
   return (
     <section
       ref={sectionRef}
+      id="process"
       className="relative w-full overflow-hidden"
-      style={{ background: "#f4f5f7" }}
+      style={{ background: "#f4f5f7", scrollMarginTop: "100px" }}
     >
       {/* Curvy demarcation */}
       <div className="absolute top-0 left-0 w-full pointer-events-none">
