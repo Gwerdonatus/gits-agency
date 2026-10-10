@@ -19,7 +19,6 @@ import Hero from "@/components/Hero";
 import ServicesOverview from "@/components/ServicesOverview";
 import ProcessFlow from "@/components/ProcessFlow";
 import BlueprintsMiniCaseStudies from "@/components/BlueprintsMiniCaseStudies";
-import GITSAdvisor from "@/components/GITSAdvisor";
 import { BreadcrumbSchema, FAQSchema } from "./structured-data";
 
 const SITE_URL = "https://gits.technology";
@@ -30,14 +29,14 @@ const SITE_URL = "https://gits.technology";
 export const metadata: Metadata = {
   title: "SaaS, Apps & AI Automation Agency | GITS",
   description:
-    "GITS builds SaaS platforms, mobile apps, AI automation systems, websites, and internal tools for startups and businesses worldwide. Based in Nigeria. Senior-only team. Transparent pricing. 40+ businesses served across 12 countries.",
+    "GITS builds SaaS platforms, mobile apps, AI automation systems, websites, and internal tools for startups and businesses worldwide. Based in Nigeria. Scoped delivery, reviewable milestones and documented handover.",
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
     title: "SaaS, Mobile Apps & AI Automation Agency | GITS",
     description:
-      "Premium digital agency. SaaS, mobile apps, AI automation, websites, and internal tools. Senior-only team. Starting from $200. 40+ businesses, 12 countries.",
+      "Premium digital agency. SaaS, mobile apps, AI automation, websites, and internal tools. Scoped delivery, reviewable milestones and documented handover.",
     url: SITE_URL,
     type: "website",
     // images MUST be repeated here. A page-level openGraph object replaces the
@@ -74,15 +73,15 @@ const HOMEPAGE_FAQS = [
   },
   {
     q: "Where is GITS based?",
-    a: "GITS is based in Abuja, Nigeria, and operates as a fully remote agency serving clients in 12+ countries including the United States, United Kingdom, and across Africa.",
+    a: "GITS is based in Abuja, Nigeria, and operates as a fully remote agency available to work with businesses internationally.",
   },
   {
     q: "How much does GITS charge?",
-    a: "GITS pricing ranges from $200 for a landing page to $20,000+ for a complex SaaS platform. Mobile app MVPs start at $3,000, AI automation from $1,000, and internal tools from $2,000. All pricing is transparent and quoted upfront.",
+    a: "Project pricing follows an agreed scope, dependencies, milestones and support. Ask for a scoped proposal.",
   },
   {
     q: "How do I contact GITS?",
-    a: "You can contact GITS via WhatsApp at +2348116276212, book a call at https://calendly.com/donatusgwer, or submit a project enquiry at https://gits.technology/contact.",
+    a: "You can contact GITS via WhatsApp at +2349034360747, book a call at https://calendly.com/donatusgwer, or submit a project enquiry at https://gits.technology/contact.",
   },
   {
     q: "Does GITS offer a free audit?",
@@ -114,7 +113,6 @@ export default function Home() {
       <ServicesOverview />
       <ProcessFlow />
       <BlueprintsMiniCaseStudies />
-      <GITSAdvisor />
     </>
   );
 }

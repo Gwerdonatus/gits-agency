@@ -46,3 +46,6 @@ nul
 
 # Output of npm run check:advisor
 .advisor-check/
+
+# Private, unverified source/evidence inventory (never published)
+.local-evidence/

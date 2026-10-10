@@ -126,9 +126,9 @@ function LogoStack({ size = 36 }: { size?: number }) {
 
 function SoftwareWidget() {
   const stats = [
-    { value: "40+", label: "Products shipped" },
-    { value: "12", label: "Countries" },
-    { value: "0", label: "Junior devs" },
+    { value: "Scope", label: "Agreed workflow" },
+    { value: "Review", label: "Shared milestones" },
+    { value: "Code", label: "Agreed handover" },
   ];
   const stack = ["React", "Node", "TS", "AWS"];
   
@@ -142,7 +142,7 @@ function SoftwareWidget() {
     >
       <div className="flex items-center gap-2 mb-3">
         <div className="h-2 w-2 rounded-full bg-[#4A7C59]" />
-        <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500">Delivery track record</span>
+        <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500">Delivery approach</span>
       </div>
       <div className="grid grid-cols-3 gap-2 mb-3">
         {stats.map((s) => (
@@ -163,52 +163,7 @@ function SoftwareWidget() {
   );
 }
 
-function PlatformWidget() {
-  const metrics = [
-    { label: "Load time", before: "4.2s", after: "1.1s", improvement: "74%" },
-    { label: "Conversion", before: "1.8%", after: "5.4%", improvement: "3x" },
-  ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease, delay: 0.2 }}
-      className="flex flex-col sm:flex-row gap-3"
-    >
-      <div
-        className="rounded-2xl bg-white/95 backdrop-blur-xl p-4 w-full sm:w-[220px]"
-        style={{ boxShadow: "0 18px 40px rgba(0,0,0,0.16)" }}
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <div className="h-2 w-2 rounded-full bg-[#4A7C59]" />
-          <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-500">Performance lift</span>
-        </div>
-        {metrics.map((m) => (
-          <div key={m.label} className="flex items-center justify-between mb-2 last:mb-0">
-            <span className="text-[11px] text-gray-500 font-medium">{m.label}</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] text-gray-400 line-through">{m.before}</span>
-              <span className="text-[11px] font-bold text-[#4A7C59]">{m.after}</span>
-              <span className="text-[9px] font-semibold text-white bg-[#4A7C59] px-1.5 py-0.5 rounded-full">
-                {m.improvement}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div
-        className="rounded-2xl bg-white/95 backdrop-blur-xl p-4 w-full sm:w-[160px] flex flex-col justify-center"
-        style={{ boxShadow: "0 18px 40px rgba(0,0,0,0.16)" }}
-      >
-        <p className="text-[10px] uppercase tracking-wider font-semibold text-gray-500 mb-2">SEO-first</p>
-        <p className="text-2xl font-bold text-gray-900">Top 3</p>
-        <p className="text-[10px] text-gray-400">Avg. ranking for client target keywords</p>
-      </div>
-    </motion.div>
-  );
-}
+function PlatformWidget() { return <div className="rounded-2xl bg-white/95 p-4 max-w-xs text-gray-900"><p className="text-xs uppercase tracking-wider">Website delivery</p><p className="mt-2 text-sm">Responsive layouts, a clear enquiry path and performance checks.</p></div>; }
 
 function AutomationWidget() {
   const workflows = [
@@ -252,9 +207,9 @@ function AutomationWidget() {
         className="rounded-2xl bg-white/95 backdrop-blur-xl p-4 w-full sm:w-[140px] flex flex-col items-center justify-center"
         style={{ boxShadow: "0 18px 40px rgba(0,0,0,0.16)" }}
       >
-        <p className="text-[10px] uppercase tracking-wider font-semibold text-gray-500 mb-1">Hours saved</p>
-        <p className="text-3xl font-bold text-[#4A7C59]">1,240</p>
-        <p className="text-[10px] text-gray-400">this year for clients</p>
+        <p className="text-[10px] uppercase tracking-wider font-semibold text-gray-500 mb-1">Human review</p>
+        <p className="text-3xl font-bold text-[#4A7C59]">Review</p>
+        <p className="text-[10px] text-gray-400">for uncertain cases</p>
       </div>
     </motion.div>
   );
@@ -378,7 +333,7 @@ const cardsData: CardData[] = [
     id: "software",
     label: "Software",
     title: "Custom Software",
-    description: "From MVPs to full platforms — built to scale with your business. Senior engineers only. No handoffs.",
+    description: "From MVPs to full platforms — built to scale with your business. Agreed scope. Reviewable milestones.",
     bgImage: "/hero/software-lead.webp",
     bgImageAlt: "/hero/software-lead2.webp",
     overlayGradient: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0) 70%)",
@@ -569,13 +524,13 @@ function MobileAccordionCard({
               {/* Stat pill */}
               <div className="bg-white/15 backdrop-blur-2xl rounded-xl px-3 py-2.5 border border-white/10">
                 <p className="text-[9px] text-white/50 font-medium uppercase tracking-wider">
-                  {card.id === "software" && "Products shipped"}
-                  {card.id === "platforms" && "Performance gain"}
-                  {card.id === "automation" && "Hours saved"}
+                  {card.id === "software" && "Delivery"}
+                  {card.id === "platforms" && "Website"}
+                  {card.id === "automation" && "Exceptions"}
                 </p>
                 <p className="text-lg font-medium text-white leading-none mt-1">
-                  {card.id === "software" && "40+"}
-                  {card.id === "platforms" && "74%"}
+                  {card.id === "software" && "Scoped"}
+                  {card.id === "platforms" && "Responsive"}
                   {card.id === "automation" && "1,240"}
                 </p>
               </div>
@@ -636,8 +591,8 @@ function MobileCarouselCard({
               {card.id === "automation" && "Hours saved"}
             </p>
             <p className="text-xl font-medium text-white leading-none mt-1">
-              {card.id === "software" && "40+"}
-              {card.id === "platforms" && "74%"}
+              {card.id === "software" && "Scoped"}
+              {card.id === "platforms" && "Responsive"}
               {card.id === "automation" && "1,240"}
             </p>
           </div>
@@ -797,7 +752,7 @@ export default function Hero() {
           {/* Trust bar — text, then flag stack */}
           <div className="shrink-0 flex items-center gap-4 pb-4 border-b border-gray-100">
             <p className="text-[11px] text-gray-400 font-medium">
-              Trusted by 40+ teams worldwide
+              Built around a clearly defined workflow
             </p>
             <LogoStack size={22} />
           </div>
@@ -856,7 +811,7 @@ export default function Hero() {
             custom={0.35}
             className="mt-4 text-[15px] leading-[1.75] text-gray-500 max-w-[340px]"
           >
-            From MVPs to enterprise platforms — built to scale with your business. Senior engineers only. No handoffs.
+            From first workflows to larger platforms — agreed scope, reviewable milestones and documented handover.
           </motion.p>
 
           <motion.div
@@ -953,7 +908,7 @@ export default function Hero() {
         >
           <div className="border-t border-gray-100 pt-6 flex flex-col items-center gap-4">
             <p className="text-[11px] text-gray-400 font-medium text-center">
-              Trusted by 40+ teams worldwide
+              Built around a clearly defined workflow
             </p>
             <LogoStack size={26} />
           </div>

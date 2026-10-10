@@ -27,8 +27,8 @@ export default function HomePage() {
               ))}
             </div>
             <div className="hero-search">
-              <input type="text" placeholder="Country, City, Address, Postal Code or ID" />
-              <button className="search-arrow">&#8594;</button>
+              <input type="text" aria-label="Sample search — not connected" placeholder="Sample search — not connected" disabled />
+              <Link href="/elowen-living/properties" className="search-arrow" aria-label="Browse sample property cards">&#8594;</Link>
             </div>
           </div>
           <div className="hero-property-card">

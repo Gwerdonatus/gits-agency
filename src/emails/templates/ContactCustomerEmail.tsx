@@ -21,16 +21,16 @@ export default function ContactCustomerEmail({
   name = "Jane", projectType = "Web app", refId = "GITS-ABCD1234",
 }: ContactCustomerEmailProps) {
   return (
-    <EmailLayout preview="We received your message — we'll reply within 24 hours.">
+    <EmailLayout preview="Your GITS project enquiry was submitted.">
       <EmailLabel>Message received</EmailLabel>
-      <EmailHeading>We'll be in touch soon, {name.split(" ")[0]}.</EmailHeading>
-      <EmailBadge>Reply within 24 hours · Mon–Sat</EmailBadge>
+      <EmailHeading>Your enquiry was submitted, {name.split(" ")[0]}.</EmailHeading>
+      <EmailBadge>Project enquiry submitted</EmailBadge>
 
       <EmailBody>
-        Thanks for reaching out to Gits Technology. We've received your message and our team will review it shortly.
+        Thanks for reaching out to Gits Technology. Your enquiry was accepted for processing. This confirmation is not proof of delivery to the team inbox.
       </EmailBody>
       <EmailBody muted>
-        We typically reply within <strong>24 hours</strong> on weekdays. If your request is time-sensitive, you can also reach us on WhatsApp.
+        We will review your brief and suggest the next step. If your request is time-sensitive, you can also reach us on WhatsApp.
       </EmailBody>
 
       <EmailDivider label="Your Submission" />
@@ -57,7 +57,7 @@ export default function ContactCustomerEmail({
 
       <EmailDivider />
       <EmailBody muted>
-        Didn't submit this? You can safely ignore this email. Questions? Reply directly or email <strong>support@gits.technology</strong>.
+        Did not submit this? You can safely ignore this email. Questions? Reply directly or email <strong>support@gits.technology</strong>.
       </EmailBody>
     </EmailLayout>
   );

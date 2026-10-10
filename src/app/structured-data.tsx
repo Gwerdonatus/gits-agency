@@ -58,7 +58,7 @@ export function OrganizationSchema() {
       founder: {
         "@type": "Person",
         name: "Gwer Msughter Donatus",
-        jobTitle: "Founder & Senior Software Engineer",
+        jobTitle: "Founder",
         // Resolves to the anchor on the About page's founder section.
         url: `${SITE_URL}/about#founder`,
         // sameAs is how Google collapses these profiles into one person
@@ -67,7 +67,7 @@ export function OrganizationSchema() {
         // LinkedIn URLs here ("donatusgwer") did not exist and contradicted
         // the links rendered on the About page.
         sameAs: [
-          "https://donatus-gwer.vercel.app/",
+          "https://gwer.space/",
           "https://github.com/Gwerdonatus",
           "https://www.linkedin.com/in/donatus-gwer-857610338",
           "https://x.com/donatus_gwer",
@@ -153,19 +153,19 @@ export function OrganizationSchema() {
         {
           "@type": "ContactPoint",
           contactType: "customer support",
-          telephone: "+2348116276212",
+          telephone: "+2349034360747",
           availableLanguage: "English",
         },
         {
           "@type": "ContactPoint",
           contactType: "WhatsApp",
-          telephone: "+2348116276212",
-          url: "https://wa.me/2348116276212",
+          telephone: "+2349034360747",
+          url: "https://wa.me/2349034360747",
           availableLanguage: "English",
         },
       ],
       email: "hello@gits.technology",
-      telephone: "+2348116276212",
+      telephone: "+2349034360747",
       // Verified profiles only. sameAs is how Google and AI engines collapse
       // these accounts into one confident entity, so an unverifiable or dead
       // URL here weakens the whole record rather than padding it.
@@ -175,7 +175,7 @@ export function OrganizationSchema() {
         "https://www.facebook.com/profile.php?id=61590804764643",
         "https://www.tiktok.com/@buildwithgits",
         "https://github.com/Gwerdonatus",
-        "https://wa.me/2348116276212",
+        "https://wa.me/2349034360747",
         "https://calendly.com/donatusgwer",
       ],
     }} />
@@ -215,42 +215,42 @@ export function ServicesSchema() {
       description:
         "GITS builds SaaS platforms, online marketplaces, booking systems, membership platforms, customer portals, vendor management systems, business management software, and enterprise applications tailored to your business workflows.",
       url: `${SITE_URL}/services/custom-software-development`,
-      offers: { price: "5000", priceCurrency: "USD", priceSpecification: "Starting from $5,000" },
+
     },
     {
       name: "Website Design & Development",
       description:
         "Modern, conversion-first websites and digital experiences built with Next.js — business & corporate websites, e-commerce stores, landing pages, portfolio websites, event websites, and marketing websites. Mobile-first, fast-loading, and SEO-optimised.",
       url: `${SITE_URL}/services/websites-digital-experiences`,
-      offers: { price: "200", priceCurrency: "USD", priceSpecification: "Starting from $200" },
+
     },
     {
       name: "AI Automation & Business Automation",
       description:
         "Custom AI assistants, chatbots, lead qualification systems, workflow automation, reporting automation, WhatsApp automation, email automation, AI-powered business tools, and custom AI integrations. We integrate OpenAI GPT-4, Claude, and other LLMs into business workflows.",
       url: `${SITE_URL}/services/ai-business-automation`,
-      offers: { price: "1000", priceCurrency: "USD", priceSpecification: "Starting from $1,000" },
+
     },
     {
       name: "WhatsApp AI Agents",
       description:
         "Custom AI-powered conversational agents built on WhatsApp Business API. Automate customer support, lead qualification, sales, appointment booking, and order tracking. Integrates with CRMs and helpdesks. Multi-language support with human handoff. Built with OpenAI GPT-4, Claude, and custom LLMs.",
-      url: `${SITE_URL}/services/whatsapp-ai-agents`,
-      offers: { price: "1000", priceCurrency: "USD", priceSpecification: "Starting from $1,000" },
+      url: `${SITE_URL}/services/ai-business-automation`,
+
     },
     {
       name: "Internal Tools & CRM Systems",
       description:
         "Custom CRM systems, inventory management systems, admin dashboards, employee portals, reporting platforms, vendor management systems, internal workflow tools, and operations management systems for multi-branch businesses and organizations.",
       url: `${SITE_URL}/services/internal-tools-crm`,
-      offers: { price: "2000", priceCurrency: "USD", priceSpecification: "Starting from $2,000" },
+
     },
     {
       name: "Integrations & API Development",
       description:
         "Payment integrations (Stripe, Paystack), REST & GraphQL API development, CRM & marketing integrations, WhatsApp & email integrations, data synchronization pipelines, third-party service integrations, custom automation workflows, and webhook & event systems.",
       url: `${SITE_URL}/services/integrations-apis`,
-      offers: { price: "1000", priceCurrency: "USD", priceSpecification: "Starting from $1,000" },
+
     },
   ];
 
@@ -269,13 +269,6 @@ export function ServicesSchema() {
           availableChannel: {
             "@type": "ServiceChannel",
             serviceUrl: `${SITE_URL}/contact`,
-          },
-          offers: {
-            "@type": "Offer",
-            price: s.offers.price,
-            priceCurrency: s.offers.priceCurrency,
-            description: s.offers.priceSpecification,
-            availability: "https://schema.org/InStock",
           },
         }} />
       ))}
@@ -379,7 +372,7 @@ export function LocalBusinessSchema() {
       name: "GITS",
       description: "Premium AI agency and digital product studio in Abuja, Nigeria. Building custom software, AI automation, and WhatsApp AI agents for global clients.",
       url: SITE_URL,
-      telephone: "+2348116276212",
+      telephone: "+2349034360747",
       email: "hello@gits.technology",
       address: {
         "@type": "PostalAddress",

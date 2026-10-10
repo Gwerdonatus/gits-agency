@@ -3,10 +3,10 @@
    Sotheby's International Realty Replica
    ============================================ */
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+.elowen-living, .elowen-living *, .elowen-living *::before, .elowen-living *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.elowen-living { scroll-behavior: smooth; }
 
-body {
+.elowen-living {
     font-family: Georgia, 'Times New Roman', serif;
     color: #1a1a1a;
     background: #ffffff;
@@ -15,15 +15,15 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
-img { max-width: 100%; display: block; }
-ul, ol { list-style: none; }
-button { border: none; background: none; cursor: pointer; font-family: inherit; }
+.elowen-living a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+.elowen-living img { max-width: 100%; display: block; }
+.elowen-living ul, .elowen-living ol { list-style: none; }
+.elowen-living button { border: none; background: none; cursor: pointer; font-family: inherit; }
 
 /* ============================================
    TOP UTILITY BAR
    ============================================ */
-.top-bar {
+.elowen-living .top-bar {
     background: #0a1a2e;
     color: #ffffff;
     padding: 8px 40px;
@@ -35,14 +35,14 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     font-family: Arial, 'Helvetica Neue', sans-serif;
     letter-spacing: 0.5px;
 }
-.top-bar a { color: #ffffff; opacity: 0.9; transition: opacity 0.3s; }
-.top-bar a:hover { opacity: 1; }
-.top-bar .separator { color: rgba(255,255,255,0.3); }
+.elowen-living .top-bar a { color: #ffffff; opacity: 0.9; transition: opacity 0.3s; }
+.elowen-living .top-bar a:hover { opacity: 1; }
+.elowen-living .top-bar .separator { color: rgba(255,255,255,0.3); }
 
 /* ============================================
    MAIN NAVIGATION
    ============================================ */
-.main-nav {
+.elowen-living .main-nav {
     background: #0a1a2e;
     padding: 0 40px;
     display: flex;
@@ -55,8 +55,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     z-index: 1000;
 }
 
-.logo { display: flex; flex-direction: column; gap: 2px; cursor: pointer; }
-.logo-brand {
+.elowen-living .logo { display: flex; flex-direction: column; gap: 2px; cursor: pointer; }
+.elowen-living .logo-brand {
     font-family: Georgia, serif;
     font-size: 28px;
     font-weight: 400;
@@ -64,7 +64,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     letter-spacing: 1px;
     line-height: 1;
 }
-.logo-sub {
+.elowen-living .logo-sub {
     font-family: Arial, sans-serif;
     font-size: 9px;
     color: #ffffff;
@@ -74,12 +74,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     margin-top: 2px;
 }
 
-.nav-links {
+.elowen-living .nav-links {
     display: flex;
     align-items: center;
     gap: 36px;
 }
-.nav-links a {
+.elowen-living .nav-links a {
     color: #ffffff;
     font-family: Arial, sans-serif;
     font-size: 13px;
@@ -90,7 +90,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     padding: 4px 0;
     cursor: pointer;
 }
-.nav-links a::after {
+.elowen-living .nav-links a::after {
     content: '';
     position: absolute;
     bottom: -2px;
@@ -100,10 +100,10 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     background: #c9a96e;
     transition: width 0.3s ease;
 }
-.nav-links a:hover::after,
-.nav-links a.active::after { width: 100%; }
+.elowen-living .nav-links a:hover::after,
+.elowen-living .nav-links a.active::after { width: 100%; }
 
-.nav-links .search-icon {
+.elowen-living .nav-links .search-icon {
     color: #ffffff;
     font-size: 18px;
     cursor: pointer;
@@ -111,7 +111,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     align-items: center;
 }
 
-.nav-cta {
+.elowen-living .nav-cta {
     border: 1px solid #c9a96e;
     color: #ffffff;
     padding: 12px 28px;
@@ -123,12 +123,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     background: transparent;
     cursor: pointer;
 }
-.nav-cta:hover { background: #c9a96e; color: #0a1a2e; }
+.elowen-living .nav-cta:hover { background: #c9a96e; color: #0a1a2e; }
 
 /* ============================================
    SUB NAVIGATION
    ============================================ */
-.sub-nav {
+.elowen-living .sub-nav {
     background: #ffffff;
     padding: 0 40px;
     display: flex;
@@ -139,7 +139,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     border-bottom: 1px solid #e8e8e8;
     position: relative;
 }
-.sub-nav a {
+.elowen-living .sub-nav a {
     font-family: Arial, sans-serif;
     font-size: 12px;
     letter-spacing: 1.5px;
@@ -151,8 +151,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     transition: opacity 0.3s;
     cursor: pointer;
 }
-.sub-nav a:hover, .sub-nav a.active { opacity: 1; }
-.sub-nav a.active::after {
+.elowen-living .sub-nav a:hover, .elowen-living .sub-nav a.active { opacity: 1; }
+.elowen-living .sub-nav a.active::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -161,7 +161,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     height: 3px;
     background: #c9a96e;
 }
-.sub-nav .cta-btn {
+.elowen-living .sub-nav .cta-btn {
     position: absolute;
     right: 40px;
     border: 1px solid #1a1a1a;
@@ -174,12 +174,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     color: #1a1a1a;
     cursor: pointer;
 }
-.sub-nav .cta-btn:hover { background: #1a1a1a; color: #ffffff; }
+.elowen-living .sub-nav .cta-btn:hover { background: #1a1a1a; color: #ffffff; }
 
 /* ============================================
    HERO - HOMEPAGE
    ============================================ */
-.hero-home {
+.elowen-living .hero-home {
     background: #0a1a2e;
     min-height: 500px;
     display: flex;
@@ -189,7 +189,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     position: relative;
     overflow: hidden;
 }
-.hero-home-content {
+.elowen-living .hero-home-content {
     max-width: 1400px;
     margin: 0 auto;
     width: 100%;
@@ -198,8 +198,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     align-items: flex-start;
     gap: 60px;
 }
-.hero-home-left { flex: 1; max-width: 500px; }
-.hero-home-left h1 {
+.elowen-living .hero-home-left { flex: 1; max-width: 500px; }
+.elowen-living .hero-home-left h1 {
     font-family: Georgia, serif;
     font-size: 52px;
     font-weight: 400;
@@ -207,12 +207,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     line-height: 1.15;
     margin-bottom: 40px;
 }
-.hero-tabs {
+.elowen-living .hero-tabs {
     display: flex;
     gap: 32px;
     margin-bottom: 30px;
 }
-.hero-tabs button {
+.elowen-living .hero-tabs button {
     font-family: Arial, sans-serif;
     font-size: 13px;
     letter-spacing: 1.5px;
@@ -225,8 +225,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     border: none;
     cursor: pointer;
 }
-.hero-tabs button.active { color: #ffffff; }
-.hero-tabs button.active::after {
+.elowen-living .hero-tabs button.active { color: #ffffff; }
+.elowen-living .hero-tabs button.active::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -235,13 +235,13 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     height: 2px;
     background: #c9a96e;
 }
-.hero-search {
+.elowen-living .hero-search {
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.3);
     padding-bottom: 12px;
 }
-.hero-search input {
+.elowen-living .hero-search input {
     background: transparent;
     border: none;
     color: #ffffff;
@@ -251,8 +251,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     outline: none;
     padding: 8px 0;
 }
-.hero-search input::placeholder { color: rgba(255,255,255,0.5); }
-.hero-search .search-arrow {
+.elowen-living .hero-search input::placeholder { color: rgba(255,255,255,0.5); }
+.elowen-living .hero-search .search-arrow {
     color: #ffffff;
     font-size: 24px;
     cursor: pointer;
@@ -260,14 +260,14 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     background: none;
     border: none;
 }
-.hero-search .search-arrow:hover { transform: translateX(4px); }
+.elowen-living .hero-search .search-arrow:hover { transform: translateX(4px); }
 
-.hero-property-card {
+.elowen-living .hero-property-card {
     flex: 1;
     max-width: 700px;
     position: relative;
 }
-.hero-property-card .property-overlay {
+.elowen-living .hero-property-card .property-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -275,7 +275,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     padding: 40px;
     background: linear-gradient(transparent, rgba(0,0,0,0.6));
 }
-.hero-property-card .property-location {
+.elowen-living .hero-property-card .property-location {
     font-family: Georgia, serif;
     font-size: 48px;
     color: #ffffff;
@@ -283,7 +283,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     line-height: 1.1;
     margin-bottom: 16px;
 }
-.hero-property-card .property-details {
+.elowen-living .hero-property-card .property-details {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -291,8 +291,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     font-size: 16px;
     font-family: Georgia, serif;
 }
-.hero-property-card .property-details .dot { color: #c9a96e; font-size: 20px; }
-.hero-property-card .see-details {
+.elowen-living .hero-property-card .property-details .dot { color: #c9a96e; font-size: 20px; }
+.elowen-living .hero-property-card .see-details {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -305,12 +305,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     transition: gap 0.3s;
     cursor: pointer;
 }
-.hero-property-card .see-details:hover { gap: 20px; }
+.elowen-living .hero-property-card .see-details:hover { gap: 20px; }
 
 /* ============================================
    HERO - SELL WITH US
    ============================================ */
-.hero-sell {
+.elowen-living .hero-sell {
     background: #0a1a2e;
     min-height: 400px;
     display: flex;
@@ -321,7 +321,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     padding: 80px 40px;
     position: relative;
 }
-.hero-sell h1 {
+.elowen-living .hero-sell h1 {
     font-family: Georgia, serif;
     font-size: 64px;
     font-weight: 400;
@@ -329,7 +329,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     line-height: 1.1;
     margin-bottom: 24px;
 }
-.hero-sell p {
+.elowen-living .hero-sell p {
     font-family: Georgia, serif;
     font-size: 24px;
     font-style: italic;
@@ -340,12 +340,12 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 /* ============================================
    HERO - AGENTS
    ============================================ */
-.hero-agents {
+.elowen-living .hero-agents {
     position: relative;
     height: 500px;
     overflow: hidden;
 }
-.hero-agents-overlay {
+.elowen-living .hero-agents-overlay {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -356,14 +356,14 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     width: 90%;
     text-align: center;
 }
-.hero-agents-overlay h1 {
+.elowen-living .hero-agents-overlay h1 {
     font-family: Georgia, serif;
     font-size: 42px;
     font-weight: 400;
     color: #ffffff;
     line-height: 1.2;
 }
-.hero-agents-search {
+.elowen-living .hero-agents-search {
     position: absolute;
     bottom: -30px;
     left: 50%;
@@ -377,7 +377,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     gap: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
-.hero-agents-search input {
+.elowen-living .hero-agents-search input {
     flex: 1;
     border: none;
     font-size: 18px;
@@ -385,8 +385,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     outline: none;
     color: #1a1a1a;
 }
-.hero-agents-search input::placeholder { color: #999; }
-.hero-agents-search .search-arrow {
+.elowen-living .hero-agents-search input::placeholder { color: #999; }
+.elowen-living .hero-agents-search .search-arrow {
     color: #1a1a1a;
     font-size: 24px;
     cursor: pointer;
@@ -397,7 +397,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 /* ============================================
    SEARCH BAR - PROPERTIES
    ============================================ */
-.search-bar-section {
+.elowen-living .search-bar-section {
     background: #ffffff;
     padding: 24px 40px;
     border-bottom: 1px solid #e8e8e8;
@@ -405,7 +405,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     align-items: center;
     gap: 20px;
 }
-.search-bar-section .search-input-wrapper {
+.elowen-living .search-bar-section .search-input-wrapper {
     flex: 1;
     display: flex;
     align-items: center;
@@ -413,7 +413,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     border-bottom: 1px solid #ccc;
     padding-bottom: 8px;
 }
-.search-bar-section .search-input-wrapper input {
+.elowen-living .search-bar-section .search-input-wrapper input {
     flex: 1;
     border: none;
     font-size: 16px;
@@ -421,9 +421,9 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     outline: none;
     color: #1a1a1a;
 }
-.search-bar-section .search-input-wrapper input::placeholder { color: #999; }
-.search-filters { display: flex; gap: 12px; }
-.filter-btn {
+.elowen-living .search-bar-section .search-input-wrapper input::placeholder { color: #999; }
+.elowen-living .search-filters { display: flex; gap: 12px; }
+.elowen-living .filter-btn {
     border: 1px solid #ccc;
     padding: 10px 20px;
     font-family: Arial, sans-serif;
@@ -435,16 +435,16 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     background: #ffffff;
     cursor: pointer;
 }
-.filter-btn.active { background: #0a1a2e; color: #ffffff; border-color: #0a1a2e; }
-.filter-btn:hover { border-color: #1a1a1a; }
+.elowen-living .filter-btn.active { background: #0a1a2e; color: #ffffff; border-color: #0a1a2e; }
+.elowen-living .filter-btn:hover { border-color: #1a1a1a; }
 
 /* ============================================
    PROPERTIES LISTING
    ============================================ */
-.properties-section { display: flex; min-height: calc(100vh - 200px); }
-.properties-list { flex: 1; padding: 30px 40px; max-width: 50%; }
-.properties-header { margin-bottom: 24px; }
-.properties-header h2 {
+.elowen-living .properties-section { display: flex; min-height: calc(100vh - 200px); }
+.elowen-living .properties-list { flex: 1; padding: 30px 40px; max-width: 50%; }
+.elowen-living .properties-header { margin-bottom: 24px; }
+.elowen-living .properties-header h2 {
     font-family: Georgia, serif;
     font-size: 22px;
     font-weight: 400;
@@ -452,8 +452,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     line-height: 1.3;
     margin-bottom: 8px;
 }
-.properties-header p { font-family: Arial, sans-serif; font-size: 13px; color: #666; }
-.sort-bar {
+.elowen-living .properties-header p { font-family: Arial, sans-serif; font-size: 13px; color: #666; }
+.elowen-living .sort-bar {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -463,9 +463,9 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     letter-spacing: 1px;
     text-transform: uppercase;
 }
-.sort-bar .sort-label { color: #666; }
-.sort-bar .sort-value { color: #1a1a1a; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-.property-card {
+.elowen-living .sort-bar .sort-label { color: #666; }
+.elowen-living .sort-bar .sort-value { color: #1a1a1a; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+.elowen-living .property-card {
     display: flex;
     gap: 20px;
     margin-bottom: 24px;
@@ -474,15 +474,15 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     padding: 8px;
     border-radius: 4px;
 }
-.property-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-.property-card .card-image { width: 280px; height: 200px; object-fit: cover; flex-shrink: 0; }
-.property-card .card-info { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
-.property-card .card-price { font-family: Georgia, serif; font-size: 20px; color: #1a1a1a; font-weight: 400; }
-.property-card .card-address { font-family: Arial, sans-serif; font-size: 14px; color: #666; line-height: 1.4; }
-.property-card .card-details { font-family: Arial, sans-serif; font-size: 13px; color: #999; }
+.elowen-living .property-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.elowen-living .property-card .card-image { width: 280px; height: 200px; object-fit: cover; flex-shrink: 0; }
+.elowen-living .property-card .card-info { display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.elowen-living .property-card .card-price { font-family: Georgia, serif; font-size: 20px; color: #1a1a1a; font-weight: 400; }
+.elowen-living .property-card .card-address { font-family: Arial, sans-serif; font-size: 14px; color: #666; line-height: 1.4; }
+.elowen-living .property-card .card-details { font-family: Arial, sans-serif; font-size: 13px; color: #999; }
 
-.map-section { flex: 1; background: #e8f4f8; position: relative; min-height: 600px; }
-.map-placeholder {
+.elowen-living .map-section { flex: 1; background: #e8f4f8; position: relative; min-height: 600px; }
+.elowen-living .map-placeholder {
     width: 100%;
     height: 100%;
     min-height: 600px;
@@ -493,7 +493,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     position: relative;
     overflow: hidden;
 }
-.map-placeholder::before {
+.elowen-living .map-placeholder::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -501,7 +501,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     background-size: 20px 20px;
     opacity: 0.3;
 }
-.map-placeholder-text {
+.elowen-living .map-placeholder-text {
     font-family: Arial, sans-serif;
     font-size: 14px;
     color: rgba(255,255,255,0.8);
@@ -509,7 +509,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     text-transform: uppercase;
     z-index: 1;
 }
-.map-controls {
+.elowen-living .map-controls {
     position: absolute;
     top: 20px;
     left: 20px;
@@ -517,7 +517,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     gap: 8px;
     z-index: 10;
 }
-.map-control-btn {
+.elowen-living .map-control-btn {
     background: #ffffff;
     border: 1px solid #ccc;
     padding: 8px 16px;
@@ -531,8 +531,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     transition: all 0.3s;
     cursor: pointer;
 }
-.map-control-btn:hover { background: #f5f5f5; }
-.map-zoom {
+.elowen-living .map-control-btn:hover { background: #f5f5f5; }
+.elowen-living .map-zoom {
     position: absolute;
     right: 20px;
     top: 20px;
@@ -541,7 +541,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     gap: 4px;
     z-index: 10;
 }
-.map-zoom-btn {
+.elowen-living .map-zoom-btn {
     width: 36px;
     height: 36px;
     background: #ffffff;
@@ -554,8 +554,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     transition: all 0.3s;
     cursor: pointer;
 }
-.map-zoom-btn:hover { background: #f5f5f5; }
-.map-marker {
+.elowen-living .map-zoom-btn:hover { background: #f5f5f5; }
+.elowen-living .map-marker {
     position: absolute;
     background: #0a1a2e;
     color: #ffffff;
@@ -573,17 +573,17 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     transition: transform 0.3s;
     z-index: 5;
 }
-.map-marker:hover { transform: scale(1.15); z-index: 100; }
-.map-marker.large { width: 50px; height: 50px; font-size: 14px; }
+.elowen-living .map-marker:hover { transform: scale(1.15); z-index: 100; }
+.elowen-living .map-marker.large { width: 50px; height: 50px; font-size: 14px; }
 
 /* ============================================
    CONTENT SECTIONS
    ============================================ */
-.content-section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
-.content-section.dark { background: #0a1a2e; color: #ffffff; max-width: 100%; }
-.content-section.dark .section-title, .content-section.dark .section-subtitle { color: #ffffff; }
-.section-header { text-align: center; margin-bottom: 60px; }
-.section-title {
+.elowen-living .content-section { padding: 80px 40px; max-width: 1200px; margin: 0 auto; }
+.elowen-living .content-section.dark { background: #0a1a2e; color: #ffffff; max-width: 100%; }
+.elowen-living .content-section.dark .section-title, .elowen-living .content-section.dark .section-subtitle { color: #ffffff; }
+.elowen-living .section-header { text-align: center; margin-bottom: 60px; }
+.elowen-living .section-title {
     font-family: Georgia, serif;
     font-size: 42px;
     font-weight: 400;
@@ -591,7 +591,7 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     line-height: 1.2;
     margin-bottom: 20px;
 }
-.section-subtitle {
+.elowen-living .section-subtitle {
     font-family: Georgia, serif;
     font-size: 20px;
     font-style: italic;
@@ -600,9 +600,9 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     margin: 0 auto;
 }
 
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 60px; }
-.feature-card { text-align: center; padding: 40px 20px; }
-.feature-card .feature-icon {
+.elowen-living .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 60px; }
+.elowen-living .feature-card { text-align: center; padding: 40px 20px; }
+.elowen-living .feature-card .feature-icon {
     width: 80px;
     height: 80px;
     margin: 0 auto 24px;
@@ -614,18 +614,18 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     font-size: 32px;
     color: #c9a96e;
 }
-.feature-card h3 { font-family: Georgia, serif; font-size: 22px; font-weight: 400; color: #1a1a1a; margin-bottom: 16px; }
-.feature-card p { font-family: Arial, sans-serif; font-size: 14px; color: #666; line-height: 1.6; }
+.elowen-living .feature-card h3 { font-family: Georgia, serif; font-size: 22px; font-weight: 400; color: #1a1a1a; margin-bottom: 16px; }
+.elowen-living .feature-card p { font-family: Arial, sans-serif; font-size: 14px; color: #666; line-height: 1.6; }
 
-.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; text-align: center; margin: 60px 0; }
-.stat-item .stat-number { font-family: Georgia, serif; font-size: 56px; font-weight: 400; color: #c9a96e; line-height: 1; margin-bottom: 12px; }
-.stat-item .stat-label { font-family: Arial, sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: #666; }
+.elowen-living .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; text-align: center; margin: 60px 0; }
+.elowen-living .stat-item .stat-number { font-family: Georgia, serif; font-size: 56px; font-weight: 400; color: #c9a96e; line-height: 1; margin-bottom: 12px; }
+.elowen-living .stat-item .stat-label { font-family: Arial, sans-serif; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: #666; }
 
-.two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-.two-column .column-image { width: 100%; height: 500px; object-fit: cover; }
-.two-column .column-content h3 { font-family: Georgia, serif; font-size: 32px; font-weight: 400; color: #1a1a1a; margin-bottom: 20px; line-height: 1.2; }
-.two-column .column-content p { font-family: Arial, sans-serif; font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 20px; }
-.column-link {
+.elowen-living .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.elowen-living .two-column .column-image { width: 100%; height: 500px; object-fit: cover; }
+.elowen-living .two-column .column-content h3 { font-family: Georgia, serif; font-size: 32px; font-weight: 400; color: #1a1a1a; margin-bottom: 20px; line-height: 1.2; }
+.elowen-living .two-column .column-content p { font-family: Arial, sans-serif; font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 20px; }
+.elowen-living .column-link {
     font-family: Arial, sans-serif;
     font-size: 12px;
     letter-spacing: 1.5px;
@@ -639,28 +639,28 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     transition: gap 0.3s;
     cursor: pointer;
 }
-.column-link:hover { gap: 16px; }
+.elowen-living .column-link:hover { gap: 16px; }
 
 /* ============================================
    AGENTS LISTING
    ============================================ */
-.agents-section { padding: 80px 40px 40px; max-width: 1400px; margin: 0 auto; }
-.agents-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-.agents-header h2 { font-family: Georgia, serif; font-size: 32px; font-weight: 400; color: #1a1a1a; }
-.agents-sort { display: flex; align-items: center; gap: 8px; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
-.agents-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
-.agent-card { text-align: center; cursor: pointer; transition: transform 0.3s; }
-.agent-card:hover { transform: translateY(-4px); }
-.agent-card .agent-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 16px; filter: grayscale(100%); transition: filter 0.3s; }
-.agent-card:hover .agent-photo { filter: grayscale(0%); }
-.agent-card .agent-name { font-family: Georgia, serif; font-size: 18px; font-weight: 400; color: #1a1a1a; margin-bottom: 4px; }
-.agent-card .agent-title { font-family: Arial, sans-serif; font-size: 12px; color: #666; letter-spacing: 0.5px; }
-.agent-card .agent-location { font-family: Arial, sans-serif; font-size: 12px; color: #999; margin-top: 4px; }
+.elowen-living .agents-section { padding: 80px 40px 40px; max-width: 1400px; margin: 0 auto; }
+.elowen-living .agents-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.elowen-living .agents-header h2 { font-family: Georgia, serif; font-size: 32px; font-weight: 400; color: #1a1a1a; }
+.elowen-living .agents-sort { display: flex; align-items: center; gap: 8px; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
+.elowen-living .agents-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+.elowen-living .agent-card { text-align: center; cursor: pointer; transition: transform 0.3s; }
+.elowen-living .agent-card:hover { transform: translateY(-4px); }
+.elowen-living .agent-card .agent-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; margin-bottom: 16px; filter: grayscale(100%); transition: filter 0.3s; }
+.elowen-living .agent-card:hover .agent-photo { filter: grayscale(0%); }
+.elowen-living .agent-card .agent-name { font-family: Georgia, serif; font-size: 18px; font-weight: 400; color: #1a1a1a; margin-bottom: 4px; }
+.elowen-living .agent-card .agent-title { font-family: Arial, sans-serif; font-size: 12px; color: #666; letter-spacing: 0.5px; }
+.elowen-living .agent-card .agent-location { font-family: Arial, sans-serif; font-size: 12px; color: #999; margin-top: 4px; }
 
 /* ============================================
    IMAGE PLACEHOLDERS
    ============================================ */
-.img-placeholder {
+.elowen-living .img-placeholder {
     background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
     display: flex;
     align-items: center;
@@ -668,13 +668,13 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     position: relative;
     overflow: hidden;
 }
-.img-placeholder::before {
+.elowen-living .img-placeholder::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
 }
-.img-placeholder .placeholder-label {
+.elowen-living .img-placeholder .placeholder-label {
     font-family: Arial, sans-serif;
     font-size: 11px;
     letter-spacing: 2px;
@@ -688,26 +688,26 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
 /* ============================================
    FOOTER
    ============================================ */
-.footer {
+.elowen-living .footer {
     background: #0a1a2e;
     color: #ffffff;
     padding: 60px 40px 30px;
 }
-.footer-top {
+.elowen-living .footer-top {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 60px;
     max-width: 1400px;
     margin: 0 auto 40px;
 }
-.footer-brand { max-width: 400px; }
-.footer-brand .logo-brand { font-size: 24px; margin-bottom: 16px; font-family: Georgia, serif; color: #ffffff; }
-.footer-brand p { font-family: Arial, sans-serif; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7; }
-.footer-column h4 { font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: #ffffff; margin-bottom: 20px; font-weight: 600; }
-.footer-column a { display: block; font-family: Arial, sans-serif; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 10px; transition: color 0.3s; cursor: pointer; }
-.footer-column a:hover { color: #ffffff; }
-.footer-social { display: flex; gap: 16px; margin-top: 20px; }
-.footer-social a {
+.elowen-living .footer-brand { max-width: 400px; }
+.elowen-living .footer-brand .logo-brand { font-size: 24px; margin-bottom: 16px; font-family: Georgia, serif; color: #ffffff; }
+.elowen-living .footer-brand p { font-family: Arial, sans-serif; font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+.elowen-living .footer-column h4 { font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; color: #ffffff; margin-bottom: 20px; font-weight: 600; }
+.elowen-living .footer-column a { display: block; font-family: Arial, sans-serif; font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 10px; transition: color 0.3s; cursor: pointer; }
+.elowen-living .footer-column a:hover { color: #ffffff; }
+.elowen-living .footer-social { display: flex; gap: 16px; margin-top: 20px; }
+.elowen-living .footer-social a {
     width: 36px;
     height: 36px;
     border: 1px solid rgba(255,255,255,0.3);
@@ -720,8 +720,8 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     transition: all 0.3s;
     cursor: pointer;
 }
-.footer-social a:hover { background: #ffffff; color: #0a1a2e; }
-.footer-bottom {
+.elowen-living .footer-social a:hover { background: #ffffff; color: #0a1a2e; }
+.elowen-living .footer-bottom {
     border-top: 1px solid rgba(255,255,255,0.1);
     padding-top: 30px;
     max-width: 1400px;
@@ -732,40 +732,54 @@ button { border: none; background: none; cursor: pointer; font-family: inherit; 
     flex-wrap: wrap;
     gap: 20px;
 }
-.footer-bottom p { font-family: Arial, sans-serif; font-size: 12px; color: rgba(255,255,255,0.4); }
-.footer-bottom-links { display: flex; gap: 24px; }
-.footer-bottom-links a { font-family: Arial, sans-serif; font-size: 12px; color: rgba(255,255,255,0.5); transition: color 0.3s; cursor: pointer; }
-.footer-bottom-links a:hover { color: #ffffff; }
+.elowen-living .footer-bottom p { font-family: Arial, sans-serif; font-size: 12px; color: rgba(255,255,255,0.4); }
+.elowen-living .footer-bottom-links { display: flex; gap: 24px; }
+.elowen-living .footer-bottom-links a { font-family: Arial, sans-serif; font-size: 12px; color: rgba(255,255,255,0.5); transition: color 0.3s; cursor: pointer; }
+.elowen-living .footer-bottom-links a:hover { color: #ffffff; }
 
 /* ============================================
    RESPONSIVE
    ============================================ */
 @media (max-width: 1024px) {
-    .properties-section { flex-direction: column; }
-    .properties-list { max-width: 100%; }
-    .map-section { min-height: 400px; }
-    .agents-grid { grid-template-columns: repeat(3, 1fr); }
-    .features-grid { grid-template-columns: repeat(2, 1fr); }
-    .two-column { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
-    .hero-home-content { flex-direction: column; }
+    .elowen-living .properties-section { flex-direction: column; }
+    .elowen-living .properties-list { max-width: 100%; }
+    .elowen-living .map-section { min-height: 400px; }
+    .elowen-living .agents-grid { grid-template-columns: repeat(3, 1fr); }
+    .elowen-living .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .elowen-living .two-column { grid-template-columns: 1fr; }
+    .elowen-living .footer-top { grid-template-columns: 1fr 1fr; }
+    .elowen-living .hero-home-content { flex-direction: column; }
 }
 
 @media (max-width: 768px) {
-    .main-nav { padding: 0 20px; height: 60px; }
-    .nav-links { display: none; }
-    .hero-home-left h1 { font-size: 36px; }
-    .hero-sell h1 { font-size: 42px; }
-    .agents-grid { grid-template-columns: repeat(2, 1fr); }
-    .features-grid { grid-template-columns: 1fr; }
-    .stats-grid { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr; }
-    .top-bar { padding: 8px 20px; }
-    .search-bar-section { flex-wrap: wrap; padding: 16px 20px; }
-    .search-filters { flex-wrap: wrap; }
-    .hero-agents-overlay h1 { font-size: 28px; }
-    .section-title { font-size: 32px; }
+    .elowen-living .main-nav { padding: 0 20px; height: 60px; }
+    .elowen-living .nav-links { display: none; }
+    .elowen-living .hero-home-left h1 { font-size: 36px; }
+    .elowen-living .hero-sell h1 { font-size: 42px; }
+    .elowen-living .agents-grid { grid-template-columns: repeat(2, 1fr); }
+    .elowen-living .features-grid { grid-template-columns: 1fr; }
+    .elowen-living .stats-grid { grid-template-columns: 1fr; }
+    .elowen-living .footer-top { grid-template-columns: 1fr; }
+    .elowen-living .top-bar { padding: 8px 20px; }
+    .elowen-living .search-bar-section { flex-wrap: wrap; padding: 16px 20px; }
+    .elowen-living .search-filters { flex-wrap: wrap; }
+    .elowen-living .hero-agents-overlay h1 { font-size: 28px; }
+    .elowen-living .section-title { font-size: 32px; }
 }
 
-.container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
-.text-center { text-align: center; }
+.elowen-living .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+.elowen-living .text-center { text-align: center; }
+
+.elowen-living .top-bar { flex-wrap: wrap; }
+.elowen-living :is(a, button, input):focus-visible { outline: 2px solid #b38748; outline-offset: 4px; }
+.elowen-living button:disabled { cursor: default; opacity: 0.7; }
+.elowen-living .footer-column > span { display: block; margin-bottom: 10px; font: 13px Arial, sans-serif; color: #bbc0c7; }
+.elowen-living .footer-social > span { font: 12px Arial, sans-serif; color: #bbc0c7; }
+@media (max-width: 600px) {
+  .elowen-living .top-bar { justify-content: center; gap: 8px; text-align: center; }
+  .elowen-living .property-card { flex-direction: column; }
+  .elowen-living .property-card > div:first-child { max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .elowen-living, .elowen-living * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+}

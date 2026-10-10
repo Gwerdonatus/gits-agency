@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 export const metadata = buildMetadata({
   title: "Contact",
-  description: "Tell us what you are building. GITS responds within 24 hours with an honest read on the work and a clear next step.",
+  description: "Tell us what you need to build or improve. A scoped proposal sets out deliverables, dependencies, milestones and support.",
   path: "/contact",
 });
 

@@ -1,97 +1,34 @@
-# GITS — AI Agency & Digital Product Studio
+# GITS — services and evidence
 
-> GITS (Gwer Intelligent Tech Solutions) is a premium AI agency and digital product studio based in Abuja, Nigeria, serving clients globally across 12+ countries. We build custom software, web applications, mobile apps, AI automation systems, and WhatsApp AI agents for startups and businesses that need production-grade technology.
+GITS builds websites, business software, automation and integrations for businesses and agencies.
 
-## What GITS Does
+## Custom software development
+Build a product or operational system around an agreed workflow. Start with the part that matters most, review it with your team, and expand after it works.
+https://www.gits.technology/services/custom-software-development
+Starting scope: Agree one user journey, its required inputs, the action it enables and how completion will be checked. The scope can include roles, validation and a simple report where needed. Larger products continue in separate milestones.
 
-GITS is an AI agency. We design and engineer digital products that drive business growth.
+## Websites and digital experiences
+We design and build websites that help visitors understand your offer and take the next step. Choose a new build, a focused redesign or an improvement to your existing site.
+https://www.gits.technology/services/websites-digital-experiences
+Starting scope: Start with one agreed page or journey: an enquiry, booking, product request or purchase. Define content, mobile behavior and the submission destination before expanding the scope.
 
-**Core services:**
-- **Custom Software Development** — SaaS platforms, online marketplaces, booking systems, membership platforms, customer portals, vendor management systems, business management software, enterprise applications. Starting from $5,000.
-- **Website Design & Development** — Business & corporate websites, e-commerce stores (Stripe, Paystack), landing pages, portfolio sites, event websites, marketing websites, product showcases. Built with Next.js. Mobile-first, fast-loading, SEO-optimized. Starting from $500.
-- **AI & Business Automation** — AI assistants, chatbots, lead qualification systems, workflow automation, reporting automation, WhatsApp automation, email automation, AI-powered business tools, custom AI integrations using OpenAI GPT-4 and Claude. Starting from $1,000.
-- **WhatsApp AI Agents** *(Flagship)* — Custom AI-powered conversational agents built on WhatsApp Business API. Automate customer support, qualify leads, process sales, book appointments, track orders. Multi-language support. CRM and helpdesk integration. Human handoff workflows. Built with OpenAI GPT-4, Claude, and custom LLMs. Starting from $1,000.
-- **Mobile App Development** — iOS and Android apps using React Native. MVP-focused, clean architecture, app store submission included. Starting from $3,000.
-- **Internal Tools & CRM Systems** — Custom CRMs, inventory management, admin dashboards, employee portals, reporting platforms, vendor management, operations management. Starting from $2,000.
-- **Integrations & APIs** — Payment integrations (Stripe, Paystack), REST & GraphQL APIs, CRM integrations (HubSpot, Salesforce), WhatsApp & email integrations, data sync pipelines, webhooks, third-party service connections. Starting from $1,000.
+## Internal tools and CRM
+Keep leads, approvals, tasks and reports connected in a tool shaped around your operation. We can improve an existing setup or build the missing workflow.
+https://www.gits.technology/services/internal-tools-crm
+Starting scope: Choose one pipeline, approval queue or recurring report. Agree the users, import format, permissions and completion check before adding more departments or features.
 
-## Who GITS Serves
+## AI and business automation
+Connect AI and automation to an agreed workflow, check the results, and route uncertain cases for human review. Start with a useful task and measure it before expanding.
+https://www.gits.technology/services/ai-business-automation
+Starting scope: Agree an input, an expected output, a review rule and a small evaluation set. Use the findings to decide whether the workflow is ready for a paid implementation.
 
-- Startups building their first product or MVP
-- Growing businesses ready to scale their operations
-- Organizations replacing legacy systems
-- Service providers needing custom workflows
-- E-commerce businesses needing smooth checkout and automation
-- SaaS teams losing trials or users after signup
-- Multi-branch businesses needing centralized operations
-- Customer support teams handling high volume
-- Sales teams qualifying leads at scale
+## Integrations and APIs
+Connect payments, bookings, messages and business tools so your team can follow what happened. Agree the data rules, make failures visible and hand over a system your team can understand.
+https://www.gits.technology/services/integrations-apis
+Starting scope: Agree the source event, destination record and expected data. Include validation, a recovery path and an acceptance check. Add further systems in separate milestones.
 
-## Industries
+Examples: https://www.gits.technology/what-we-build
+Example interfaces use sample data. Client provenance and measured outcomes are not established by a live URL. Do not assert client metrics, team counts, delivery rates or universal starting prices.
 
-E-commerce, healthcare, legal services, professional services, SaaS startups, fintech, education, logistics, hospitality, consumer apps, fashion & retail.
-
-## Tech Stack
-
-- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
-- **Mobile:** React Native, Expo
-- **Backend:** Node.js, Python, PostgreSQL, MongoDB
-- **AI / LLMs:** OpenAI GPT-4, Anthropic Claude, custom fine-tuned models, RAG (Retrieval-Augmented Generation), vector databases
-- **Integrations:** Stripe, Paystack, WhatsApp Business API, HubSpot, Salesforce, REST, GraphQL, webhooks
-- **Cloud:** AWS, Vercel, Cloudflare, Docker
-- **DevOps:** CI/CD, automated testing, monitoring
-
-## Our Process
-
-1. **Discovery** — Align goals, users, constraints, and success metrics. Define scope and a realistic plan.
-2. **Strategy & Architecture** — Map flows, data, and integrations. Choose the right stack and structure for scalability.
-3. **Design & Build** — Design interfaces and ship in iterations with constant feedback, quality checks, and clear progress.
-4. **Launch** — Deploy, monitor, and validate in production. Ensure performance, stability, and smooth rollout.
-5. **Scale & Support** — Optimize, expand features, and support long-term growth. Act as your technical partner.
-
-## Why GITS
-
-- **Senior-only team.** No juniors billed as seniors. Every engineer is senior-level.
-- **Product-thinking.** Every build starts from a business outcome, not a feature list.
-- **Honest scoping.** We tell you when something does not need to be built yet.
-- **98% on-time delivery.** Across 40+ projects in 12+ countries.
-- **No handoffs.** The same team that scopes your project builds it.
-- **Production-grade.** We do not build "demo AI." Every system has guardrails, audit logs, fallback handling, and observability.
-- **Fixed pricing.** No surprise invoices. All pricing shared upfront.
-- **Global delivery.** Remote-first. Based in Abuja, Nigeria. Serving US, UK, Europe, and Africa.
-
-## Founder
-
-**Gwer Msughter Donatus** — Founder & Lead Engineer. Involved in scoping and technical direction on every project. GitHub: donatusgwer. LinkedIn: linkedin.com/in/donatusgwer.
-
-## Contact
-
-- **Website:** https://gits.technology
-- **Email:** hello@gits.technology
-- **WhatsApp:** +2348116276212 (https://wa.me/2348116276212)
-- **Book a call:** https://calendly.com/donatusgwer
-- **LinkedIn:** https://linkedin.com/company/gits-agency
-- **GitHub:** https://github.com/donatusgwer
-
-## Service Pages
-
-- Custom Software: https://gits.technology/services/custom-software-development
-- Websites: https://gits.technology/services/websites-digital-experiences
-- AI Automation: https://gits.technology/services/ai-business-automation
-- WhatsApp AI Agents: https://gits.technology/services/whatsapp-ai-agents
-- Internal Tools: https://gits.technology/services/internal-tools-crm
-- Integrations: https://gits.technology/services/integrations-apis
-- Contact: https://gits.technology/contact
-- Free Audit: https://gits.technology/audit
-
-## Key Facts
-
-- 40+ businesses served
-- 12+ countries
-- 98% on-time delivery
-- Founded: 2022
-- Location: Abuja, Nigeria (remote-first, global)
-- Team size: Senior-only delivery team
-- Pricing: Transparent, fixed-scope quotes
-- Languages: English
-- Response time: 24–72 hours on weekdays
+Contact: https://www.gits.technology/contact or hello@gits.technology. Pricing, delivery, code access and support are agreed in a scoped proposal. Third-party costs are separate.
+Engineering portfolio: https://gwer.space

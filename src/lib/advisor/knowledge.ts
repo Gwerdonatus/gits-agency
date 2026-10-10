@@ -90,10 +90,8 @@ export const SERVICES: ServiceEntry[] = [
       "a founder who needs one sharp landing page for a launch next week",
       "a company whose site looks nothing like the quality of its actual work",
     ],
-    pricing:
-      "from $200 for a one-pager; $800–$3,000 for a multi-page marketing site; $1,500–$5,000 for e-commerce; $1,500–$5,000 for a full UI/UX product design in Figma",
-    timeline:
-      "3–5 days for a one-pager, 1–3 weeks multi-page, 2–5 weeks e-commerce, 2–4 weeks for a full product design",
+    pricing: "Quoted after scope, dependencies and acceptance checks are agreed; no public minimum price",
+    timeline: "Dates are agreed after scope, access, content and dependencies are confirmed",
     path: "/services/websites-digital-experiences",
     keywords: [
       "website", "web site", "webpage", "web page", "landing page", "one pager",
@@ -127,9 +125,8 @@ export const SERVICES: ServiceEntry[] = [
       "a support inbox where the team re-types the same answers by hand",
       "an office keying details off documents into a spreadsheet all afternoon",
     ],
-    pricing:
-      "from $1,000; WhatsApp or email AI agent $2,500–$6,500; CRM & workflow automation $2,000–$5,000; document intelligence $4,000–$9,000; full multi-channel agent $6,500–$13,000",
-    timeline: "3–6 weeks for most automations, 6–10 weeks for a full multi-channel agent",
+    pricing: "Quoted after scope, dependencies and acceptance checks are agreed; no public minimum price",
+    timeline: "Dates are agreed after scope, access, content and dependencies are confirmed",
     path: "/services/ai-business-automation",
     keywords: [
       "ai", "a.i.", "artificial intelligence", "automation", "automate", "agent",
@@ -163,9 +160,8 @@ export const SERVICES: ServiceEntry[] = [
       "a company whose customers keep asking for a portal to check their own status",
       "a business paying for four tools that still do not talk to each other",
     ],
-    pricing:
-      "from $5,000; typical range $8,000–$35,000+ — scope decides the number, so this one is best pinned down on a call",
-    timeline: "4–12 weeks depending on scope",
+    pricing: "Quoted after scope, dependencies and acceptance checks are agreed; no public minimum price",
+    timeline: "Dates are agreed after scope, access, content and dependencies are confirmed",
     path: "/services/custom-software-development",
     keywords: [
       "custom software", "software", "saas", "platform", "marketplace", "portal",
@@ -199,9 +195,8 @@ export const SERVICES: ServiceEntry[] = [
       "a manager preparing the same report by hand every Monday",
       "a company where the roster, leave and shift swaps live in one person's head",
     ],
-    pricing:
-      "from $2,000; custom CRM $5,000–$12,000; operations dashboard $4,000–$9,000; staff/HR system $6,000–$13,000; ticketing $5,000–$11,000",
-    timeline: "3–6 weeks for most internal tools",
+    pricing: "Quoted after scope, dependencies and acceptance checks are agreed; no public minimum price",
+    timeline: "Dates are agreed after scope, access, content and dependencies are confirmed",
     path: "/services/internal-tools-crm",
     keywords: [
       "internal tool", "internal tools", "crm", "dashboard", "admin panel",
@@ -233,9 +228,8 @@ export const SERVICES: ServiceEntry[] = [
       "a platform that needs Paystack, WhatsApp or Maps wired in properly",
       "a company whose accounting and sales figures never quite agree",
     ],
-    pricing:
-      "single integration (payment, SMS, maps) $2,500–$5,000; custom API $3,500–$10,000; multi-system integration $7,000–$18,000",
-    timeline: "2–3 weeks for a single integration, 4–8 weeks multi-system",
+    pricing: "Quoted after scope, dependencies and acceptance checks are agreed; no public minimum price",
+    timeline: "Dates are agreed after scope, access, content and dependencies are confirmed",
     path: "/services/integrations-apis",
     keywords: [
       "integration", "integrate", "api", "apis", "webhook", "sync", "stripe",
@@ -265,8 +259,8 @@ export const SERVICES: ServiceEntry[] = [
       "a founder validating a product idea with a focused first version",
       "a service with regulars who would reorder in two taps",
     ],
-    pricing: "from $3,000; scoped like custom software once the feature list is clear",
-    timeline: "4–8 weeks for an MVP",
+    pricing: "Quoted after scope, dependencies and acceptance checks are agreed; no public minimum price",
+    timeline: "Dates are agreed after scope, access, content and dependencies are confirmed",
     path: "/services",
     keywords: [
       "mobile app", "mobile", "app", "ios", "android", "iphone", "play store",
@@ -293,26 +287,12 @@ export const CAPABILITIES = [
 ];
 
 /* ─── Company facts ─────────────────────────────────────────────────────── */
-export const COMPANY_FACTS = `
-ABOUT GITS — facts you may state:
-- Full name: Gwer Intelligent Tech Solutions (GITS). Tagline: clarity · speed · quality.
-- An AI agency and digital product studio: custom software, web, mobile, AI automation.
-- Headquartered in Abuja, Nigeria. Remote-first, serving clients globally —
-  including the US, UK and across Africa. Clients in 12+ countries.
-- Founded by Gwer Msughter Donatus — senior engineer and AI systems architect.
-- Team published on /about: Gwer Msughter Donatus (founder, engineering),
-  Daniel Ochai (UI/UX & design systems), Aisha Adeyemi (marketing & media).
-  Name no one else — describe the roles on a project instead.
-- Senior-only team. The site publishes 98% on-time delivery across 40+ projects.
-- Every project: you own the full source code, NDA before discovery,
-  documentation on handoff, post-launch support.
-- Discovery is free and carries no commitment.
-`;
+export const COMPANY_FACTS = `GITS (Gwer Intelligent Tech Solutions) builds websites, business software, automation and integrations. Remote-first. Scope, ownership, support and delivery dates are confirmed in a proposal. Do not assert team seniority, staff identities, client counts, country totals or on-time delivery rates without owner-confirmed evidence.`;
 
 export const PROCESS_FACTS = `
 HOW A GITS PROJECT RUNS — five steps, from the process section of the site:
 1. Discovery — clarify goals, users, constraints and success metrics; define
-   scope and a realistic plan. Free, no commitment.
+   scope and a realistic plan. Implementation terms follow the scoped proposal.
 2. Strategy & Architecture — map flows, data and integrations; choose the stack.
 3. Design & Build — design the interfaces, ship in iterations with constant
    feedback and quality checks.
@@ -327,14 +307,14 @@ export const TECH_FACTS = `
 TECHNICAL ANSWERS you may give:
 - Web: Next.js / React, TypeScript. Backend: Node, REST and GraphQL APIs.
 - Mobile: iOS and Android.
-- AI: OpenAI GPT, Anthropic Claude, Gemini, custom fine-tuned models,
+- AI: OpenAI GPT, Anthropic Claude, Gemini, model APIs,
   Retrieval-Augmented Generation (RAG), vector databases, custom AI pipelines.
 - WhatsApp: WhatsApp Business API — agents that support, qualify, book and
   track orders, handle several languages, and hand off to a human when needed.
 - Payments: Stripe, Paystack (card, bank transfer, USSD — strong in Nigeria and
   Ghana), Flutterwave (mobile money, broader Africa). Notifications: Termii
   (WhatsApp + SMS, Nigeria).
-- Integrations we do regularly: Stripe, Paystack, Salesforce, HubSpot, Zoho,
+- Potential integration scope (not a list of verified deployments): Stripe, Paystack, Salesforce, HubSpot, Zoho,
   WhatsApp Business API, email platforms, custom REST/GraphQL APIs.
 - Cloud deployment, DevOps, performance work, analytics and security practices
   are part of what we do, not add-ons.
@@ -342,16 +322,7 @@ If asked about something not listed, say you will confirm with the team rather
 than guessing — then offer the call.
 `;
 
-export const PLATFORM_KNOWLEDGE = `
-WHEN A VISITOR NAMES A TOOL THEY ARE STRUGGLING WITH:
-- HubSpot → strong for SaaS, awkward for property, legal, manufacturing.
-- Salesforce → heavy for a mid-size team.
-- ServiceNow → enterprise IT, expensive to implement.
-- Zendesk / Freshdesk → support tools, not operations tools.
-- Deputy / 7Shifts → single-location restaurant tools, not multi-property.
-- Procore / Buildertrend → built for large Western contractors.
-Be fair about these. Naming a real limitation is useful; trashing a tool is not.
-`;
+export const PLATFORM_KNOWLEDGE = `Evaluate the actual limitation before suggesting replacement of any named tool. Configuration or an integration may be sufficient.`;
 
 /* ─── Real client work ──────────────────────────────────────────────────
    The only projects the advisor may cite. Every entry is a named client with
@@ -361,32 +332,7 @@ Be fair about these. Naming a real limitation is useful; trashing a tool is not.
    Without this the model invented case studies unprompted, complete with
    fabricated metrics. Keep in sync with /what-we-build.
    ───────────────────────────────────────────────────────────────────────── */
-export const REAL_CLIENT_WORK = `
-REAL GITS PROJECTS — the only work you may ever reference:
-1. Sanmark Luxury (sanmarkluxury.com) — premium fashion store in Lagos.
-   Editorial product photography, clean taxonomy, conversion-focused checkout.
-2. Blakdhut Exchange (blakdhut.com) — dark-mode crypto trading platform.
-   Live pricing and a secure transaction flow.
-3. Lamed Pharmacy (lamed-pharmacy.vercel.app) — patient-facing pharmacy platform
-   in Jos. Prescription upload, branch finder, PLASCHEMA verification.
-4. NOTGATE (notgate-w6l1.vercel.app) — corporate site for a construction firm.
-   Project gallery and partner trust signals. The firm publishes 25+ years,
-   120+ projects and over N65B delivered.
-5. Selo (selo-red.vercel.app) — a curated store selling only purple clothing,
-   accessories and bags.
-6. Elowen Living (gits.technology/elowen-living) — luxury real estate.
-   Editorial layout, full-bleed property imagery, virtual tours.
-
-RULES FOR USING THESE — these override anything else in this prompt:
-- Reference a project ONLY from this list. Never any other company.
-- Never state a metric, percentage, timeline or money figure for a client
-  unless it appears above. Do not estimate one, and do not illustrate with a
-  hypothetical that reads like a real result.
-- If nothing here matches what they are describing, say so plainly and talk
-  about the approach instead. "We have not built exactly that" is a better
-  answer than an invented one, and it is the honest one.
-- Never invent a client name, industry or outcome under any circumstances.
-`;
+export const REAL_CLIENT_WORK = `Website examples and workflow previews are listed at /what-we-build. They use sample data and are not verified client deliveries. Elowen is a UI demonstration. Other provenance remains unclassified. Never infer live payments, model connectivity, delivery outcomes or business metrics from an interface. Link the relevant service example and explain its boundaries. Stock movement, leave approval and payment replay have browser-only sandboxes; no external provider is connected.`;
 
 /* ─── Contact facts ─────────────────────────────────────────────────────
    The advisor used to be told to close with a WhatsApp or booking CTA without
@@ -396,7 +342,7 @@ RULES FOR USING THESE — these override anything else in this prompt:
    ───────────────────────────────────────────────────────────────────────── */
 export const CONTACT_FACTS = `
 GITS CONTACT DETAILS — the only ones you may ever give out:
-- WhatsApp (fastest): https://wa.me/2348116276212  (+234 811 627 6212)
+- WhatsApp (fastest): https://wa.me/2349034360747  (+234 903 436 0747)
 - Book a call: https://calendly.com/donatusgwer
 - Email: hello@gits.technology
 - Contact page: https://gits.technology/contact
@@ -485,7 +431,7 @@ HANDING OVER TO A HUMAN — do this the moment you are out of your depth:
 - Say it plainly: "I'm not certain about that one, and I'd rather not guess than
   tell you something wrong." Never invent an answer to stay useful — guessing
   costs more trust than not knowing ever does.
-- Hand over in the SAME message: WhatsApp https://wa.me/2348116276212 is the
+- Hand over in the SAME message: WhatsApp https://wa.me/2349034360747 is the
   fastest way to reach the team, or book a call at
   https://calendly.com/donatusgwer.
 - Offer to summarise what they have told you so whoever picks it up is already up

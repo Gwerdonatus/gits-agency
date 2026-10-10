@@ -115,9 +115,9 @@ const MOBILE_SHADES = [
 ];
 
 const TRUST_STATS = [
-  { value: "40+", label: "Businesses served" },
-  { value: "12", label: "Countries" },
-  { value: "98%", label: "On-time delivery" },
+  { value: "Scope", label: "Agreed before delivery" },
+  { value: "Review", label: "Visible milestones" },
+  { value: "Handover", label: "Documented responsibilities" },
 ] as const;
 
 function usePrefersReducedMotion() {
@@ -378,7 +378,7 @@ export default function ServicesPage() {
             transition={{ duration: 0.7, ease: easeOut, delay: 0.18 }}
             className="mt-8 flex flex-wrap gap-3"
           >
-            <a href="/contact" className="inline-flex items-center justify-center rounded-xl bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition">Start a project</a>
+            <a href="/contact" className="inline-flex items-center justify-center rounded-xl bg-black text-white px-6 py-3 text-sm font-medium hover:opacity-90 transition">Discuss a project</a>
             <a href="/#process" className="inline-flex items-center justify-center rounded-xl border border-black/15 px-6 py-3 text-sm font-medium text-gray-900 hover:bg-black hover:text-white transition">See our process</a>
           </motion.div>
 
@@ -713,7 +713,7 @@ export default function ServicesPage() {
             <div className="pointer-events-none absolute inset-0 rounded-2xl" aria-hidden="true" style={{ background: "radial-gradient(700px 300px at 0% 50%, rgba(37,99,235,0.06), transparent 60%)" }} />
             <div className="relative z-10">
               <p className="text-[13px] text-gray-500 uppercase tracking-widest font-semibold">Ready to build?</p>
-              <p className="mt-1 text-xl font-semibold text-gray-900 leading-snug">Tell us what you need. We'll scope it in 24 hours.</p>
+              <p className="mt-1 text-xl font-semibold text-gray-900 leading-snug">Tell us what you need. We’ll suggest the next step.</p>
             </div>
             <div className="relative z-10 flex items-center gap-3 flex-shrink-0">
               <a href="/contact" className="inline-flex items-center gap-2 rounded-xl bg-black text-white px-6 py-3 text-sm font-semibold hover:opacity-90 transition">Start a project <span aria-hidden>→</span></a>

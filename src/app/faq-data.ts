@@ -15,15 +15,15 @@ export const HOME_FAQS = [
   },
   {
     q: "What services does GITS offer?",
-    a: "GITS offers six core services: (1) Custom Software Development — SaaS platforms, marketplaces, and enterprise apps; (2) Websites & Digital Experiences — modern, conversion-first websites; (3) AI & Business Automation — AI assistants, chatbots, and workflow automation; (4) WhatsApp AI Agents — custom conversational AI for WhatsApp Business; (5) Internal Tools & CRM Systems — custom dashboards and operations tools; (6) Integrations & APIs — payment, CRM, and third-party integrations.",
+    a: "GITS offers five core services: (1) Custom Software Development — SaaS platforms, marketplaces, and enterprise apps; (2) Websites & Digital Experiences — modern, conversion-first websites; (3) AI & Business Automation — AI assistants, chatbots, and workflow automation; (4) Internal Tools & CRM Systems — custom dashboards and operations tools; (5) Integrations & APIs — payment, CRM, and third-party integrations.",
   },
   {
     q: "How is GITS different from other software development agencies?",
-    a: "Unlike traditional dev shops, GITS combines senior engineering with AI-native thinking. We don't just build features — we architect systems that leverage AI to reduce operational costs, automate workflows, and create competitive advantages. Our team is senior-only, with 98% on-time delivery across 40+ projects in 12 countries.",
+    a: "We agree a bounded workflow, review the implementation with representative inputs and document the handover.",
   },
   {
     q: "How much does it cost to work with GITS?",
-    a: "Project costs vary by scope. Websites start from $200, AI automation and WhatsApp AI agents from $1,000, internal tools and CRM systems from $2,000, mobile apps from $3,000, and custom software development from $5,000. We scope every project individually and provide transparent pricing.",
+    a: "A scoped proposal defines price, dependencies, milestones and support. Hosting and provider costs are separate.",
   },
   {
     q: "What industries does GITS specialize in?",

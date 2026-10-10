@@ -11,7 +11,7 @@ export async function GET() {
       "https://www.gits.technology/",
       "https://www.gits.technology/services",
       "https://www.gits.technology/services/websites-digital-experiences",
-      "https://www.gits.technology/services/whatsapp-ai-agents",
+      "https://www.gits.technology/services/ai-business-automation",
        "https://www.gits.technology/services/custom-software-development",
       "https://www.gits.technology/contact"
     ]

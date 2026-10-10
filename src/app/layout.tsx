@@ -1,11 +1,10 @@
 // src/app/layout.tsx
 import type { Metadata, Viewport } from "next";
-// @ts-ignore
 import "./globals.css";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import GITSAdvisor from "@/components/GITSAdvisor";
+import GITSAdvisor from "@/components/AdvisorPlacement";
 import { OrganizationSchema, WebSiteSchema } from "@/app/structured-data";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
@@ -16,7 +15,7 @@ const IMG_ROOT  = "/GITS_Complete_Image_Package";
 // Primary description — written to match search intent, not just explain the brand.
 // Target queries: "digital agency Nigeria", "SaaS development company", "web agency Africa"
 const SITE_DESC =
-  "GITS is a premium digital agency building SaaS platforms, mobile apps, AI automation systems, websites, and internal tools for startups and businesses worldwide. Based in Nigeria, serving 12+ countries. clarity · speed · quality.";
+  "GITS builds websites, business software, automation and integrations for businesses and agencies. Based in Nigeria and available remotely. clarity · speed · quality.";
 
 // ─── VIEWPORT ────────────────────────────────────────────────────────────────
 export const viewport: Viewport = {

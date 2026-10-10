@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 
 export default function PropertiesPage() {
-  const [activeFilter, setActiveFilter] = useState("Buy");
   const filters = ["Buy", "Rent", "Price Range", "Beds & Baths", "Home Type", "Filters"];
 
   const properties = [
@@ -57,14 +55,15 @@ export default function PropertiesPage() {
       <div className="search-bar-section">
         <div className="search-input-wrapper">
           <span style={{ color: "#999", fontSize: "18px" }}>&#128269;</span>
-          <input type="text" placeholder="Country, City, Address, Postal Code or ID" />
+          <input type="text" aria-label="Sample search — not connected" placeholder="Sample search — not connected" disabled />
         </div>
         <div className="search-filters">
           {filters.map((f) => (
             <button
               key={f}
-              className={activeFilter === f ? "filter-btn active" : "filter-btn"}
-              onClick={() => setActiveFilter(f)}
+              className={f === "Buy" ? "filter-btn active" : "filter-btn"}
+              disabled
+              title="Filter presentation only; no listing search is connected"
             >
               {f}
             </button>
@@ -77,8 +76,8 @@ export default function PropertiesPage() {
         {/* List View */}
         <div className="properties-list">
           <div className="properties-header">
-            <h2>Viewing 24 of 952,254 Homes for Sale in All locations</h2>
-            <p>Showing listings marketed by all brokers in the searched area.</p>
+            <h2>Viewing {properties.length} sample property cards</h2>
+            <p>Static UI demonstration. Search, filters, listing details and viewing requests are not connected.</p>
           </div>
           <div className="sort-bar">
             <span className="sort-label">Sort:</span>
@@ -107,17 +106,17 @@ export default function PropertiesPage() {
         {/* Map View */}
         <div className="map-section">
           <div className="map-controls">
-            <button className="map-control-btn">
+            <button className="map-control-btn" disabled>
               <span>&#128204;</span> Boundary
             </button>
-            <button className="map-control-btn">Remove Outline</button>
+            <button className="map-control-btn" disabled>Remove Outline</button>
           </div>
           <div className="map-zoom">
-            <button className="map-zoom-btn">+</button>
-            <button className="map-zoom-btn">&#8722;</button>
+            <button className="map-zoom-btn" disabled aria-label="Zoom in — sample control">+</button>
+            <button className="map-zoom-btn" disabled aria-label="Zoom out — sample control">&#8722;</button>
           </div>
           <div className="map-placeholder">
-            <span className="map-placeholder-text">Interactive Map</span>
+            <span className="map-placeholder-text">Map layout preview · sample markers</span>
             {markers.map((m, i) => (
               <div className={`map-marker ${m.large ? "large" : ""}`} style={{ top: m.top, left: m.left }} key={i}>
                 {m.val}

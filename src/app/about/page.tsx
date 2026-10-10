@@ -265,7 +265,7 @@ const STAGES: Stage[] = [
   { num: "01", title: "Research", desc: "We study the business before we study the interface — market, users, and the technical debt already on the books." },
   { num: "02", title: "Strategy", desc: "A written point of view on what to build, what to defer, and what to refuse. Direction before decoration." },
   { num: "03", title: "Design", desc: "Interfaces drawn with editorial restraint. Every spacing and weight decision is deliberate, not default." },
-  { num: "04", title: "Engineering", desc: "Senior engineers only — no bench of juniors learning on your invoice. Clean architecture, documented, owned." },
+  { num: "04", title: "Engineering", desc: "Agreed workflows, reviewable milestones and documented handover. Responsibilities and source-code access follow the proposal." },
   { num: "05", title: "Automation", desc: "Workflows that remove friction with guardrails, not black boxes. Automation you can explain to an auditor." },
   { num: "06", title: "Launch", desc: "Deployed with monitoring and a rollback plan already written — launch day should be uneventful." },
   { num: "07", title: "Growth", desc: "We stay on past handoff, reading the data and shipping the next quiet improvement." },
@@ -663,9 +663,9 @@ export default function AboutPage() {
             custom={0.4}
             className="mt-10 md:mt-14 max-w-xl text-base md:text-lg font-light text-[#666666] leading-[1.7]"
           >
-            We are a small studio of senior engineers, designers, and systems
-            thinkers building software, digital platforms, and AI automation
-            for companies that refuse to look ordinary.
+            GITS builds websites, business software, automation and integrations
+            for businesses and agencies. Each project starts with an agreed
+            workflow, clear responsibilities and a useful first milestone.
           </motion.p>
 
           <motion.div
@@ -731,10 +731,9 @@ export default function AboutPage() {
                   designed to still make sense in three years.
                 </p>
                 <p className="text-base md:text-lg font-light text-[#666666] leading-[1.75]">
-                  Every engineer we staff is senior. Not because juniors
-                  can&rsquo;t learn — but because your product isn&rsquo;t
-                  the place for it. Craft is non-negotiable, and it shows in
-                  the parts no one asks to see.
+                  We define the work, review the implementation and document
+                  the handover. The proposal identifies the people responsible
+                  for delivery and the checks used to accept the work.
                 </p>
               </motion.div>
             </div>
@@ -761,19 +760,18 @@ export default function AboutPage() {
                 <p className="text-base font-light text-[#666666] leading-[1.75]">
                   GITS began as one person&rsquo;s refusal to hand over
                   work that merely worked. What started as independent
-                  builds grew into a studio where product design, senior
+                  builds grew into a practice where product design,
                   engineering, and intelligent automation sit at the same
                   table.
                 </p>
                 <p className="text-base font-light text-[#666666] leading-[1.75]">
-                  Today we partner with founders and operators in fintech,
-                  entertainment, and commerce — building platforms that
-                  hold up under real traffic and automation that survives
-                  an audit.
+                  We work from the workflow a business needs to improve.
+                  Scope can include a website journey, an internal tool,
+                  a product flow or a connection between existing systems.
                 </p>
                 <p className="text-base font-light text-[#666666] leading-[1.75]">
-                  We stay small on purpose. A small, senior team is
-                  slower to hire and faster to trust.
+                  Project responsibilities and any specialist involvement
+                  are confirmed in the proposal before implementation.
                 </p>
               </div>
             </motion.div>
@@ -781,7 +779,7 @@ export default function AboutPage() {
             <div className="relative">
               <EditorialImage
                 src="/about/story-office.webp"
-                alt="GITS office"
+                alt="Workspace illustration"
                 className="aspect-[3/4]"
                 parallax={0.2}
               />
@@ -793,11 +791,11 @@ export default function AboutPage() {
                 className="absolute -bottom-8 -left-6 md:-left-14 bg-white border border-[#050505]/10 p-6 md:p-8 max-w-[220px]"
               >
                 <p className="font-mono text-4xl md:text-5xl font-light text-[#050505]">
-                  0
+                  Scope
                 </p>
                 <p className="mt-2 text-sm font-light text-[#666666]">
-                  Junior hires. Every engineer on your project is senior,
-                  full stop.
+                  Agree responsibilities, milestones and a completion check
+                  before building.
                 </p>
               </motion.div>
             </div>
@@ -853,7 +851,7 @@ export default function AboutPage() {
             viewport={{ once: true, margin: "-80px" }}
             variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
           >
-            <PrincipleRow invert number="01" title="Senior only" text="Every engineer on staff is senior. Your project is not where anyone practices." />
+            <PrincipleRow invert number="01" title="Clear responsibilities" text="The proposal identifies delivery responsibilities and the checks used to accept the work." />
             <PrincipleRow invert number="02" title="Systems over screens" text="We design reusable architecture, not one-off pages that fall apart at scale." />
             <PrincipleRow invert number="03" title="Automation with judgment" text="Intelligent workflows built with guardrails — automation you can explain, not a black box." />
             <PrincipleRow invert number="04" title="Speed is trust" text="Every millisecond is a signal. Performance is treated as a feature, not an afterthought." />
@@ -897,13 +895,13 @@ export default function AboutPage() {
               />
               <div className="mt-5 text-center sm:text-left">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#666666]">
-                  Founder &amp; Senior Software Engineer
+                  Founder &amp; Software Engineer
                 </p>
                 <p className="mt-1 text-xl font-light text-[#050505]">
                   Gwer Msughter Donatus
                 </p>
                 <a
-                  href="https://donatus-gwer.vercel.app/"
+                  href="https://gwer.space/"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Gwer Msughter Donatus — personal site (opens in a new tab)"
@@ -993,9 +991,9 @@ export default function AboutPage() {
             transition={{ duration: 0.55, ease }}
             className="mb-16 md:mb-24"
           >
-            <Eyebrow index="06">The team</Eyebrow>
+            <Eyebrow index="06">Project responsibilities</Eyebrow>
             <h2 className="mt-6 text-3xl md:text-4xl lg:text-5xl font-extralight leading-[1.1] tracking-tight text-[#050505] max-w-xl">
-              Small by design. No bench, no bloat.
+              Agree who owns each part of the work.
             </h2>
           </motion.div>
 
@@ -1006,21 +1004,8 @@ export default function AboutPage() {
             variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
             className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-12 max-w-3xl"
           >
-            <TeamMember
-              index={0}
-              name="Daniel Ochai"
-              role="UI/UX & Design Systems"
-              bio="Owns every spacing token and interaction pattern. Nothing ships until it earns its place."
-              imageSrc="/about/daniel.webp"
-              linkedin="https://www.linkedin.com/in/daniel-o-ochai-596a47319/"
-            />
-            <TeamMember
-              index={1}
-              name="Aisha Adeyemi"
-              role="Marketing & Media"
-              bio="Runs how the studio sounds in public — channels, campaigns, and the story around the work. Positioning before promotion."
-              imageSrc="/about/team-aisha.webp"
-            />
+            <div className="border-t border-black/15 pt-6"><h3 className="text-xl font-light">Design &amp; implementation</h3><p className="mt-4 text-[#666666] leading-7">Agree the user journey, content, interfaces and implementation scope. Review each milestone against the agreed acceptance check.</p></div>
+            <div className="border-t border-black/15 pt-6"><h3 className="text-xl font-light">Review &amp; handover</h3><p className="mt-4 text-[#666666] leading-7">Identify the person who reviews the work, the required access and documentation, and the support responsibilities after handover.</p></div>
           </motion.div>
         </div>
       </section>

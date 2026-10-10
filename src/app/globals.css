@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.service-detail { overflow-wrap: anywhere; }
+.service-detail :is(a, button, summary, input, select):focus-visible {
+  outline: 2px solid #3157c8;
+  outline-offset: 4px;
+}
+.service-detail summary { list-style-position: outside; margin-left: 1.2rem; }
+@media (prefers-reduced-motion: reduce) {
+  .service-detail * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

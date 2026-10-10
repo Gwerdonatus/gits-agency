@@ -151,13 +151,13 @@ for (const s of SERVICES) {
 const askedPrice = detectIntent("how much for a landing page?");
 const pricePrompt = buildSystemPrompt({ result: askedPrice, stage: "goal", msgCount: 2, context: {} });
 assert("a pricing turn loads the bands", pricePrompt.includes("PRICE BANDS — money is on the table"));
-assert("the landing-page floor is $200", pricePrompt.includes("from $200 for a one-pager"));
-assert("a pricing turn leads with the number", pricePrompt.includes("this is the one turn where you lead with money"));
+assert("no universal price floor", pricePrompt.includes("no published minimum") && !pricePrompt.includes("starts at $200"));
+assert("pricing explains scope", pricePrompt.includes("acceptance"));
 
 /* Not knowing, and handing over, has to be available on every turn. */
 for (const [label, p] of [["catalogue", prompt], ["pricing", pricePrompt]] as const) {
   assert(`${label} turn carries the handoff script`, p.includes("HANDING OVER TO A HUMAN"));
-  assert(`${label} turn carries the WhatsApp number`, p.includes("https://wa.me/2348116276212"));
+  assert(`${label} turn carries the WhatsApp number`, p.includes("https://wa.me/2349034360747"));
 }
 
 /* Being corrected: admit it, then hand over rather than inventing a recovery. */
@@ -180,8 +180,8 @@ assert(
 );
 assert("catalogue prompt forbids deflecting", prompt.includes("Do NOT ask them to state their needs BEFORE listing"));
 assert("catalogue reply budget leaves room for a list", maxTokensFor("catalogue", "goal") >= 700);
-assert("contact details are always in the prompt", prompt.includes("https://wa.me/2348116276212"));
-assert("real-client guardrail is always in the prompt", prompt.includes("the only work you may ever reference"));
+assert("contact details are always in the prompt", prompt.includes("https://wa.me/2349034360747"));
+assert("real-client guardrail is always in the prompt", prompt.includes("not verified client deliveries") && prompt.includes("Never infer"));
 
 const discovery = detectIntent("I run a pharmacy in Jos");
 const discoveryPrompt = buildSystemPrompt({ result: discovery, stage: "goal", msgCount: 1, context: {} });

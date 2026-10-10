@@ -30,6 +30,7 @@ function validate(body: unknown): { ok: true; data: ContactPayload } | { ok: fal
   if (name.length < 2)               return { ok: false, error: "Name is required (minimum 2 characters)." };
   if (!/^\S+@\S+\.\S+$/.test(email)) return { ok: false, error: "A valid email address is required." };
   if (message.length < 10)           return { ok: false, error: "Please include a message (minimum 10 characters)." };
+  if (name.length > 200 || email.length > 254 || message.length > 12000) return { ok: false, error: "Please shorten your message or contact us by email." };
 
   return {
     ok: true,
@@ -53,6 +54,7 @@ export async function POST(req: NextRequest) {
   if (!validation.ok && validation.error === "__honeypot__") return NextResponse.json({ ok: true, id: "bot" });
   if (!validation.ok) return NextResponse.json({ ok: false, error: validation.error }, { status: 422 });
 
+  try {
   const { data } = validation;
   const refId     = generateRefId();
   const timestamp = formatTimestamp();
@@ -89,5 +91,8 @@ export async function POST(req: NextRequest) {
   console.log("[api/contact] Customer:", customer.ok ? `sent (${customer.id})` : `FAILED: ${customer.error}`);
 
   if (!admin.ok) return NextResponse.json({ ok: false, error: "Failed to process your submission. Please try again or email us directly." }, { status: 500 });
-  return NextResponse.json({ ok: true, id: refId }, { status: 200 });
+  return NextResponse.json({ ok: true, id: refId, status: "accepted" }, { status: 200 });
+  } catch {
+    return NextResponse.json({ ok: false, error: "Failed to process your submission. Please try again or email us directly." }, { status: 500 });
+  }
 }

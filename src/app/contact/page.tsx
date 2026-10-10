@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { resolveContactContext } from "@/content/services";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { InlineWidget } from "react-calendly";
 
 type FAQ = { q: string; a: string };
 
@@ -148,8 +148,8 @@ export default function ContactPage() {
   const successRef = useRef<HTMLDivElement | null>(null);
 
   const PRIMARY_EMAIL = "hello@gits.technology";
-  const PHONE_E164 = "+2348116276212";
-  const WHATSAPP_E164 = "+2348116276212";
+  const PHONE_E164 = "+2349034360747";
+  const WHATSAPP_E164 = "+2349034360747";
   const CALENDLY_URL = "https://calendly.com/donatusgwer";
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -160,15 +160,24 @@ export default function ContactPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    projectType: "Website",
-    timeline: "2–4 weeks",
-    budget: "$1k–$3k",
+    projectType: "Not sure yet",
+    timeline: "Not specified",
+    budget: "Not specified",
     prefer: "Email",
     message: "",
     consent: true,
     company: "",
     phone: "",
+    context: "",
+    organization: "",
   });
+
+  useEffect(() => {
+    const context = resolveContactContext(window.location.search);
+    // Hydrate browser-only allowlisted query context once, without overwriting edits.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (context) setForm(p => ({ ...p, context: context.service.name + (context.example ? ` — ${context.example.title}` : "") }));
+  }, []);
 
   const canSend = useMemo(() => {
     const okEmail = /^\S+@\S+\.\S+$/.test(form.email.trim());
@@ -202,24 +211,23 @@ export default function ContactPage() {
           projectType: form.projectType,
           timeline: form.timeline,
           budget: form.budget,
-          message: form.message,
+          message: [form.context && `Project context: ${form.context}`, form.organization && `Company / website: ${form.organization}`, form.message].filter(Boolean).join("\n\n"),
           company: form.company, // honeypot
         }),
       });
 
-      const data = await res.json().catch(() => ({} as any));
+      const data: {ok?: boolean; id?: string; error?: string} = await res.json().catch(() => ({}));
 
-      if (!res.ok || data?.ok === false) {
+      if (!res.ok || data?.ok !== true || typeof data.id !== "string" || !data.id.trim() || data.id === "bot") {
         const msg = data?.error || "Something went wrong. Please try again or email us.";
         setStatus("error");
         setStatusMsg(msg);
-        window.setTimeout(() => setStatus("idle"), 6500);
         return;
       }
 
       setStatus("success");
       setRefId(typeof data?.id === "string" && data.id.length ? data.id : null);
-      setStatusMsg("Message sent. We’ll reply within 24 hours (Mon–Sat).");
+      setStatusMsg("Your enquiry was accepted for email processing. This is not a delivery receipt.");
 
       // clear form, keep their email so it feels “recognized”
       setForm((p) => ({
@@ -228,9 +236,9 @@ export default function ContactPage() {
         phone: "",
         message: "",
         prefer: "Email",
-        projectType: "Website",
-        timeline: "2–4 weeks",
-        budget: "$1k–$3k",
+        projectType: "Not sure yet",
+        timeline: "Not specified",
+        budget: "Not specified",
         company: "",
         consent: true,
       }));
@@ -292,7 +300,7 @@ export default function ContactPage() {
       <AnimatePresence>
         {status === "success" ? (
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.35, ease }}
@@ -309,7 +317,7 @@ export default function ContactPage() {
                 <div className="min-w-0">
                   <p className="text-sm font-medium text-gray-900">Message received</p>
                   <p className="mt-1 text-xs text-gray-600 leading-relaxed">
-                    We’ll reply within <span className="font-medium text-gray-900">24 hours</span> (Mon–Sat).
+                    Accepted for email processing. Delivery is not yet confirmed.
                     {refId ? (
                       <>
                         {" "}
@@ -326,7 +334,7 @@ export default function ContactPage() {
 
         {status === "error" ? (
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.35, ease }}
@@ -345,13 +353,13 @@ export default function ContactPage() {
 
       <section className="relative px-6 pt-28 pb-12 md:pt-32">
         <div className="mx-auto max-w-6xl">
-          <motion.p variants={fadeUp} initial="hidden" animate="visible" className="text-sm uppercase tracking-widest text-gray-500">
+          <motion.p variants={fadeUp} initial={false} animate="visible" className="text-sm uppercase tracking-widest text-gray-500">
             Contact
           </motion.p>
 
           <motion.h1
             variants={fadeUp}
-            initial="hidden"
+            initial={false}
             animate="visible"
             custom={0.05}
             className="mt-3 text-4xl md:text-6xl font-medium leading-[1.05] max-w-3xl text-gray-900"
@@ -359,19 +367,19 @@ export default function ContactPage() {
             Let’s talk about the build — and the fastest path to launch.
           </motion.h1>
 
-          <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={0.12} className="mt-5 text-gray-600 max-w-2xl leading-relaxed">
+          <motion.p variants={fadeUp} initial={false} animate="visible" custom={0.12} className="mt-5 text-gray-600 max-w-2xl leading-relaxed">
             Share what you’re building. We’ll reply with the clearest next step — a quick question list, a rough plan, or a call if needed.
           </motion.p>
 
-          <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0.18} className="mt-8 grid gap-4 md:grid-cols-3">
+          <motion.div variants={fadeUp} initial={false} animate="visible" custom={0.18} className="mt-8 grid gap-4 md:grid-cols-3">
             <QuickAction href="#book" title="Book a call" sub="Pick a time. No back-and-forth." icon={<CalendarIcon />} />
             <QuickAction href={mailtoHref} title="Email" sub={PRIMARY_EMAIL} icon={<MailIcon />} />
             <QuickAction href={waHref} title="WhatsApp" sub={PHONE_E164} icon={<WhatsAppIcon />} external />
           </motion.div>
 
-          <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr,0.95fr] items-start">
+          <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] items-start">
             <motion.div
-              initial={{ opacity: 0, y: 14 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.75, ease }}
               className="relative overflow-hidden rounded-3xl border border-black/10 bg-white/60 backdrop-blur p-6 md:p-8"
@@ -385,7 +393,7 @@ export default function ContactPage() {
                   <div>
                     <p className="text-sm text-gray-600">Fastest route</p>
                     <p className="mt-1 text-gray-900 font-medium">Book a quick call or send details below.</p>
-                    <p className="mt-1 text-xs text-gray-500">Typical reply time: within 24 hours (Mon–Sat).</p>
+                    <p className="mt-1 text-xs text-gray-500">We will review the brief and suggest the next step. A call is optional.</p>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
@@ -412,7 +420,7 @@ export default function ContactPage() {
                 <div className="mt-6 h-px w-full bg-black/10" />
 
                 {/* Strong in-card confirmation (replaces form) */}
-                <div ref={successRef} className="mt-6">
+                <div ref={successRef} className="mt-6" role="status" aria-live="polite">
                   <AnimatePresence mode="wait">
                     {status === "success" ? (
                       <motion.div
@@ -430,10 +438,9 @@ export default function ContactPage() {
                           </div>
 
                           <div className="min-w-0">
-                            <p className="text-sm font-medium text-gray-900">Sent successfully</p>
+                            <p className="text-sm font-medium text-gray-900">Enquiry accepted</p>
                             <p className="mt-1 text-sm text-gray-600 leading-relaxed">
-                              Thanks — we’ve received your message. We’ll reply within{" "}
-                              <span className="font-medium text-gray-900">24 hours</span> (Mon–Sat).
+                              Our email provider accepted your enquiry for processing. This confirms submission, not inbox delivery.
                             </p>
 
                             {refId ? (
@@ -479,7 +486,10 @@ export default function ContactPage() {
 
                 {/* Form only when not success */}
                 {status !== "success" ? (
-                  <form onSubmit={onSubmit} className="mt-6 grid gap-5">
+                  <form id="project-form" onSubmit={onSubmit} className="mt-6 grid gap-5 scroll-mt-28">
+                    <p className="text-sm leading-6 text-gray-600">Tell us what you need to build or improve. We will review the brief and suggest the next step. A scoped proposal sets out deliverables, dependencies, milestones and support.</p>
+                    <Field label="Service / example context (editable)"><input className="w-full rounded-2xl border border-black/10 px-4 py-3" value={form.context} onChange={e=>setForm(p=>({...p,context:e.target.value}))}/></Field>
+                    <Field label="Company / website (optional)"><input className="w-full rounded-2xl border border-black/10 px-4 py-3" value={form.organization} onChange={e=>setForm(p=>({...p,organization:e.target.value}))}/></Field>
                     <input
                       value={form.company}
                       onChange={(e) => setForm((p) => ({ ...p, company: e.target.value }))}
@@ -497,6 +507,7 @@ export default function ContactPage() {
                           className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black/25"
                           placeholder="Your name"
                           autoComplete="name"
+                          required
                         />
                       </Field>
 
@@ -507,6 +518,8 @@ export default function ContactPage() {
                           className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black/25"
                           placeholder="you@company.com"
                           autoComplete="email"
+                          type="email"
+                          required
                         />
                       </Field>
                     </div>
@@ -528,12 +541,13 @@ export default function ContactPage() {
                         </select>
                       </Field>
 
-                      <Field label="Timeline">
+                      <Field label="Timeline (optional)">
                         <select
                           value={form.timeline}
                           onChange={(e) => setForm((p) => ({ ...p, timeline: e.target.value }))}
                           className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black/25"
                         >
+                          <option>Not specified</option>
                           <option>ASAP</option>
                           <option>1–2 weeks</option>
                           <option>2–4 weeks</option>
@@ -542,12 +556,13 @@ export default function ContactPage() {
                         </select>
                       </Field>
 
-                      <Field label="Budget range">
+                      <Field label="Budget range (optional)">
                         <select
                           value={form.budget}
                           onChange={(e) => setForm((p) => ({ ...p, budget: e.target.value }))}
                           className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black/25"
                         >
+                          <option>Not specified</option>
                           <option>$100–$1k</option>
                           <option>$1k–$3k</option>
                           <option>$3k–$7k</option>
@@ -582,8 +597,10 @@ export default function ContactPage() {
                       </Field>
                     </div>
 
-                    <Field label="Project details" required>
+                    <Field label="What would you like to improve or build?" required>
                       <textarea
+                        required
+                        minLength={10}
                         value={form.message}
                         onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
                         className="min-h-[160px] w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black/25"
@@ -636,6 +653,7 @@ export default function ContactPage() {
                         {status === "error" ? (
                           <motion.p
                             key="err-inline"
+                            role="alert"
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -6 }}
@@ -652,7 +670,7 @@ export default function ContactPage() {
             </motion.div>
 
             <motion.aside
-              initial={{ opacity: 0, y: 14 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.75, delay: 0.08, ease }}
               className="lg:sticky lg:top-28 space-y-4"
@@ -693,7 +711,7 @@ export default function ContactPage() {
       <section id="book" className="relative px-6 pb-16">
         <div className="mx-auto max-w-6xl">
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
+            initial={false}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-120px" }}
             transition={{ duration: reduceMotion ? 0 : 0.75, ease }}
@@ -707,9 +725,8 @@ export default function ContactPage() {
             className="mt-8 rounded-3xl border border-black/10 bg-white/60 backdrop-blur p-2 md:p-3 overflow-hidden"
             style={{ boxShadow: "0 30px 80px rgba(0,0,0,0.08), 0 8px 20px rgba(0,0,0,0.05)" }}
           >
-            <div className="h-[820px] w-full">
-              <InlineWidget url={CALENDLY_URL} styles={{ height: "820px", width: "100%" }} />
-            </div>
+            <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="inline-block m-4 rounded-full bg-black text-white px-6 py-4 focus-visible:outline-2 focus-visible:outline-offset-4">Open scheduling (new tab) ↗</a>
+            <p className="px-4 pb-4 text-sm text-gray-600">Scheduling opens on Calendly. You can also use the enquiry form, email or WhatsApp above.</p>
           </div>
         </div>
       </section>
@@ -727,6 +744,8 @@ export default function ContactPage() {
                   <button
                     type="button"
                     onClick={() => setOpenFaq((p) => (p === idx ? null : idx))}
+                    aria-expanded={open}
+                    aria-controls={`contact-faq-${idx}`}
                     className="w-full px-5 py-4 text-left flex items-center justify-between gap-6"
                   >
                     <span className="text-sm md:text-base text-gray-900">{f.q}</span>
@@ -738,10 +757,11 @@ export default function ContactPage() {
                   <AnimatePresence initial={false}>
                     {open ? (
                       <motion.div
+                        id={`contact-faq-${idx}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.35, ease }}
+                        transition={{ duration: reduceMotion ? 0 : 0.35, ease }}
                       >
                         <div className="px-5 pb-5 text-sm text-gray-600 leading-relaxed">{f.a}</div>
                       </motion.div>

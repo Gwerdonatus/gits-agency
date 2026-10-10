@@ -5,7 +5,7 @@ import { buildMetadata } from "@/lib/metadata";
 
 export const metadata = buildMetadata({
   title: "Services",
-  description: "Custom software, websites, AI and business automation, internal tools and API integrations — designed and engineered by senior engineers for production use.",
+  description: "Custom software, websites, AI and business automation, internal tools and API integrations — scoped around your workflow, with agreed review and handover.",
   path: "/services",
 });
 

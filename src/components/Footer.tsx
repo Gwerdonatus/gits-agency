@@ -63,7 +63,7 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
     <motion.div whileHover={{ x: 3 }} transition={{ duration: 0.22, ease: spring }}>
       <Link
         href={href}
-        className="text-[12.5px] font-light text-white/45 hover:text-white/90 transition-colors duration-[220ms] leading-none"
+        className="text-[12.5px] font-light text-white/65 hover:text-white/90 transition-colors duration-[220ms] leading-none"
         style={{ fontFamily: "DM Sans, sans-serif" }}
       >
         {children}
@@ -115,7 +115,7 @@ function NewsletterSignup() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.72, ease: spring, delay: 0.18 }}
       className="mx-auto max-w-[860px] px-10 py-[44px] border-b border-white/[0.07]"
@@ -125,13 +125,13 @@ function NewsletterSignup() {
         {/* Left: label + desc */}
         <div className="max-w-[280px]">
           <p
-            className="text-[10.5px] uppercase tracking-[0.18em] text-white/22 mb-2"
+            className="text-[10.5px] uppercase tracking-[0.18em] text-white/65 mb-2"
             style={{ fontFamily: "DM Sans, sans-serif" }}
           >
             Newsletter
           </p>
           <p
-            className="text-[13.5px] font-light text-white/55 leading-[1.65]"
+            className="text-[13.5px] font-light text-white/65 leading-[1.65]"
             style={{ fontFamily: "DM Sans, sans-serif" }}
           >
             Build insights, design notes, and short industry takes. Low frequency. No filler.
@@ -144,21 +144,21 @@ function NewsletterSignup() {
             {status === "success" ? (
               <motion.p
                 key="success"
-                initial={{ opacity: 0, y: 6 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3, ease: spring }}
-                className="text-[12.5px] text-white/55 leading-[1.6]"
+                className="text-[12.5px] text-white/65 leading-[1.6]"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 You&apos;re on the list.{" "}
-                <span className="text-white/30">Check your inbox.</span>
+                <span className="text-white/65">Check your inbox.</span>
               </motion.p>
             ) : (
               <motion.form
                 key="form"
                 onSubmit={handleSubmit}
-                initial={{ opacity: 0 }}
+                initial={false}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
@@ -180,9 +180,10 @@ function NewsletterSignup() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
+                    aria-label="Newsletter email address"
                     autoComplete="email"
                     inputMode="email"
-                    className="flex-1 min-w-0 rounded-full border border-white/10 bg-white/[0.05] px-4 py-[9px] text-[12.5px] text-white/80 placeholder:text-white/20 outline-none focus:border-white/20 focus:bg-white/[0.07] transition-all duration-200"
+                    className="flex-1 min-w-0 rounded-full border border-white/10 bg-white/[0.05] px-4 py-[9px] text-[12.5px] text-white/80 placeholder:text-white/65 outline-none focus:border-white/20 focus:bg-white/[0.07] transition-all duration-200"
                     style={{ fontFamily: "DM Sans, sans-serif" }}
                   />
                   <motion.button
@@ -205,7 +206,7 @@ function NewsletterSignup() {
                 <AnimatePresence>
                   {status === "error" && error ? (
                     <motion.p
-                      initial={{ opacity: 0, y: 4 }}
+                      initial={false}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.25 }}
@@ -241,7 +242,7 @@ export default function Footer() {
           CTA BAND
       ════════════════════════════════════ */}
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: spring, delay: 0.05 }}
         className="mx-auto max-w-[860px] px-10 pt-[72px] pb-[52px] border-b border-white/[0.07]"
@@ -251,7 +252,7 @@ export default function Footer() {
           {/* Hook copy */}
           <div>
             <p
-              className="text-[10.5px] uppercase tracking-[0.18em] text-white/22 mb-3"
+              className="text-[10.5px] uppercase tracking-[0.18em] text-white/65 mb-3"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
               Ready to build something great?
@@ -278,7 +279,7 @@ export default function Footer() {
             <motion.div whileHover={{ y: -1 }} transition={{ duration: 0.18, ease: spring }}>
               <Link
                 href="mailto:hello@gits.technology"
-                className="inline-flex items-center gap-2 border border-white/14 rounded-full px-6 py-[11px] text-[12.5px] text-white/55 hover:text-white hover:border-white/35 hover:bg-white/[0.04] transition-all duration-[250ms]"
+                className="inline-flex items-center gap-2 border border-white/14 rounded-full px-6 py-[11px] text-[12.5px] text-white/65 hover:text-white hover:border-white/35 hover:bg-white/[0.04] transition-all duration-[250ms]"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 hello@gits.technology
@@ -302,7 +303,7 @@ export default function Footer() {
 
           {/* ── Brand column ── */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.72, ease: spring, delay: 0.1 }}
           >
@@ -325,16 +326,15 @@ export default function Footer() {
 
             {/* Tagline */}
             <p
-              className="text-[12px] font-light text-white/32 leading-[1.8] max-w-[200px] mb-6"
+              className="text-[12px] font-light text-white/65 leading-[1.8] max-w-[200px] mb-6"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
-              Premium web experiences — design that feels expensive,
-              engineering that stays clean.
+              GITS builds websites, business software, automation and integrations for businesses and agencies.
             </p>
 
             {/* Location */}
             <p
-              className="text-[11px] font-light text-white/20 leading-[1.8] mb-6"
+              className="text-[11px] font-light text-white/65 leading-[1.8] mb-6"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
              <br />
@@ -350,11 +350,11 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: spring, delay: 0.3 + i * 0.07 }}
                   whileHover={{ y: -2, color: "#ffffff" }}
-                  className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/35 hover:text-white hover:border-white/30 hover:bg-white/[0.05] transition-colors duration-200"
+                  className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/65 hover:text-white hover:border-white/30 hover:bg-white/[0.05] transition-colors duration-200"
                 >
                   <Icon />
                 </motion.a>
@@ -365,16 +365,16 @@ export default function Footer() {
           {/* ── Services column ── */}
           <div>
             <motion.p
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: spring, delay: 0.28 }}
-              className="text-[10px] uppercase tracking-[0.15em] text-white/18 mb-[18px]"
+              className="text-[10px] uppercase tracking-[0.15em] text-white/65 mb-[18px]"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
               Services
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: spring, delay: 0.36 }}
               className="flex flex-col gap-[12px]"
@@ -388,16 +388,16 @@ export default function Footer() {
           {/* ── Company column ── */}
           <div>
             <motion.p
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: spring, delay: 0.32 }}
-              className="text-[10px] uppercase tracking-[0.15em] text-white/18 mb-[18px]"
+              className="text-[10px] uppercase tracking-[0.15em] text-white/65 mb-[18px]"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
               Company
             </motion.p>
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: spring, delay: 0.40 }}
               className="flex flex-col gap-[12px]"
@@ -421,21 +421,21 @@ export default function Footer() {
 
         {/* ── Bottom bar ── */}
         <motion.div
-          initial={{ opacity: 0, y: 4 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: spring, delay: 1.2 }}
           className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
             <p
-              className="text-[11px] font-light text-white/16 tracking-[0.02em]"
+              className="text-[11px] font-light text-white/65 tracking-[0.02em]"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
               © {year} GITS · Gwer Intelligent Tech Solutions
             </p>
-            <span className="hidden sm:block text-white/10 text-[11px]">·</span>
+            <span className="hidden sm:block text-white/65 text-[11px]">·</span>
             <p
-              className="text-[11px] font-light text-white/12 tracking-[0.02em]"
+              className="text-[11px] font-light text-white/65 tracking-[0.02em]"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
                · Remote-first · Available worldwide
@@ -446,7 +446,7 @@ export default function Footer() {
               <Link
                 key={label}
                 href={`/${label.toLowerCase()}`}
-                className="text-[11px] font-light text-white/16 hover:text-white/50 transition-colors duration-150"
+                className="text-[11px] font-light text-white/65 hover:text-white/65 transition-colors duration-150"
                 style={{ fontFamily: "DM Sans, sans-serif" }}
               >
                 {label}
@@ -458,7 +458,7 @@ export default function Footer() {
 
       {/* ── Full-bleed cinematic image ── */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 1.5 }}
         className="relative w-full"
