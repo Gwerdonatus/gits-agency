@@ -18,7 +18,7 @@ const SITE_URL = "https://gits.technology";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }> | { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await Promise.resolve(params);
   const post = await getPostBySlug(slug);
@@ -63,7 +63,7 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: {
-  params: Promise<{ slug: string }> | { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await Promise.resolve(params);
   const post = await getPostBySlug(slug);
