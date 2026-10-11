@@ -11,6 +11,11 @@ function load(file, stubs = {}) {
   return exports;
 }
 const {serviceContent, serviceExamples, resolveContactContext, contactHref} = load('src/content/services.ts');
+// The portfolio is separate from service examples and must retain its original presentation.
+const portfolio = fs.readFileSync('src/app/what-we-build/page.tsx', 'utf8');
+for (const title of ['Sanmark Luxury', 'NOTGATE', 'Lamed Pharmacy', 'Selo', 'Blakdhut Exchange', 'AI Spa Assistant', 'Pet Internal System']) assert.ok(portfolio.includes(title), 'Original portfolio project: '+title);
+for (const section of ['BlueprintsSection', 'MediaMosaic', 'TestimonialCard']) assert.ok(portfolio.includes(section), 'Original portfolio section: '+section);
+assert.ok(!portfolio.includes('Find the example closest to your task.'), 'Do not replace the portfolio with the service-example catalogue');
 assert.equal(serviceContent.length, 5);
 assert.equal(serviceExamples.length, 15);
 assert.equal(new Set(serviceExamples.map(e=>e.id)).size, 15);
