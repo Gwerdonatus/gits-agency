@@ -1,5 +1,106 @@
 @import "tailwindcss";
 
+.example-navigation {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+}
+.example-navigation button,
+.example-navigation a {
+  min-height: 44px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #344054;
+  border-radius: 8px;
+}
+.example-navigation a {
+  background: #050505;
+  color: #fff;
+}
+.example-navigation button[aria-pressed="true"] {
+  background: #f0f2f5;
+  font-weight: 600;
+}
+.example-navigation :focus-visible {
+  outline: 3px solid #475467;
+  outline-offset: 2px;
+}
+[id$="-preview"] {
+  scroll-margin-top: 140px;
+}
+.capability-details summary {
+  cursor: pointer;
+  color: #344054;
+  min-height: 44px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ddd;
+}
+@media (max-width: 639px) {
+  .service-capabilities > .group {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 4px 14px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 16px;
+  }
+  .service-capabilities > .group > svg {
+    width: 30px;
+    height: 30px;
+    grid-row: 1 / 4;
+    margin-top: 4px;
+  }
+  .service-capabilities > .group > p,
+  .service-capabilities > .group > h3,
+  .service-capabilities > .group > details {
+    margin-top: 0;
+  }
+  .service-capabilities > .group > details {
+    grid-column: 2;
+  }
+  .service-page .case-demo-band {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+footer a:focus-visible,
+header a:focus-visible,
+header button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 4px;
+}
+footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+footer a[aria-label] {
+  min-width: 44px;
+}
+@media (max-width: 639px) {
+  .case-study-toggle[aria-expanded="false"] .case-metadata {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .case-study-toggle[aria-expanded="false"] > div:not(:first-child) {
+    display: none;
+  }
+  .case-study-toggle[aria-expanded="false"]::after {
+    content: "Open full story & try the demo →";
+    display: block;
+    margin-top: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #344054;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -25,12 +126,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.service-detail { overflow-wrap: anywhere; }
+.service-detail {
+  overflow-wrap: anywhere;
+}
 .service-detail :is(a, button, summary, input, select):focus-visible {
   outline: 2px solid #3157c8;
   outline-offset: 4px;
 }
-.service-detail summary { list-style-position: outside; margin-left: 1.2rem; }
+.service-detail summary {
+  list-style-position: outside;
+  margin-left: 1.2rem;
+}
 @media (prefers-reduced-motion: reduce) {
-  .service-detail * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .service-detail * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }

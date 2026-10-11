@@ -338,7 +338,7 @@ export default function Footer() {
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
              <br />
-              <span className="text-white/13">Available worldwide · Remote-first</span>
+              <span className="text-white/65">Available worldwide · Remote-first</span>
             </p>
 
             {/* Social icons */}

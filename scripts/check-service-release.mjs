@@ -19,6 +19,8 @@ for (const service of serviceContent) {
   assert.ok(fs.existsSync(`src/app/services/${service.slug}/page.tsx`));
 }
 for (const example of serviceExamples) {
+  assert.equal(example.origin, 'client', 'Owner confirmed all 15 projects are real client work with changed names');
+  assert.equal(example.permissionToNameClient, false, 'Protected client identities must not be disclosed');
   assert.ok(example.caseUrl.endsWith('#'+example.id));
   assert.ok(example.limitations && example.exactContribution && example.lastVerifiedAt);
   assert.equal(example.outcomes.length, 0, 'No unsupported commercial metrics');

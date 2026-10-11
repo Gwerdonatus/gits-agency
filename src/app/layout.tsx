@@ -182,7 +182,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
 
       <body className="min-h-screen bg-white text-gray-900 antialiased">
-        <div className="overflow-x-hidden">
+        <div className="overflow-x-clip">
           <ConditionalNavFooter>
             {children}
           </ConditionalNavFooter>

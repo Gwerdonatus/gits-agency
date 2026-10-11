@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -38,7 +38,7 @@ function TwistText({ children }: { children: React.ReactNode }) {
           "bg-gradient-to-r from-transparent via-white/20 to-transparent",
           "opacity-0 group-hover:opacity-100",
           "translate-x-0 group-hover:translate-x-[220%]",
-          "transition-all duration-500 ease-out"
+          "transition-all duration-500 ease-out",
         )}
       />
 
@@ -48,7 +48,10 @@ function TwistText({ children }: { children: React.ReactNode }) {
       </span>
 
       {/* hover layer */}
-      <span className="absolute left-0 top-0 block translate-y-[105%] rotate-[6deg] opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:rotate-0 group-hover:opacity-100">
+      <span
+        aria-hidden="true"
+        className="absolute left-0 top-0 block translate-y-[105%] rotate-[6deg] opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:rotate-0 group-hover:opacity-100"
+      >
         {children}
       </span>
     </span>
@@ -78,7 +81,7 @@ function NavLink({
       className={cx(
         "group relative inline-flex items-center rounded-full px-3 py-2 text-sm",
         "text-white/85 hover:text-white transition",
-        active && "text-white"
+        active && "text-white",
       )}
       style={{ fontFamily: "Inter" }}
     >
@@ -91,7 +94,7 @@ function NavLink({
       <span
         className={cx(
           "pointer-events-none absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full transition",
-          active ? "bg-white/85" : "bg-white/0 group-hover:bg-white/70"
+          active ? "bg-white/85" : "bg-white/0 group-hover:bg-white/70",
         )}
       />
     </Link>
@@ -117,7 +120,7 @@ function GhostButton({
       className={cx(
         "group inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium",
         "border border-white/20 text-white/90 hover:text-white hover:border-white/35",
-        "bg-black hover:bg-white/5 transition active:scale-[0.99]"
+        "bg-black hover:bg-white/5 transition active:scale-[0.99]",
       )}
       style={{ fontFamily: "Inter" }}
     >
@@ -144,7 +147,7 @@ function PrimaryButton({
       onClick={onClick}
       className={cx(
         "group inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium",
-        "bg-white text-black hover:opacity-90 transition active:scale-[0.99]"
+        "bg-white text-black hover:opacity-90 transition active:scale-[0.99]",
       )}
       style={{ fontFamily: "Inter" }}
     >
@@ -155,6 +158,63 @@ function PrimaryButton({
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const trigger = triggerRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const background = Array.from(
+      document.querySelectorAll<HTMLElement>("main, footer"),
+    );
+    const previousInert = background.map((el) => el.inert);
+    background.forEach((el) => {
+      el.inert = true;
+    });
+    const focusable = () =>
+      Array.from(
+        menuRef.current?.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled])",
+        ) ?? [],
+      );
+    focusable()[0]?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+      }
+      if (event.key !== "Tab") return;
+      const items = focusable();
+      const first = items[0],
+        last = items.at(-1);
+      if (
+        !menuRef.current?.contains(document.activeElement) ||
+        (event.shiftKey && document.activeElement === first)
+      ) {
+        event.preventDefault();
+        (event.shiftKey ? last : first)?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 1024) setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      background.forEach((el, i) => {
+        el.inert = previousInert[i];
+      });
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+      trigger?.focus();
+    };
+  }, [open]);
 
   /**
    * Desktop + Mobile primary navigation
@@ -164,11 +224,15 @@ export default function Navbar() {
   const primary = useMemo(
     () => [
       { label: "Services", href: "/services", mobileLabel: "Services" },
-      { label: "What We Build", href: "/what-we-build", mobileLabel: "Projects" }, // ✅ mobile label
+      {
+        label: "What We Build",
+        href: "/what-we-build",
+        mobileLabel: "Projects",
+      }, // ✅ mobile label
       { label: "Blog", href: "/blog", mobileLabel: "Blog" },
       { label: "About", href: "/about", mobileLabel: "About" },
     ],
-    []
+    [],
   );
 
   /**
@@ -176,11 +240,10 @@ export default function Navbar() {
    */
   const secondary = useMemo(
     () => [
+      { label: "Blog", href: "/blog" },
       { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Get free audit", href: "/audit" },
     ],
-    []
+    [],
   );
 
   return (
@@ -190,7 +253,10 @@ export default function Navbar() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex h-16 sm:h-[72px] items-center justify-between gap-3">
             {/* Brand */}
-            <Link href="/" className="inline-flex items-center gap-3 select-none flex-shrink-0">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-3 select-none flex-shrink-0"
+            >
               <motion.div
                 className="text-xl sm:text-2xl font-bold"
                 style={{
@@ -204,7 +270,11 @@ export default function Navbar() {
                   WebkitTextFillColor: "transparent",
                 }}
                 animate={{ backgroundPositionX: ["200%", "-50%"] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
                 GITS.
               </motion.div>
@@ -218,7 +288,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop navigation */}
-            <nav className="hidden md:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-1 whitespace-nowrap">
               {primary.map((item) => (
                 <NavLink key={item.href} href={item.href}>
                   {item.label}
@@ -227,22 +297,23 @@ export default function Navbar() {
             </nav>
 
             {/* Desktop CTAs */}
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden lg:flex items-center gap-2 whitespace-nowrap">
               <GhostButton href="/contact">Contact</GhostButton>
               <PrimaryButton href="/audit">Get free audit</PrimaryButton>
             </div>
 
             {/* Mobile top row */}
-            <div className="md:hidden flex items-center gap-2 min-w-0">
+            <div className="lg:hidden flex items-center gap-1 min-w-0">
               {/* Use shorter labels on mobile + prevent wrap */}
               {primary.slice(0, 3).map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cx(
-                    "group rounded-full px-3 py-2",
+                    "group rounded-full px-2 sm:px-3 py-3",
                     "text-[13px] text-white/85 hover:text-white transition",
-                    "whitespace-nowrap leading-none italic" // ✅ italic + never stack
+                    "whitespace-nowrap leading-none italic", // ✅ italic + never stack
+                    item.href === "/blog" && "hidden sm:inline-flex",
                   )}
                   style={{ fontFamily: "Inter" }}
                 >
@@ -251,12 +322,15 @@ export default function Navbar() {
               ))}
 
               <button
+                ref={triggerRef}
                 onClick={() => setOpen(true)}
                 aria-label="Open menu"
+                aria-expanded={open}
+                aria-controls="gits-mobile-menu"
                 className={cx(
-                  "ml-1 inline-flex h-10 w-10 items-center justify-center rounded-full flex-shrink-0",
+                  "ml-1 inline-flex h-11 w-11 items-center justify-center rounded-full flex-shrink-0",
                   "border border-white/20 bg-black text-white",
-                  "hover:bg-white/5 transition active:scale-[0.99]"
+                  "hover:bg-white/5 transition active:scale-[0.99]",
                 )}
               >
                 ☰
@@ -277,11 +351,19 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.22, ease }}
-            className="md:hidden fixed inset-x-0 top-0 z-[60]"
+            className="lg:hidden fixed inset-x-0 top-0 z-[60]"
           >
-            <div className="fixed inset-0 bg-black/70" onClick={() => setOpen(false)} />
+            <div
+              className="fixed inset-0 bg-black/70"
+              onClick={() => setOpen(false)}
+            />
 
             <motion.div
+              ref={menuRef}
+              id="gits-mobile-menu"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="gits-menu-title"
               initial={{ scale: 0.98 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.98 }}
@@ -289,13 +371,17 @@ export default function Navbar() {
               className="relative mx-3 mt-3 overflow-hidden rounded-[22px] border border-white/12 bg-black shadow-[0_30px_120px_rgba(0,0,0,0.70)]"
             >
               <div className="flex items-center justify-between px-4 py-3">
-                <div className="text-sm text-white/70" style={{ fontFamily: "Inter" }}>
+                <div
+                  id="gits-menu-title"
+                  className="text-sm text-white/70"
+                  style={{ fontFamily: "Inter" }}
+                >
                   Menu
                 </div>
                 <button
                   onClick={() => setOpen(false)}
                   aria-label="Close menu"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/12 bg-black text-white/90 hover:bg-white/5 transition"
+                  className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-black text-white/90 hover:bg-white/5 transition"
                 >
                   ✕
                 </button>

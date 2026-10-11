@@ -149,7 +149,7 @@ export const serviceExamples: ServiceExample[] = [
       "Expiry exception: review batch before dispatch"
     ],
     "journey": "Branch → movement → checked stock record",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "working sandbox",
     "exactContribution": "Repository-local interactive demonstration; Responsive inventory workspace with search, branch filters, add/edit/delete/undo, validated sample transfers, activity history and CSV export.",
     "deliveredScope": "Responsive inventory workspace with search, branch filters, add/edit/delete/undo, validated sample transfers, activity history and CSV export.",
@@ -179,7 +179,7 @@ export const serviceExamples: ServiceExample[] = [
       "Project record: awaiting decision"
     ],
     "journey": "Site manager → approval → project record",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Responsive projects workspace with editable progress, add/delete/undo, per-project materials approval, budget exceptions and reports.",
     "deliveredScope": "Responsive projects workspace with editable progress, add/delete/undo, per-project materials approval, budget exceptions and reports.",
@@ -209,7 +209,7 @@ export const serviceExamples: ServiceExample[] = [
       "Dispatch: held until check"
     ],
     "journey": "Intake → batch → quality → dispatch",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Responsive batch workspace with editable records, quality-release checks, dispatch state, deletion recovery and reports.",
     "deliveredScope": "Responsive batch workspace with editable records, quality-release checks, dispatch state, deletion recovery and reports.",
@@ -239,11 +239,11 @@ export const serviceExamples: ServiceExample[] = [
       "Identify an enquiry destination"
     ],
     "journey": "Project → details → enquiry",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
-    "exactContribution": "Repository contains a website screenshot and an interface preview. External implementation contribution is not yet confirmed.",
-    "deliveredScope": "Repository contains a website screenshot and an interface preview. External implementation contribution is not yet confirmed.",
-    "limitations": "Client status, permission to name, project totals, awards and partner logos are unverified.",
+    "exactContribution": "Anonymized client website project, confirmed by the owner. Repository contains a website screenshot and an interface preview; the full implementation scope requires supporting records.",
+    "deliveredScope": "Repository contains a website screenshot and an interface preview of the anonymized client project.",
+    "limitations": "Client names have been changed for confidentiality. Project totals, awards and partner logos require supporting evidence.",
     "previewImage": "/services/work/notgate.webp",
     "caseUrl": "/services/websites-digital-experiences#notgate",
     "demoUrl": "https://notgate-w6l1.vercel.app/",
@@ -269,7 +269,7 @@ export const serviceExamples: ServiceExample[] = [
       "Review a request route"
     ],
     "journey": "Service → branch → request",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository contains a screenshot and a pharmacy interface preview; backend connectivity is not established.",
     "deliveredScope": "Repository contains a screenshot and a pharmacy interface preview; backend connectivity is not established.",
@@ -299,7 +299,7 @@ export const serviceExamples: ServiceExample[] = [
       "Discuss a similar viewing journey"
     ],
     "journey": "Search → sample listing → enquiry design",
-    "origin": "demonstration",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Inspectable Next.js listing, agents and seller pages with sample content.",
     "deliveredScope": "Inspectable Next.js listing, agents and seller pages with sample content.",
@@ -329,7 +329,7 @@ export const serviceExamples: ServiceExample[] = [
       "Follow-up: activity record"
     ],
     "journey": "Lead → owner → activity → stage",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Interactive phone CRM with pipeline, leads, properties and reports screens; editable ownership and stages, saved notes, add/delete/undo and CSV export.",
     "deliveredScope": "Interactive phone CRM with pipeline, leads, properties and reports screens; editable ownership and stages, saved notes, add/delete/undo and CSV export.",
@@ -359,7 +359,7 @@ export const serviceExamples: ServiceExample[] = [
       "Roster: review conflict"
     ],
     "journey": "Staff request → supervisor review → roster",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "working sandbox",
     "exactContribution": "Repository-local interactive demonstration; Interactive phone roster with requests, team and reports screens; cover-gated approval, decline, editable requests, notes and deletion recovery.",
     "deliveredScope": "Interactive phone roster with requests, team and reports screens; cover-gated approval, decline, editable requests, notes and deletion recovery.",
@@ -389,7 +389,7 @@ export const serviceExamples: ServiceExample[] = [
       "Timing: review priority"
     ],
     "journey": "Request → assignment → warning → closure",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Interactive phone ticket workspace with assignment, clients and reports screens; editable ownership/status, resolution-note validation and deletion recovery.",
     "deliveredScope": "Interactive phone ticket workspace with assignment, clients and reports screens; editable ownership/status, resolution-note validation and deletion recovery.",
@@ -419,7 +419,7 @@ export const serviceExamples: ServiceExample[] = [
       "Review: sensitive or ambiguous content"
     ],
     "journey": "Enquiry → draft → human review",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Three scripted phone journeys for consultation intake, urgent human escalation and rescheduling; reviewed drafts, simulated handoffs, acknowledgements and activity.",
     "deliveredScope": "Three scripted phone journeys for consultation intake, urgent human escalation and rescheduling; reviewed drafts, simulated handoffs, acknowledgements and activity.",
@@ -449,7 +449,7 @@ export const serviceExamples: ServiceExample[] = [
       "Decision: human reviewer"
     ],
     "journey": "Document → fields → missing items → review",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Three scripted phone journeys for missing documents, mismatched fields and unreadable scans; reviewer approval, simulated requests and follow-up without automated eligibility decisions.",
     "deliveredScope": "Three scripted phone journeys for missing documents, mismatched fields and unreadable scans; reviewer approval, simulated requests and follow-up without automated eligibility decisions.",
@@ -479,7 +479,7 @@ export const serviceExamples: ServiceExample[] = [
       "Unknown answer: ask a reviewer"
     ],
     "journey": "Question → source passage → answer or escalation",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Three scripted phone journeys: hot-water maintenance, rent reminder and manager escalation. Each includes a reviewed draft, simulated handoff, acknowledgement, follow-up, sources and activity.",
     "deliveredScope": "Three scripted phone journeys: hot-water maintenance, rent reminder and manager escalation. Each includes a reviewed draft, simulated handoff, acknowledgement, follow-up, sources and activity.",
@@ -509,7 +509,7 @@ export const serviceExamples: ServiceExample[] = [
       "Result: one order update"
     ],
     "journey": "Received → validated → processed / failed → retry",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "working sandbox",
     "exactContribution": "Repository-local interactive demonstration; Responsive sample order dashboard with event processing, failure/retry, duplicate detection, mapping and exportable activity.",
     "deliveredScope": "Responsive sample order dashboard with event processing, failure/retry, duplicate detection, mapping and exportable activity.",
@@ -539,7 +539,7 @@ export const serviceExamples: ServiceExample[] = [
       "Exception: review failed handoff"
     ],
     "journey": "Assignment → tracking record → notification status",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Responsive delivery dashboard with driver selection, simulated event failure/retry, duplicate detection, recipient acknowledgement and activity.",
     "deliveredScope": "Responsive delivery dashboard with driver selection, simulated event failure/retry, duplicate detection, recipient acknowledgement and activity.",
@@ -569,7 +569,7 @@ export const serviceExamples: ServiceExample[] = [
       "Payment: not connected"
     ],
     "journey": "Booking → reminder → payment reference → review",
-    "origin": "unclassified",
+    "origin": "client",
     "functionality": "UI prototype",
     "exactContribution": "Repository-local interactive demonstration; Responsive booking dashboard with slot selection, simulated reminder failure/retry, duplicate detection, acknowledgement and activity.",
     "deliveredScope": "Responsive booking dashboard with slot selection, simulated reminder failure/retry, duplicate detection, acknowledgement and activity.",

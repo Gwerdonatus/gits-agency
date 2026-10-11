@@ -20,9 +20,20 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 
-const fraunces = Fraunces({ subsets: ["latin"], style: ["italic", "normal"], variable: "--font-fraunces" });
-const instrument = Instrument_Sans({ subsets: ["latin"], variable: "--font-instrument" });
-const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  style: ["italic", "normal"],
+  variable: "--font-fraunces",
+});
+const instrument = Instrument_Sans({
+  subsets: ["latin"],
+  variable: "--font-instrument",
+});
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+});
 
 /** Root class for a page adopting the system. Without this the page inherits
  *  the Arial fallback set on body in globals.css. */
@@ -61,11 +72,13 @@ export function Eyebrow({
       <p
         className={cx(
           "font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.22em]",
-          invert ? "text-white/60" : "text-[#666666]"
+          invert ? "text-white/60" : "text-[#666666]",
         )}
       >
         {index && (
-          <span className={invert ? "text-white/30" : "text-[#050505]/25"}>{index}</span>
+          <span className={invert ? "text-white/30" : "text-[#050505]/25"}>
+            {index}
+          </span>
         )}
         <span className={index ? "ml-3" : undefined}>{children}</span>
       </p>
@@ -85,7 +98,7 @@ export function SectionHeading({
     <h2
       className={cx(
         "text-3xl md:text-4xl lg:text-[2.75rem] font-extralight leading-[1.1] tracking-tight text-[#050505]",
-        className
+        className,
       )}
     >
       {children}
@@ -113,12 +126,15 @@ export function EditorialButton({
       : "border border-[#050505]/15 text-[#050505] hover:bg-[#050505] hover:text-white hover:border-[#050505]";
   const cls = cx(base, styles, className);
   return href.startsWith("#") ? (
-    <a href={href} className={cls}>{children}</a>
+    <a href={href} className={cls}>
+      {children}
+    </a>
   ) : (
-    <Link href={href} className={cls}>{children}</Link>
+    <Link href={href} className={cls}>
+      {children}
+    </Link>
   );
 }
-
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Section navigation.
@@ -156,7 +172,7 @@ export function SectionNav({ sections }: { sections: NavSection[] }) {
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) setActive(visible[0].target.id);
       },
-      { rootMargin: "-140px 0px -55% 0px", threshold: 0 }
+      { rootMargin: "-140px 0px -55% 0px", threshold: 0 },
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -166,8 +182,13 @@ export function SectionNav({ sections }: { sections: NavSection[] }) {
     e.preventDefault();
     const el = document.getElementById(id);
     if (!el) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    el.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "start",
+    });
     setActive(id);
     // Keep the address bar in step without triggering a second jump.
     window.history.replaceState(null, "", `#${id}`);
@@ -176,7 +197,7 @@ export function SectionNav({ sections }: { sections: NavSection[] }) {
   return (
     <nav
       aria-label="Page sections"
-      className="sticky top-16 z-40 border-y border-[#050505]/10 bg-white/85 backdrop-blur-md"
+      className="sticky top-16 sm:top-[72px] z-40 border-y border-[#050505]/10 bg-white/95 backdrop-blur-md"
     >
       <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
         {/* Scrolls horizontally on narrow screens rather than wrapping or
@@ -192,7 +213,9 @@ export function SectionNav({ sections }: { sections: NavSection[] }) {
                   aria-current={isActive ? "true" : undefined}
                   className={cx(
                     "relative block py-4 font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.18em] whitespace-nowrap transition-colors duration-300",
-                    isActive ? "text-[#050505]" : "text-[#666666] hover:text-[#050505]"
+                    isActive
+                      ? "text-[#050505]"
+                      : "text-[#666666] hover:text-[#050505]",
                   )}
                 >
                   {s.label}
@@ -200,7 +223,9 @@ export function SectionNav({ sections }: { sections: NavSection[] }) {
                     aria-hidden
                     className={cx(
                       "absolute inset-x-0 bottom-0 h-px origin-left transition-transform duration-300",
-                      isActive ? "scale-x-100 bg-[#050505]" : "scale-x-0 bg-transparent"
+                      isActive
+                        ? "scale-x-100 bg-[#050505]"
+                        : "scale-x-0 bg-transparent",
                     )}
                   />
                 </a>
