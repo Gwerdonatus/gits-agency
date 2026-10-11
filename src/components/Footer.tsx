@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion, useInView } from "framer-motion";
 import { useState, useRef } from "react";
 
 const spring = [0.22, 0.61, 0.36, 1] as const;
@@ -118,7 +118,7 @@ function NewsletterSignup() {
       initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.72, ease: spring, delay: 0.18 }}
-      className="mx-auto max-w-[860px] px-10 py-[44px] border-b border-white/[0.07]"
+      className="mx-auto w-full px-5 sm:px-8 lg:px-12 2xl:px-16 py-[44px] border-b border-white/[0.07]"
     >
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
 
@@ -139,7 +139,7 @@ function NewsletterSignup() {
         </div>
 
         {/* Right: form */}
-        <div className="flex-1 max-w-[360px]">
+        <div className="w-full sm:w-auto sm:flex-1 sm:max-w-[440px]">
           <AnimatePresence mode="wait">
             {status === "success" ? (
               <motion.p
@@ -229,6 +229,9 @@ function NewsletterSignup() {
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const reducedMotion = useReducedMotion();
+  const handsRef = useRef<HTMLDivElement>(null);
+  const handsVisible = useInView(handsRef, { amount: 0.5 });
 
   return (
     <footer
@@ -245,7 +248,7 @@ export default function Footer() {
         initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: spring, delay: 0.05 }}
-        className="mx-auto max-w-[860px] px-10 pt-[72px] pb-[52px] border-b border-white/[0.07]"
+        className="mx-auto w-full px-5 sm:px-8 lg:px-12 2xl:px-16 pt-[72px] pb-[52px] border-b border-white/[0.07]"
       >
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8">
 
@@ -298,11 +301,12 @@ export default function Footer() {
       {/* ════════════════════════════════════
           MAIN FOOTER GRID
       ════════════════════════════════════ */}
-      <div className="mx-auto max-w-[860px] px-10 pt-[52px] pb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto_auto] gap-y-12 gap-x-14">
+      <div className="mx-auto w-full px-5 sm:px-8 lg:px-12 2xl:px-16 pt-[52px] pb-10">
+        <div className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-[1.4fr_1fr_.6fr] gap-y-10 gap-x-8 lg:gap-x-14">
 
           {/* ── Brand column ── */}
           <motion.div
+            className="min-[480px]:col-span-2 lg:col-span-1"
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.72, ease: spring, delay: 0.1 }}
@@ -326,7 +330,7 @@ export default function Footer() {
 
             {/* Tagline */}
             <p
-              className="text-[12px] font-light text-white/65 leading-[1.8] max-w-[200px] mb-6"
+              className="text-[12px] font-light text-white/65 leading-[1.8] max-w-[340px] mb-6"
               style={{ fontFamily: "DM Sans, sans-serif" }}
             >
               GITS builds websites, business software, automation and integrations for businesses and agencies.
@@ -424,9 +428,9 @@ export default function Footer() {
           initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: spring, delay: 1.2 }}
-          className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+          className="mt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4"
         >
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p
               className="text-[11px] font-light text-white/65 tracking-[0.02em]"
               style={{ fontFamily: "DM Sans, sans-serif" }}
@@ -457,22 +461,30 @@ export default function Footer() {
       </div>
 
       {/* ── Full-bleed cinematic image ── */}
-      <motion.div
-        initial={false}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.6, ease: [0.76, 0, 0.24, 1], delay: 1.5 }}
+      <div
+        ref={handsRef}
         className="relative w-full"
         style={{ aspectRatio: "16 / 7" }}
+        aria-hidden="true"
       >
-        <Image
-          src="/footer-hands.webp"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-center select-none pointer-events-none"
-          priority={false}
-          aria-hidden="true"
-        />
+        {[-1, 1].map((side) => (
+          <motion.div
+            key={side}
+            className="absolute inset-0 pointer-events-none"
+            style={{ clipPath: side === -1 ? "inset(0 50% 0 0)" : "inset(0 0 0 50%)", mixBlendMode: "screen" }}
+            initial={reducedMotion ? false : { x: 0, y: 0, scale: 1 }}
+            animate={handsVisible || reducedMotion ? { x: side === -1 ? "5.5%" : "-9.3%", y: `${side * 1.6}%`, scale: 1.2 } : { x: 0, y: 0, scale: 1 }}
+            transition={{ duration: reducedMotion ? 0 : 1.8, ease: spring }}
+          >
+            <Image
+              src="/footer-hands.webp"
+              alt=""
+              fill
+              sizes="100vw"
+              className="object-cover object-center select-none"
+            />
+          </motion.div>
+        ))}
         {/* Top fade blends from the footer&apos;s black */}
         <div
           className="absolute inset-x-0 top-0 h-20 pointer-events-none"
@@ -483,7 +495,7 @@ export default function Footer() {
           className="absolute inset-x-0 bottom-0 h-12 pointer-events-none"
           style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%)" }}
         />
-      </motion.div>
+      </div>
 
     </footer>
   );
