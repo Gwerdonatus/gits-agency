@@ -151,20 +151,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Branch → movement → checked stock record",
     "origin": "unclassified",
     "functionality": "working sandbox",
-    "exactContribution": "Existing pharmacy dashboard UI; local sample state, not a warehouse connection.",
-    "deliveredScope": "Existing pharmacy dashboard UI; local sample state, not a warehouse connection.",
-    "limitations": "No dispensing advice, live stock database or enforced staff permissions.",
+    "exactContribution": "Repository-local interactive demonstration; Responsive inventory workspace with search, branch filters, add/edit/delete/undo, validated sample transfers, activity history and CSV export.",
+    "deliveredScope": "Responsive inventory workspace with search, branch filters, add/edit/delete/undo, validated sample transfers, activity history and CSV export.",
+    "limitations": "No dispensing advice, live stock database or enforced staff permissions. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/custom-software-development#medicore",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Browser memory only; reset clears sample data"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": "stock"
   },
   {
@@ -181,20 +181,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Site manager → approval → project record",
     "origin": "unclassified",
     "functionality": "UI prototype",
-    "exactContribution": "Existing construction interface shows sample progress and procurement states.",
-    "deliveredScope": "Existing construction interface shows sample progress and procurement states.",
-    "limitations": "No purchase order is sent; approval roles are illustrative.",
+    "exactContribution": "Repository-local interactive demonstration; Responsive projects workspace with editable progress, add/delete/undo, per-project materials approval, budget exceptions and reports.",
+    "deliveredScope": "Responsive projects workspace with editable progress, add/delete/undo, per-project materials approval, budget exceptions and reports.",
+    "limitations": "No purchase order is sent; approval roles are illustrative. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/custom-software-development#buildcore",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -211,20 +211,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Intake → batch → quality → dispatch",
     "origin": "unclassified",
     "functionality": "UI prototype",
-    "exactContribution": "Existing production interface presents sample batch stages.",
-    "deliveredScope": "Existing production interface presents sample batch stages.",
-    "limitations": "No physical traceability, sensor data or compliance certification.",
+    "exactContribution": "Repository-local interactive demonstration; Responsive batch workspace with editable records, quality-release checks, dispatch state, deletion recovery and reports.",
+    "deliveredScope": "Responsive batch workspace with editable records, quality-release checks, dispatch state, deletion recovery and reports.",
+    "limitations": "No physical traceability, sensor data or compliance certification. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/custom-software-development#factoryflow",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -331,20 +331,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Lead → owner → activity → stage",
     "origin": "unclassified",
     "functionality": "UI prototype",
-    "exactContribution": "Existing local-state CRM preview supports lead selection and a sample note.",
-    "deliveredScope": "Existing local-state CRM preview supports lead selection and a sample note.",
-    "limitations": "No persistent CRM, server-enforced roles, scheduled reminder or real import/export.",
+    "exactContribution": "Repository-local interactive demonstration; Interactive phone CRM with pipeline, leads, properties and reports screens; editable ownership and stages, saved notes, add/delete/undo and CSV export.",
+    "deliveredScope": "Interactive phone CRM with pipeline, leads, properties and reports screens; editable ownership and stages, saved notes, add/delete/undo and CSV export.",
+    "limitations": "Browser-local sample CRM; CSV export works, but no persistent database, server-enforced roles, imports or scheduled reminders. Changes reset on reload.",
     "previewImage": null,
     "caseUrl": "/services/internal-tools-crm#pipelinedesk",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -361,20 +361,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Staff request → supervisor review → roster",
     "origin": "unclassified",
     "functionality": "working sandbox",
-    "exactContribution": "Existing roster and leave preview, extended with a resettable conflict check.",
-    "deliveredScope": "Existing roster and leave preview, extended with a resettable conflict check.",
-    "limitations": "Browser-only simulation. No payroll, employee records or enforced authorization.",
+    "exactContribution": "Repository-local interactive demonstration; Interactive phone roster with requests, team and reports screens; cover-gated approval, decline, editable requests, notes and deletion recovery.",
+    "deliveredScope": "Interactive phone roster with requests, team and reports screens; cover-gated approval, decline, editable requests, notes and deletion recovery.",
+    "limitations": "Browser-only simulation. No payroll, employee records or enforced authorization. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/internal-tools-crm#staffhub",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Browser memory only; reset clears sample data"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": "roster"
   },
   {
@@ -391,20 +391,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Request → assignment → warning → closure",
     "origin": "unclassified",
     "functionality": "UI prototype",
-    "exactContribution": "Existing ticket board and client-view UI with sample escalation state.",
-    "deliveredScope": "Existing ticket board and client-view UI with sample escalation state.",
-    "limitations": "No real SLA monitoring, customer notification or stored closure.",
+    "exactContribution": "Repository-local interactive demonstration; Interactive phone ticket workspace with assignment, clients and reports screens; editable ownership/status, resolution-note validation and deletion recovery.",
+    "deliveredScope": "Interactive phone ticket workspace with assignment, clients and reports screens; editable ownership/status, resolution-note validation and deletion recovery.",
+    "limitations": "No real SLA monitoring, customer notification or stored closure. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/internal-tools-crm#servicedesk",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -421,20 +421,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Enquiry → draft → human review",
     "origin": "unclassified",
     "functionality": "UI prototype",
-    "exactContribution": "Existing scripted conversation illustrates intake; it does not call a model.",
-    "deliveredScope": "Existing scripted conversation illustrates intake; it does not call a model.",
-    "limitations": "No legal advice, connected calendar, message delivery or automated legal decisions.",
+    "exactContribution": "Repository-local interactive demonstration; Three scripted phone journeys for consultation intake, urgent human escalation and rescheduling; reviewed drafts, simulated handoffs, acknowledgements and activity.",
+    "deliveredScope": "Three scripted phone journeys for consultation intake, urgent human escalation and rescheduling; reviewed drafts, simulated handoffs, acknowledgements and activity.",
+    "limitations": "No legal advice, connected calendar, message delivery or automated legal decisions. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/ai-business-automation#nexus",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -451,20 +451,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Document → fields → missing items → review",
     "origin": "unclassified",
     "functionality": "UI prototype",
-    "exactContribution": "Scripted document-review storyboard with sample fields and a missing-information exception.",
-    "deliveredScope": "Manual input, proposed extraction and human-review steps; no model or upload connection.",
-    "limitations": "No identity verification, credit decision or verified extraction accuracy. No real documents should be submitted.",
+    "exactContribution": "Repository-local interactive demonstration; Three scripted phone journeys for missing documents, mismatched fields and unreadable scans; reviewer approval, simulated requests and follow-up without automated eligibility decisions.",
+    "deliveredScope": "Three scripted phone journeys for missing documents, mismatched fields and unreadable scans; reviewer approval, simulated requests and follow-up without automated eligibility decisions.",
+    "limitations": "No identity verification, credit decision or verified extraction accuracy. No real documents should be submitted. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/ai-business-automation#bridgepoint",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -481,20 +481,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Question → source passage → answer or escalation",
     "origin": "unclassified",
     "functionality": "UI prototype",
-    "exactContribution": "Existing scripted knowledge preview illustrates retrieval-style presentation.",
-    "deliveredScope": "Existing scripted knowledge preview illustrates retrieval-style presentation.",
-    "limitations": "No live retrieval, model training or guarantee of answer correctness.",
+    "exactContribution": "Repository-local interactive demonstration; Three scripted phone journeys: hot-water maintenance, rent reminder and manager escalation. Each includes a reviewed draft, simulated handoff, acknowledgement, follow-up, sources and activity.",
+    "deliveredScope": "Three scripted phone journeys: hot-water maintenance, rent reminder and manager escalation. Each includes a reviewed draft, simulated handoff, acknowledgement, follow-up, sources and activity.",
+    "limitations": "No live retrieval, model training or guarantee of answer correctness. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/ai-business-automation#meridian",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -511,20 +511,20 @@ export const serviceExamples: ServiceExample[] = [
     "journey": "Received → validated → processed / failed → retry",
     "origin": "unclassified",
     "functionality": "working sandbox",
-    "exactContribution": "Resettable local event processor with duplicate detection and a simulated failure/retry path.",
-    "deliveredScope": "Resettable local event processor with duplicate detection and a simulated failure/retry path.",
-    "limitations": "No payment provider, funds movement or real webhook signature validation.",
+    "exactContribution": "Repository-local interactive demonstration; Responsive sample order dashboard with event processing, failure/retry, duplicate detection, mapping and exportable activity.",
+    "deliveredScope": "Responsive sample order dashboard with event processing, failure/retry, duplicate detection, mapping and exportable activity.",
+    "limitations": "No payment provider, funds movement or real webhook signature validation. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/integrations-apis#zova",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Browser memory only; reset clears sample data"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": "payment"
   },
   {
@@ -540,21 +540,21 @@ export const serviceExamples: ServiceExample[] = [
     ],
     "journey": "Assignment → tracking record → notification status",
     "origin": "unclassified",
-    "functionality": "static preview",
-    "exactContribution": "Static workflow preview of the intended data handoff.",
-    "deliveredScope": "Static workflow preview of the intended data handoff.",
-    "limitations": "No live maps, driver tracking or messages. Provider acceptance would not establish delivery.",
+    "functionality": "UI prototype",
+    "exactContribution": "Repository-local interactive demonstration; Responsive delivery dashboard with driver selection, simulated event failure/retry, duplicate detection, recipient acknowledgement and activity.",
+    "deliveredScope": "Responsive delivery dashboard with driver selection, simulated event failure/retry, duplicate detection, recipient acknowledgement and activity.",
+    "limitations": "No live maps, driver tracking or messages. Provider acceptance would not establish delivery. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/integrations-apis#swifthaul",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   },
   {
@@ -570,21 +570,21 @@ export const serviceExamples: ServiceExample[] = [
     ],
     "journey": "Booking → reminder → payment reference → review",
     "origin": "unclassified",
-    "functionality": "static preview",
-    "exactContribution": "Static sample workflow, not a connected clinic system.",
-    "deliveredScope": "Static sample workflow, not a connected clinic system.",
-    "limitations": "No patient data, message delivery, payment collection or clinical decisions.",
+    "functionality": "UI prototype",
+    "exactContribution": "Repository-local interactive demonstration; Responsive booking dashboard with slot selection, simulated reminder failure/retry, duplicate detection, acknowledgement and activity.",
+    "deliveredScope": "Responsive booking dashboard with slot selection, simulated reminder failure/retry, duplicate detection, acknowledgement and activity.",
+    "limitations": "No patient data, message delivery, payment collection or clinical decisions. Changes reset on reload. Sample data only; this demonstration does not establish a client deployment or business-result claim.",
     "previewImage": null,
     "caseUrl": "/services/integrations-apis#pulseclinic",
     "demoUrl": null,
     "sourceUrl": null,
     "deliveryPeriod": null,
     "thirdPartyDependencies": [
-      "Production integrations require agreed API access, permissions and provider plans"
+      "React browser-local state; no live external services"
     ],
     "outcomes": [],
     "permissionToNameClient": false,
-    "lastVerifiedAt": "2026-10-09",
+    "lastVerifiedAt": "2026-10-11",
     "sandbox": null
   }
 ];
