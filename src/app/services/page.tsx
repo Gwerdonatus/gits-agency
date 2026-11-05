@@ -3,13 +3,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Inter } from "next/font/google";
+import { Code2, Globe2, Workflow, PanelsTopLeft, Network } from "lucide-react";
 import { Eyebrow, editorialRoot, cx } from "@/components/editorial";
 
 const bodyFont = Inter({ subsets: ["latin"], weight: "400" });
 
 const SERVICES = [
   {
-    icon: "💻",
+    icon: Code2,
     title: "Custom Software Development",
     shortLabel: "Software",
     shortValue: "Build software tailored to the way your business works.",
@@ -25,7 +26,7 @@ const SERVICES = [
     accentLight: "rgba(37,99,235,0.09)",
   },
   {
-    icon: "🌐",
+    icon: Globe2,
     title: "Websites & Digital Experiences",
     shortLabel: "Websites",
     shortValue: "Modern websites that attract customers and grow your business.",
@@ -34,14 +35,14 @@ const SERVICES = [
     whatWeBuild: ["Business & corporate websites","E-commerce stores","Landing pages","Portfolio websites","Event websites","Product showcase websites","Marketing websites","Performance-first web experiences"],
     idealFor: ["Boutiques and fashion brands","Businesses selling online","Service-based businesses","Professional firms & founders"],
     benefits: ["Stronger online presence and authority","Better customer trust and credibility","Mobile-first, fast-loading experiences","Improved conversions and SEO"],
-    image: "/services/web.webp",
-    imageAlt: "Clean, modern website design shown on desktop and mobile screens",
+    image: "/services/web-moda.jpg",
+    imageAlt: "MODA fashion storefront displayed on a laptop and phone against a warm orange backdrop",
     accent: "rgba(20,184,166,0.18)",
     accentHex: "#0d9488",
     accentLight: "rgba(20,184,166,0.08)",
   },
   {
-    icon: "🤖",
+    icon: Workflow,
     title: "AI & Business Automation",
     shortLabel: "AI & Auto",
     shortValue: "Automate repetitive work and improve business efficiency.",
@@ -57,7 +58,7 @@ const SERVICES = [
     accentLight: "rgba(168,85,247,0.08)",
   },
   {
-    icon: "📊",
+    icon: PanelsTopLeft,
     title: "Internal Tools & CRM Systems",
     shortLabel: "Internal Tools",
     shortValue: "Custom systems that help your team work smarter.",
@@ -73,7 +74,7 @@ const SERVICES = [
     accentLight: "rgba(245,158,11,0.08)",
   },
   {
-    icon: "🔗",
+    icon: Network,
     title: "Integrations & APIs",
     shortLabel: "Integrations",
     shortValue: "Connect your systems and eliminate unnecessary manual work.",
@@ -461,8 +462,8 @@ export default function ServicesPage() {
                       >
                         {i + 1}
                       </span>
-                      {/* Emoji icon */}
-                      <span className="text-[13px] leading-none">{s.icon}</span>
+                      {/* Consistent vector marks, rather than platform-dependent emoji. */}
+                      <s.icon size={17} strokeWidth={1.7} aria-hidden="true" className="shrink-0" style={{ color: isActive ? "#fff" : s.accentHex }} />
                       {/* Label */}
                       <span
                         className="text-[12px] font-semibold whitespace-nowrap leading-none"
@@ -527,7 +528,8 @@ export default function ServicesPage() {
                       className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold text-white"
                       style={{ background: activeService.accentHex, boxShadow: `0 4px 12px ${activeService.accentHex}60` }}
                     >
-                      {activeService.icon} {String(active + 1).padStart(2, "0")} / {SERVICES.length}
+                      <activeService.icon size={16} strokeWidth={1.7} aria-hidden="true" />
+                      {String(active + 1).padStart(2, "0")} / {SERVICES.length}
                     </span>
                   </div>
                   {/* Service name bottom-left */}
@@ -648,7 +650,9 @@ export default function ServicesPage() {
                           className="w-full flex items-center gap-2 rounded-lg px-2.5 py-2 text-left bg-white/60 hover:bg-white transition"
                           style={{ outline: "none", border: "1px solid rgba(17,24,39,0.07)" }}
                         >
-                          <span className="text-[12px]">{s.icon}</span>
+                          <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border" style={{ color: s.accentHex, background: s.accentLight, borderColor: `${s.accentHex}20` }}>
+                            <s.icon size={16} strokeWidth={1.7} aria-hidden="true" />
+                          </span>
                           <span className="text-[11px] text-gray-600 font-medium truncate">{s.shortLabel}</span>
                         </button>
                       ))}
