@@ -1014,7 +1014,9 @@ export default function AboutPage() {
             <TeamMember
               name="Chuka Ndubuisi"
               role="DevOps Engineer"
+              bio="Supports CI/CD pipelines, deployment automation and infrastructure — helping the team release software reliably and maintain consistent environments."
               imageSrc="/about/chuka-white.jpg"
+              linkedin="https://www.linkedin.com/in/chuka-Ndubuisi-70b525262/"
             />
           </motion.div>
         </div>
