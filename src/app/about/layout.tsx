@@ -17,7 +17,7 @@ const IMG_ROOT = "/GITS_Complete_Image_Package";
 
 const TITLE = "About the Studio";
 const DESCRIPTION =
-  "GITS is a small studio of senior engineers and designers in Abuja, Nigeria, building software, digital platforms, and AI automation. No junior hires, no bench — meet the team and how we work.";
+  "GITS builds websites, business software, automation and integrations for businesses and agencies. Meet the team and learn how we work.";
 
 export const metadata: Metadata = {
   // Root layout's template renders this as "About the Studio | GITS".

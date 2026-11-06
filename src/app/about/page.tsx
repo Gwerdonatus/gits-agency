@@ -534,21 +534,18 @@ function TeamMember({
   bio,
   imageSrc,
   linkedin,
-  index,
 }: {
   name: string;
   role: string;
-  bio: string;
+  bio?: string;
   imageSrc: string;
   linkedin?: string;
-  index: number;
 }) {
   return (
     // `group` is required for the image's group-hover zoom to fire — it was
     // referenced by the child but never declared on a parent.
     <motion.div
-      variants={fadeUp}
-      custom={index * 0.08}
+      initial={false}
       className="group text-center sm:text-left"
     >
       {/* Capped and centred on small screens: at full column width these ran
@@ -561,14 +558,14 @@ function TeamMember({
           alt={`${name} — ${role} at GITS`}
           fill
           className="object-cover object-top grayscale contrast-[1.05] transition-transform duration-700 ease-out group-hover:scale-105"
-          sizes="(max-width: 640px) 200px, 45vw"
+          sizes="(max-width: 639px) 200px, (max-width: 1023px) 45vw, 30vw"
         />
       </div>
       <p className="mt-5 text-base font-normal text-[#050505] tracking-tight">{name}</p>
       <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[#666666]">
         {role}
       </p>
-      <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">{bio}</p>
+      {bio && <p className="mt-3 text-sm font-light text-[#666666] leading-[1.7]">{bio}</p>}
       {linkedin && (
         <a
           href={linkedin}
@@ -991,21 +988,34 @@ export default function AboutPage() {
             transition={{ duration: 0.55, ease }}
             className="mb-16 md:mb-24"
           >
-            <Eyebrow index="06">Project responsibilities</Eyebrow>
+            <Eyebrow index="06">The team</Eyebrow>
             <h2 className="mt-6 text-3xl md:text-4xl lg:text-5xl font-extralight leading-[1.1] tracking-tight text-[#050505] max-w-xl">
-              Agree who owns each part of the work.
+              Small by design.
             </h2>
           </motion.div>
 
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-10 md:gap-12 max-w-3xl"
+            initial={false}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-12 max-w-6xl"
           >
-            <div className="border-t border-black/15 pt-6"><h3 className="text-xl font-light">Design &amp; implementation</h3><p className="mt-4 text-[#666666] leading-7">Agree the user journey, content, interfaces and implementation scope. Review each milestone against the agreed acceptance check.</p></div>
-            <div className="border-t border-black/15 pt-6"><h3 className="text-xl font-light">Review &amp; handover</h3><p className="mt-4 text-[#666666] leading-7">Identify the person who reviews the work, the required access and documentation, and the support responsibilities after handover.</p></div>
+            <TeamMember
+              name="Daniel Ochai"
+              role="UI/UX & Design Systems"
+              bio="Owns every spacing token and interaction pattern. Nothing ships until it earns its place."
+              imageSrc="/about/daniel.webp"
+              linkedin="https://www.linkedin.com/in/daniel-o-ochai-596a47319/"
+            />
+            <TeamMember
+              name="Aisha Adeyemi"
+              role="Marketing & Media"
+              bio="Runs how the studio sounds in public — channels, campaigns, and the story around the work. Positioning before promotion."
+              imageSrc="/about/aisha-white.jpg"
+            />
+            <TeamMember
+              name="Chuka Ndubuisi"
+              role="DevOps Engineer"
+              imageSrc="/about/chuka-white.jpg"
+            />
           </motion.div>
         </div>
       </section>
